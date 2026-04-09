@@ -14,22 +14,22 @@
         }
         #conteudo-privado { display: none; }
         
-        body { margin: 0; font-family: 'Poppins', sans-serif; background: #0a0a1a; color: #f0f0f0; text-align: center; padding-top: 70px; }
+        body { margin: 0; font-family: 'Poppins', sans-serif; background: #0a0a1a; color: #f0f0f0; text-align: center; padding-top: 80px; }
         .stars { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; }
         .star { position: absolute; background: white; border-radius: 50%; animation: twinkle var(--d) infinite; }
         @keyframes twinkle { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
 
-        /* Barra Fixa */
+        /* Barra Fixa no Topo */
         nav { 
             background: rgba(15, 5, 30, 0.95); padding: 15px 0; 
             border-bottom: 2px solid #d4af37; position: fixed; 
             top: 0; left: 0; width: 100%; z-index: 2000; 
             display: flex; justify-content: space-around; 
         }
-        nav a { text-decoration: none; color: #d4af37; font-weight: 600; font-size: 0.8rem; text-transform: uppercase; }
+        nav a { text-decoration: none; color: #d4af37; font-weight: 600; font-size: 0.75rem; text-transform: uppercase; }
         
         .card { background: rgba(142, 68, 173, 0.1); border: 2px solid #d4af37; border-radius: 20px; padding: 20px; margin: 20px auto; max-width: 350px; }
-        .btn-acao { background: #8e44ad; color: white; border: 1px solid #d4af37; padding: 10px 20px; border-radius: 50px; cursor: pointer; font-weight: bold; margin-top: 10px; }
+        .btn-acao { background: #8e44ad; color: white; border: 1px solid #d4af37; padding: 10px 20px; border-radius: 50px; cursor: pointer; font-weight: bold; margin-top: 10px; text-decoration: none; display: inline-block; }
         .titulo { font-family: 'Great Vibes', cursive; color: #d4af37; font-size: 2.5rem; margin: 15px 0; }
         
         .tab-content { display: none; padding: 10px; animation: fadeIn 0.5s; }
@@ -38,30 +38,30 @@
         
         input, textarea { width: 85%; padding: 12px; background: rgba(255,255,255,0.05); border: 1px solid #8e44ad; color: white; border-radius: 10px; margin-bottom: 10px; outline: none; }
 
-        /* Estilo Chat Instagram */
+        /* Chat Estilo Instagram */
         #muralChat { 
-            text-align: left; height: 350px; overflow-y: auto; 
-            padding: 15px; background: rgba(0,0,0,0.2); 
+            text-align: left; height: 300px; overflow-y: auto; 
+            padding: 15px; background: rgba(0,0,0,0.3); 
             border-radius: 15px; display: flex; flex-direction: column;
+            border: 1px solid rgba(142, 68, 173, 0.3);
         }
         .balao { 
-            max-width: 80%; padding: 10px 15px; border-radius: 20px; 
-            margin-bottom: 10px; position: relative; font-size: 0.9rem;
-            line-height: 1.4;
+            max-width: 85%; padding: 10px 15px; border-radius: 18px; 
+            margin-bottom: 10px; font-size: 0.9rem; line-height: 1.4;
+            background: #262626; align-self: flex-start; border-bottom-left-radius: 4px;
         }
-        .balao.outro { background: #333; align-self: flex-start; border-bottom-left-radius: 5px; }
-        .data-chat { font-size: 0.65rem; color: #aaa; display: block; margin-top: 5px; text-align: right; }
+        .data-chat { font-size: 0.6rem; color: #888; display: block; margin-top: 5px; }
 
         /* Lista de Conquistas */
         #listaSonhos { text-align: left; list-style: none; padding: 0; }
-        #listaSonhos li { background: rgba(212, 175, 55, 0.1); margin-bottom: 8px; padding: 10px; border-radius: 10px; border-left: 3px solid #d4af37; }
+        #listaSonhos li { background: rgba(212, 175, 55, 0.1); margin-bottom: 8px; padding: 10px; border-radius: 10px; border-left: 3px solid #d4af37; font-size: 0.9rem; }
     </style>
 </head>
 <body>
 
     <div id="bloqueio">
         <h1 class="titulo">Nossa Chave</h1>
-        <input type="password" id="inputSenha" placeholder="Nossa data (DDMM)..." style="text-align:center">
+        <input type="password" id="inputSenha" placeholder="Data especial (DDMM)..." style="text-align:center">
         <button class="btn-acao" onclick="acessar()">Entrar</button>
     </div>
 
@@ -77,8 +77,9 @@
         <main>
             <div id="home" class="tab-content active">
                 <h1 class="titulo">Bem-vindo ao Nosso Mundo</h1>
-                <img src="Amor.png" style="width:150px; border-radius:20px; border:2px solid #d4af37">
+                <img src="Amor.png" style="width:140px; border-radius:20px; border:2px solid #d4af37">
                 <p id="timer" style="font-weight: bold; color: #d4af37; margin-top: 15px;"></p>
+                <a href="https://www.youtube.com/watch?v=izGwDsrQ1eQ" target="_blank" class="btn-acao">🎵 Tocar Nossa Música</a>
             </div>
 
             <div id="filho" class="tab-content">
@@ -90,9 +91,9 @@
             </div>
 
             <div id="sonhos" class="tab-content">
-                <h2 class="titulo">O que queremos conquistar juntos</h2>
+                <h2 class="titulo">Nossas Conquistas</h2>
                 <div class="card">
-                    <input type="text" id="inputSonho" placeholder="Escreva um sonho aqui...">
+                    <input type="text" id="inputSonho" placeholder="O que queremos conquistar?">
                     <button class="btn-acao" id="btnSonho">Adicionar à lista ✅</button>
                     <ul id="listaSonhos"></ul>
                 </div>
@@ -100,11 +101,11 @@
 
             <div id="chat-aba" class="tab-content">
                 <h2 class="titulo">O que você está sentindo hoje?</h2>
-                <div class="card" style="max-width: 400px;">
+                <div class="card" style="max-width: 400px; padding: 10px;">
                     <div id="muralChat"></div>
-                    <div style="margin-top:15px; display: flex; gap: 5px;">
-                        <input type="text" id="textoChat" placeholder="Mensagem..." style="margin-bottom:0; flex:1">
-                        <button class="btn-acao" id="btnChat" style="margin-top:0">enviar</button>
+                    <div style="margin-top:10px; display: flex; gap: 5px;">
+                        <input type="text" id="textoChat" placeholder="Mensagem..." style="margin-bottom:0; flex:1; padding: 8px;">
+                        <button class="btn-acao" id="btnChat" style="margin-top:0; padding: 8px 15px;">Enviar</button>
                     </div>
                 </div>
             </div>
@@ -128,7 +129,6 @@
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
 
-        // Acesso
         window.acessar = () => {
             if(document.getElementById('inputSenha').value === "2809") {
                 document.getElementById('bloqueio').style.display = 'none';
@@ -138,18 +138,19 @@
             } else { alert("Senha incorreta!"); }
         };
 
-        // Navegação
         window.tab = (e, id) => {
             e.preventDefault();
             document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
             document.getElementById(id).classList.add('active');
-            if(id === 'chat-aba') {
-                const chat = document.getElementById('muralChat');
-                chat.scrollTop = chat.scrollHeight;
-            }
+            if(id === 'chat-aba') scrollChat();
         };
 
-        // Lógica do Chat (Instagram Style)
+        function scrollChat() {
+            const chat = document.getElementById('muralChat');
+            chat.scrollTop = chat.scrollHeight;
+        }
+
+        // Chat Instagram Style
         document.getElementById('btnChat').onclick = () => {
             const txt = document.getElementById('textoChat').value;
             if(txt.trim()) {
@@ -168,15 +169,15 @@
             snap.forEach(child => {
                 const item = child.val();
                 div.innerHTML += `
-                    <div class="balao outro">
+                    <div class="balao">
                         ${item.msg}
-                        <span class="data-chat">${item.data} • ${item.hora}</span>
+                        <span class="data-chat">${item.data} às ${item.hora}</span>
                     </div>`;
             });
-            div.scrollTop = div.scrollHeight;
+            scrollChat();
         });
 
-        // Lógica Conquistas
+        // Conquistas
         document.getElementById('btnSonho').onclick = () => {
             const sonho = document.getElementById('inputSonho').value;
             if(sonho.trim()) {
@@ -210,7 +211,7 @@
             const dataInicio = new Date(2025, 8, 28);
             setInterval(() => {
                 const dias = Math.floor((new Date() - dataInicio) / 86400000);
-                document.getElementById('timer').innerText = dias + " dias de nós.";
+                document.getElementById('timer').innerText = dias + " dias construindo nossa história.";
             }, 1000);
         }
     </script>
