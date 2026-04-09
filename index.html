@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nosso Eterno Começo ❤️</title>
+    <title>Nosso Infinito ❤️</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Great+Vibes&display=swap');
         
@@ -25,11 +25,11 @@
             top: 0; left: 0; width: 100%; z-index: 2000; 
             display: flex; justify-content: space-around; 
         }
-        nav a { text-decoration: none; color: #d4af37; font-weight: 600; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; }
+        nav a { text-decoration: none; color: #d4af37; font-weight: 600; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; }
         
         .card { background: rgba(142, 68, 173, 0.1); border: 2px solid #d4af37; border-radius: 20px; padding: 25px; margin: 20px auto; max-width: 350px; box-shadow: 0 0 15px rgba(212, 175, 55, 0.2); }
-        .btn-acao { background: #8e44ad; color: white; border: 1px solid #d4af37; padding: 12px 25px; border-radius: 50px; cursor: pointer; font-weight: bold; margin-top: 10px; text-decoration: none; display: inline-block; transition: 0.3s; }
-        .btn-acao:hover { background: #d4af37; color: #0a0a1a; }
+        .btn-acao { background: #8e44ad; color: white; border: 1px solid #d4af37; padding: 12px 25px; border-radius: 50px; cursor: pointer; font-weight: bold; margin: 10px 5px; text-decoration: none; display: inline-block; transition: 0.3s; }
+        .btn-acao:hover { background: #d4af37; color: #0a0a1a; transform: scale(1.05); }
         .titulo { font-family: 'Great Vibes', cursive; color: #d4af37; font-size: 2.8rem; margin: 15px 0; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
         
         .tab-content { display: none; padding: 10px; animation: fadeIn 0.6s ease; }
@@ -38,25 +38,20 @@
         
         input { width: 85%; padding: 12px; background: rgba(255,255,255,0.08); border: 1px solid #8e44ad; color: white; border-radius: 12px; margin-bottom: 12px; outline: none; text-align: center; }
 
-        /* Mural de Sentimentos Estilo Chat */
+        .grid-videos { display: none; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 20px; }
+        .video-item { border: 1px solid #d4af37; border-radius: 10px; width: 100%; cursor: pointer; transition: 0.3s; }
+
         #muralChat { 
             text-align: left; height: 320px; overflow-y: auto; 
             padding: 15px; background: rgba(0,0,0,0.4); 
             border-radius: 15px; display: flex; flex-direction: column;
             border: 1px solid rgba(212, 175, 55, 0.3);
         }
-        .balao { 
-            max-width: 85%; padding: 12px 16px; border-radius: 20px; 
-            margin-bottom: 12px; font-size: 0.9rem; line-height: 1.5;
-            background: #2b2b2b; align-self: flex-start; border-bottom-left-radius: 4px;
-            box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
-        }
-        .data-chat { font-size: 0.65rem; color: #d4af37; display: block; margin-top: 6px; font-weight: 300; }
+        .balao { max-width: 85%; padding: 12px 16px; border-radius: 20px; margin-bottom: 12px; font-size: 0.9rem; line-height: 1.5; background: #2b2b2b; align-self: flex-start; border-bottom-left-radius: 4px; }
+        .data-chat { font-size: 0.65rem; color: #d4af37; display: block; margin-top: 6px; }
 
         #listaSonhos { text-align: left; list-style: none; padding: 0; }
         #listaSonhos li { background: rgba(212, 175, 55, 0.1); margin-bottom: 10px; padding: 12px; border-radius: 12px; border-left: 4px solid #d4af37; font-size: 0.95rem; }
-        
-        .texto-diario { font-size: 1.2rem; line-height: 1.6; color: #fdfdfd; font-style: italic; font-family: 'Poppins', sans-serif; }
     </style>
 </head>
 <body>
@@ -79,35 +74,45 @@
         <main>
             <div id="home" class="tab-content active">
                 <h1 class="titulo">Desde 28/12/2025</h1>
-                <img src="Amor.png" style="width:140px; border-radius:30px; border:3px solid #d4af37; margin: 10px 0;">
+                <img src="Amor.png" style="width:140px; border-radius:30px; border:3px solid #d4af37; margin-bottom: 10px;">
                 <p id="timer" style="font-weight: 600; color: #d4af37; font-size: 1.2rem;"></p>
-                <a href="https://www.youtube.com/watch?v=yvAtv6v_QvY" target="_blank" class="btn-acao">🎵 Melim - Meu Abrigo</a>
+                
+                <div class="card">
+                    <button class="btn-acao" onclick="mostrarVideos()">Músicas 🎵</button>
+                    <div class="grid-videos" id="galeriaVideos">
+                        <img src="Vídeo 1.png" class="video-item" onclick="alert('Abrindo vídeo...')">
+                        <img src="Vídeo 2.png" class="video-item" onclick="alert('Abrindo vídeo...')">
+                        <img src="Vídeo 3.png" class="video-item" onclick="alert('Abrindo vídeo...')">
+                        <img src="Vídeo 4.png" class="video-item" onclick="alert('Abrindo vídeo...')">
+                        <img src="Vídeo 5.png" class="video-item" onclick="alert('Abrindo vídeo...')">
+                        <img src="Vídeo 6.png" class="video-item" onclick="alert('Abrindo vídeo...')">
+                    </div>
+                </div>
             </div>
 
             <div id="diario" class="tab-content">
                 <h2 class="titulo">Mensagem Diária</h2>
                 <div class="card">
-                    <p id="textoDoDia" class="texto-diario"></p>
-                    <p style="color: #d4af37; font-weight: bold; margin-top: 25px; letter-spacing: 2px;">COM AMOR, SEMPRE.</p>
+                    <p id="textoDoDia" style="font-size: 1.2rem; font-style: italic;"></p>
                 </div>
             </div>
 
             <div id="sonhos" class="tab-content">
                 <h2 class="titulo">Nossas Conquistas</h2>
                 <div class="card">
-                    <input type="text" id="inputSonho" placeholder="O que vamos realizar hoje?">
-                    <button class="btn-acao" id="btnSonho">Eternizar Sonho ✨</button>
+                    <input type="text" id="inputSonho" placeholder="O que vamos realizar?">
+                    <button class="btn-acao" id="btnSonho">Salvar ✅</button>
                     <ul id="listaSonhos"></ul>
                 </div>
             </div>
 
             <div id="chat-aba" class="tab-content">
-                <h2 class="titulo">Diário de Sentimentos</h2>
-                <div class="card" style="max-width: 420px; padding: 15px;">
+                <h2 class="titulo">Sentimentos</h2>
+                <div class="card">
                     <div id="muralChat"></div>
                     <div style="margin-top:15px; display: flex; gap: 8px;">
-                        <input type="text" id="textoChat" placeholder="Escreva aqui..." style="margin-bottom:0; flex:1">
-                        <button class="btn-acao" id="btnChat" style="margin-top:0; padding: 10px 15px;">Postar</button>
+                        <input type="text" id="textoChat" placeholder="Como você está hoje?" style="margin-bottom:0; flex:1">
+                        <button class="btn-acao" id="btnChat" style="margin-top:0;">Postar</button>
                     </div>
                 </div>
             </div>
@@ -115,10 +120,9 @@
     </div>
 
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+        import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
 
-        // Sua configuração original do Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyCz3H8bjiuS2gNvxUr_G3Csd21wL5J1gLw",
             authDomain: "project-3726343372287499417.firebaseapp.com",
@@ -126,7 +130,8 @@
             projectId: "project-3726343372287499417",
             storageBucket: "project-3726343372287499417.firebasestorage.app",
             messagingSenderId: "198997508418",
-            appId: "1:198997508418:web:d6f13c38481348462218db"
+            appId: "1:198997508418:web:d6f13c38481348462218db",
+            measurementId: "G-4RCB1MTXP6"
         };
 
         const app = initializeApp(firebaseConfig);
@@ -135,22 +140,20 @@
         const frasesSemana = [
             "Desde aquele 28 de dezembro, meu mundo ficou mais colorido. ❤️",
             "Você é a razão de todos os meus planos darem certo.",
-            "Nosso amor é o abrigo que eu sempre procureu. ✨",
-            "Obrigada por cada segundo ao meu lado desde o começo.",
-            "Com você, a vida é uma aventura que eu nunca quero terminar.",
-            "Você é meu presente favorito, hoje e todos os dias. 😊",
+            "Nosso amor é o abrigo que eu sempre procurei. ✨",
+            "Obrigada por cada segundo ao meu lado.",
+            "Com você, a vida é uma aventura perfeita.",
+            "Você é meu presente favorito, todos os dias. 😊",
             "Meu coração bate no ritmo da nossa história."
         ];
 
         window.acessar = () => {
-            // Senha configurada como 2810
             if(document.getElementById('inputSenha').value === "2810") {
                 document.getElementById('bloqueio').style.display = 'none';
                 document.getElementById('conteudo-privado').style.display = 'block';
                 gerarEstrelas();
                 iniciarTimer();
-                const dia = new Date().getDay();
-                document.getElementById('textoDoDia').innerText = frasesSemana[dia];
+                document.getElementById('textoDoDia').innerText = frasesSemana[new Date().getDay()];
             } else { alert("Senha incorreta!"); }
         };
 
@@ -158,6 +161,11 @@
             e.preventDefault();
             document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
             document.getElementById(id).classList.add('active');
+        };
+
+        window.mostrarVideos = () => {
+            const galeria = document.getElementById('galeriaVideos');
+            galeria.style.display = galeria.style.display === 'grid' ? 'none' : 'grid';
         };
 
         document.getElementById('btnChat').onclick = () => {
@@ -173,15 +181,10 @@
         };
 
         onValue(ref(db, 'chat'), (snap) => {
-            const div = document.getElementById('muralChat'); 
-            div.innerHTML = "";
+            const div = document.getElementById('muralChat'); div.innerHTML = "";
             snap.forEach(child => {
                 const item = child.val();
-                div.innerHTML += `
-                    <div class="balao">
-                        ${item.msg}
-                        <span class="data-chat">${item.data} às ${item.hora}</span>
-                    </div>`;
+                div.innerHTML += `<div class="balao">${item.msg}<span class="data-chat">${item.data} • ${item.hora}</span></div>`;
             });
             div.scrollTop = div.scrollHeight;
         });
@@ -195,11 +198,8 @@
         };
 
         onValue(ref(db, 'sonhos'), (snap) => {
-            const ul = document.getElementById('listaSonhos');
-            ul.innerHTML = "";
-            snap.forEach(child => {
-                ul.innerHTML += `<li>✨ ${child.val().texto}</li>`;
-            });
+            const ul = document.getElementById('listaSonhos'); ul.innerHTML = "";
+            snap.forEach(child => { ul.innerHTML += `<li>✨ ${child.val().texto}</li>`; });
         });
 
         function gerarEstrelas() {
@@ -216,18 +216,13 @@
         }
 
         function iniciarTimer() {
-            // Data de Início: 28 de Dezembro de 2025
             const dataInicio = new Date(2025, 11, 28); 
             setInterval(() => {
                 const agora = new Date();
-                const diferenca = agora - dataInicio;
-                const dias = Math.floor(diferenca / 86400000);
-                
-                if (diferenca > 0) {
-                    document.getElementById('timer').innerText = dias + " dias de pura felicidade.";
-                } else {
-                    document.getElementById('timer').innerText = "Ansiosa pelo nosso dia 28/12!";
-                }
+                const diff = agora - dataInicio;
+                const dias = Math.floor(diff / 86400000);
+                if (diff > 0) { document.getElementById('timer').innerText = dias + " dias de nós."; }
+                else { document.getElementById('timer').innerText = "Ansiosa por 28/12!"; }
             }, 1000);
         }
     </script>
