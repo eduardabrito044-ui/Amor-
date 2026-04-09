@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nosso Mundo Particular ❤️</title>
+    <title>Nosso Eterno Começo ❤️</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Great+Vibes&display=swap');
         
@@ -19,93 +19,95 @@
         .star { position: absolute; background: white; border-radius: 50%; animation: twinkle var(--d) infinite; }
         @keyframes twinkle { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
 
-        /* Barra Fixa no Topo */
         nav { 
-            background: rgba(15, 5, 30, 0.95); padding: 15px 0; 
+            background: rgba(20, 5, 35, 0.98); padding: 15px 0; 
             border-bottom: 2px solid #d4af37; position: fixed; 
             top: 0; left: 0; width: 100%; z-index: 2000; 
             display: flex; justify-content: space-around; 
         }
-        nav a { text-decoration: none; color: #d4af37; font-weight: 600; font-size: 0.75rem; text-transform: uppercase; }
+        nav a { text-decoration: none; color: #d4af37; font-weight: 600; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; }
         
-        .card { background: rgba(142, 68, 173, 0.1); border: 2px solid #d4af37; border-radius: 20px; padding: 20px; margin: 20px auto; max-width: 350px; }
-        .btn-acao { background: #8e44ad; color: white; border: 1px solid #d4af37; padding: 10px 20px; border-radius: 50px; cursor: pointer; font-weight: bold; margin-top: 10px; text-decoration: none; display: inline-block; }
-        .titulo { font-family: 'Great Vibes', cursive; color: #d4af37; font-size: 2.5rem; margin: 15px 0; }
+        .card { background: rgba(142, 68, 173, 0.1); border: 2px solid #d4af37; border-radius: 20px; padding: 25px; margin: 20px auto; max-width: 350px; box-shadow: 0 0 15px rgba(212, 175, 55, 0.2); }
+        .btn-acao { background: #8e44ad; color: white; border: 1px solid #d4af37; padding: 12px 25px; border-radius: 50px; cursor: pointer; font-weight: bold; margin-top: 10px; text-decoration: none; display: inline-block; transition: 0.3s; }
+        .btn-acao:hover { background: #d4af37; color: #0a0a1a; }
+        .titulo { font-family: 'Great Vibes', cursive; color: #d4af37; font-size: 2.8rem; margin: 15px 0; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
         
-        .tab-content { display: none; padding: 10px; animation: fadeIn 0.5s; }
+        .tab-content { display: none; padding: 10px; animation: fadeIn 0.6s ease; }
         .tab-content.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
-        input, textarea { width: 85%; padding: 12px; background: rgba(255,255,255,0.05); border: 1px solid #8e44ad; color: white; border-radius: 10px; margin-bottom: 10px; outline: none; }
+        input { width: 85%; padding: 12px; background: rgba(255,255,255,0.08); border: 1px solid #8e44ad; color: white; border-radius: 12px; margin-bottom: 12px; outline: none; text-align: center; }
 
-        /* Chat Estilo Instagram */
+        /* Mural de Sentimentos Estilo Chat */
         #muralChat { 
-            text-align: left; height: 300px; overflow-y: auto; 
-            padding: 15px; background: rgba(0,0,0,0.3); 
+            text-align: left; height: 320px; overflow-y: auto; 
+            padding: 15px; background: rgba(0,0,0,0.4); 
             border-radius: 15px; display: flex; flex-direction: column;
-            border: 1px solid rgba(142, 68, 173, 0.3);
+            border: 1px solid rgba(212, 175, 55, 0.3);
         }
         .balao { 
-            max-width: 85%; padding: 10px 15px; border-radius: 18px; 
-            margin-bottom: 10px; font-size: 0.9rem; line-height: 1.4;
-            background: #262626; align-self: flex-start; border-bottom-left-radius: 4px;
+            max-width: 85%; padding: 12px 16px; border-radius: 20px; 
+            margin-bottom: 12px; font-size: 0.9rem; line-height: 1.5;
+            background: #2b2b2b; align-self: flex-start; border-bottom-left-radius: 4px;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
         }
-        .data-chat { font-size: 0.6rem; color: #888; display: block; margin-top: 5px; }
+        .data-chat { font-size: 0.65rem; color: #d4af37; display: block; margin-top: 6px; font-weight: 300; }
 
-        /* Lista de Conquistas */
         #listaSonhos { text-align: left; list-style: none; padding: 0; }
-        #listaSonhos li { background: rgba(212, 175, 55, 0.1); margin-bottom: 8px; padding: 10px; border-radius: 10px; border-left: 3px solid #d4af37; font-size: 0.9rem; }
+        #listaSonhos li { background: rgba(212, 175, 55, 0.1); margin-bottom: 10px; padding: 12px; border-radius: 12px; border-left: 4px solid #d4af37; font-size: 0.95rem; }
+        
+        .texto-diario { font-size: 1.2rem; line-height: 1.6; color: #fdfdfd; font-style: italic; font-family: 'Poppins', sans-serif; }
     </style>
 </head>
 <body>
 
     <div id="bloqueio">
-        <h1 class="titulo">Nossa Chave</h1>
-        <input type="password" id="inputSenha" placeholder="Data especial (DDMM)..." style="text-align:center">
-        <button class="btn-acao" onclick="acessar()">Entrar</button>
+        <h1 class="titulo">Nossa Data Mágica</h1>
+        <input type="password" id="inputSenha" placeholder="Digite a nossa senha...">
+        <button class="btn-acao" onclick="acessar()">Entrar no Nosso Mundo</button>
     </div>
 
     <div id="conteudo-privado">
         <div class="stars" id="starField"></div>
         <nav>
             <a href="#" onclick="tab(event, 'home')">Início</a>
-            <a href="#" onclick="tab(event, 'filho')">Menino</a>
-            <a href="#" onclick="tab(event, 'sonhos')">Conquistas</a>
-            <a href="#" onclick="tab(event, 'chat-aba')">Sentimentos</a>
+            <a href="#" onclick="tab(event, 'diario')">Frases</a>
+            <a href="#" onclick="tab(event, 'sonhos')">Sonhos</a>
+            <a href="#" onclick="tab(event, 'chat-aba')">Sentir</a>
         </nav>
 
         <main>
             <div id="home" class="tab-content active">
-                <h1 class="titulo">Bem-vindo ao Nosso Mundo</h1>
-                <img src="Amor.png" style="width:140px; border-radius:20px; border:2px solid #d4af37">
-                <p id="timer" style="font-weight: bold; color: #d4af37; margin-top: 15px;"></p>
-                <a href="https://www.youtube.com/watch?v=izGwDsrQ1eQ" target="_blank" class="btn-acao">🎵 Tocar Nossa Música</a>
+                <h1 class="titulo">Desde 28/12/2025</h1>
+                <img src="Amor.png" style="width:140px; border-radius:30px; border:3px solid #d4af37; margin: 10px 0;">
+                <p id="timer" style="font-weight: 600; color: #d4af37; font-size: 1.2rem;"></p>
+                <a href="https://www.youtube.com/watch?v=yvAtv6v_QvY" target="_blank" class="btn-acao">🎵 Melim - Meu Abrigo</a>
             </div>
 
-            <div id="filho" class="tab-content">
-                <h2 class="titulo">Nosso Menino</h2>
+            <div id="diario" class="tab-content">
+                <h2 class="titulo">Mensagem Diária</h2>
                 <div class="card">
-                    <img src="1000059897.jpg" style="width: 100%; border-radius: 15px;">
-                    <p style="font-style: italic; color: #d4af37; margin-top: 15px;">"A razão do nosso esforço diário."</p>
+                    <p id="textoDoDia" class="texto-diario"></p>
+                    <p style="color: #d4af37; font-weight: bold; margin-top: 25px; letter-spacing: 2px;">COM AMOR, SEMPRE.</p>
                 </div>
             </div>
 
             <div id="sonhos" class="tab-content">
                 <h2 class="titulo">Nossas Conquistas</h2>
                 <div class="card">
-                    <input type="text" id="inputSonho" placeholder="O que queremos conquistar?">
-                    <button class="btn-acao" id="btnSonho">Adicionar à lista ✅</button>
+                    <input type="text" id="inputSonho" placeholder="O que vamos realizar hoje?">
+                    <button class="btn-acao" id="btnSonho">Eternizar Sonho ✨</button>
                     <ul id="listaSonhos"></ul>
                 </div>
             </div>
 
             <div id="chat-aba" class="tab-content">
-                <h2 class="titulo">O que você está sentindo hoje?</h2>
-                <div class="card" style="max-width: 400px; padding: 10px;">
+                <h2 class="titulo">Diário de Sentimentos</h2>
+                <div class="card" style="max-width: 420px; padding: 15px;">
                     <div id="muralChat"></div>
-                    <div style="margin-top:10px; display: flex; gap: 5px;">
-                        <input type="text" id="textoChat" placeholder="Mensagem..." style="margin-bottom:0; flex:1; padding: 8px;">
-                        <button class="btn-acao" id="btnChat" style="margin-top:0; padding: 8px 15px;">Enviar</button>
+                    <div style="margin-top:15px; display: flex; gap: 8px;">
+                        <input type="text" id="textoChat" placeholder="Escreva aqui..." style="margin-bottom:0; flex:1">
+                        <button class="btn-acao" id="btnChat" style="margin-top:0; padding: 10px 15px;">Postar</button>
                     </div>
                 </div>
             </div>
@@ -116,6 +118,7 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
+        // Sua configuração original do Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyCz3H8bjiuS2gNvxUr_G3Csd21wL5J1gLw",
             authDomain: "project-3726343372287499417.firebaseapp.com",
@@ -129,12 +132,25 @@
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
 
+        const frasesSemana = [
+            "Desde aquele 28 de dezembro, meu mundo ficou mais colorido. ❤️",
+            "Você é a razão de todos os meus planos darem certo.",
+            "Nosso amor é o abrigo que eu sempre procureu. ✨",
+            "Obrigada por cada segundo ao meu lado desde o começo.",
+            "Com você, a vida é uma aventura que eu nunca quero terminar.",
+            "Você é meu presente favorito, hoje e todos os dias. 😊",
+            "Meu coração bate no ritmo da nossa história."
+        ];
+
         window.acessar = () => {
-            if(document.getElementById('inputSenha').value === "2809") {
+            // Senha configurada como 2810
+            if(document.getElementById('inputSenha').value === "2810") {
                 document.getElementById('bloqueio').style.display = 'none';
                 document.getElementById('conteudo-privado').style.display = 'block';
                 gerarEstrelas();
                 iniciarTimer();
+                const dia = new Date().getDay();
+                document.getElementById('textoDoDia').innerText = frasesSemana[dia];
             } else { alert("Senha incorreta!"); }
         };
 
@@ -142,15 +158,8 @@
             e.preventDefault();
             document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
             document.getElementById(id).classList.add('active');
-            if(id === 'chat-aba') scrollChat();
         };
 
-        function scrollChat() {
-            const chat = document.getElementById('muralChat');
-            chat.scrollTop = chat.scrollHeight;
-        }
-
-        // Chat Instagram Style
         document.getElementById('btnChat').onclick = () => {
             const txt = document.getElementById('textoChat').value;
             if(txt.trim()) {
@@ -174,10 +183,9 @@
                         <span class="data-chat">${item.data} às ${item.hora}</span>
                     </div>`;
             });
-            scrollChat();
+            div.scrollTop = div.scrollHeight;
         });
 
-        // Conquistas
         document.getElementById('btnSonho').onclick = () => {
             const sonho = document.getElementById('inputSonho').value;
             if(sonho.trim()) {
@@ -196,10 +204,10 @@
 
         function gerarEstrelas() {
             const field = document.getElementById('starField');
-            for(let i=0; i<80; i++) {
+            for(let i=0; i<85; i++) {
                 const s = document.createElement('div');
                 s.className = 'star';
-                s.style.width = s.style.height = Math.random()*3+'px';
+                s.style.width = s.style.height = Math.random()*2.5+'px';
                 s.style.left = Math.random()*100+'%';
                 s.style.top = Math.random()*100+'%';
                 s.style.setProperty('--d', Math.random()*3+2+'s');
@@ -208,10 +216,18 @@
         }
 
         function iniciarTimer() {
-            const dataInicio = new Date(2025, 8, 28);
+            // Data de Início: 28 de Dezembro de 2025
+            const dataInicio = new Date(2025, 11, 28); 
             setInterval(() => {
-                const dias = Math.floor((new Date() - dataInicio) / 86400000);
-                document.getElementById('timer').innerText = dias + " dias construindo nossa história.";
+                const agora = new Date();
+                const diferenca = agora - dataInicio;
+                const dias = Math.floor(diferenca / 86400000);
+                
+                if (diferenca > 0) {
+                    document.getElementById('timer').innerText = dias + " dias de pura felicidade.";
+                } else {
+                    document.getElementById('timer').innerText = "Ansiosa pelo nosso dia 28/12!";
+                }
             }, 1000);
         }
     </script>
