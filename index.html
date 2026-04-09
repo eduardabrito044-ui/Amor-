@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nosso Infinito ❤️</title>
+    <style>
+        /* --- CÓDIGO 1: CSS (O Estilo) --- */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            background-color: #fff0f3;
+            color: #4a4a4a;
+            overflow-x: hidden;
+            text-align: center;
+        }
+
+        header {
+            padding: 80px 20px;
+            background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%);
+            color: white;
+            clip-path: ellipse(150% 100% at 50% 0%);
+        }
+
+        .foto-container {
+            margin-top: -50px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .foto-container img {
+            width: 300px;
+            border: 10px solid white;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            transition: transform 0.5s;
+        }
+
+        /* Efeito Flash ao passar o mouse */
+        .foto-container:hover img {
+            transform: scale(1.05);
+            filter: brightness(1.2);
+        }
+
+        #timer {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: white;
+            background: #ff4d6d;
+            padding: 15px 30px;
+            border-radius: 100px;
+            display: inline-block;
+            margin-top: 20px;
+            box-shadow: 0 10px 20px rgba(255, 77, 109, 0.3);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .heart {
+            position: fixed;
+            color: #ff4d6d;
+            font-size: 20px;
+            z-index: -1;
+            top: -10%;
+            animation: fall linear forwards;
+        }
+
+        @keyframes fall {
+            to { transform: translateY(110vh); }
+        }
+
+        .carta {
+            background: white;
+            margin: 40px auto;
+            padding: 30px;
+            max-width: 80%;
+            border-radius: 15px;
+            font-style: italic;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Para o Meu Bem ❤️</h1>
+        <p>A melhor parte de mim é você.</p>
+    </header>
+
+    <div class="foto-container">
+        <img src="Amor.png" alt="Nossa Foto">
+    </div>
+
+    <section>
+        <h2>Estamos juntos há:</h2>
+        <div id="timer">Calculando...</div>
+    </section>
+
+    <div class="carta">
+        <p>"Cada segundo ao seu lado é um novo motivo para sorrir. Te amo!"</p>
+    </div>
+
+    <footer>
+        Feito com ❤️ por Maria Eduarda
+    </footer>
+
+    <script>
+        // Contador configurado para 28/09/2025
+        const dataInicio = new Date(2025, 8, 28, 0, 0, 0); 
+
+        function atualizarContador() {
+            const agora = new Date();
+            const diff = agora - dataInicio;
+
+            const dias = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const horas = Math.floor((diff / (1000 * 60 * 60)) % 24);
+            const minutos = Math.floor((diff / (1000 * 60)) % 60);
+            const segundos = Math.floor((diff / 1000) % 60);
+
+            document.getElementById('timer').innerText = 
+                `${dias}d ${horas}h ${minutos}m ${segundos}s`;
+        }
+        setInterval(atualizarContador, 1000);
+        atualizarContador();
+
+        // Chuva de corações
+        function criarCoracao() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.innerText = '❤️';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = Math.random() * 2 + 3 + 's';
+            document.body.appendChild(heart);
+            setTimeout(() => { heart.remove(); }, 5000);
+        }
+        setInterval(criarCoracao, 400);
+    </script>
+</body>
+</html>
