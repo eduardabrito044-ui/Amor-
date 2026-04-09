@@ -3,143 +3,179 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nosso Infinito ❤️</title>
+    <title>Nosso Refúgio Mágico ❤️</title>
     <style>
-        /* --- CÓDIGO 1: CSS (O Estilo) --- */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Great+Vibes&display=swap');
+
         body {
-            margin: 0;
-            padding: 0;
+            margin: 0; padding: 0;
             font-family: 'Poppins', sans-serif;
-            background-color: #fff0f3;
-            color: #4a4a4a;
-            overflow-x: hidden;
-            text-align: center;
+            background: #0a0a1a; color: #f0f0f0;
+            overflow-x: hidden; text-align: center;
         }
 
-        header {
-            padding: 80px 20px;
-            background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%);
-            color: white;
-            clip-path: ellipse(150% 100% at 50% 0%);
+        /* --- CÉU ESTRELADO --- */
+        .stars-container {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -2; background: radial-gradient(circle at center, #1a0a2e 0%, #0a0a1a 100%);
+        }
+        .star {
+            position: absolute; background: white; border-radius: 50%;
+            animation: twinkle var(--d) infinite;
+        }
+        @keyframes twinkle { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
+
+        /* --- CENÁRIO --- */
+        .lua {
+            position: fixed; top: 8%; right: 10%; width: 70px; height: 70px;
+            background: #fefefe; border-radius: 50%;
+            box-shadow: 0 0 40px #8e44ad, 0 0 80px rgba(214, 175, 55, 0.3);
+        }
+        .montanha {
+            position: fixed; bottom: 0; width: 100%; height: 25vh;
+            background: #050510; z-index: -1;
+            clip-path: polygon(0% 100%, 15% 55%, 35% 75%, 60% 45%, 85% 80%, 100% 60%, 100% 100%);
+        }
+        .gato-area { position: fixed; bottom: 18vh; left: 15%; z-index: -1; }
+        .sombra-gato {
+            width: 35px; height: 8px; background: rgba(0,0,0,0.7);
+            filter: blur(4px); border-radius: 50%; margin-left: 5px;
+        }
+        .impala {
+            position: fixed; bottom: 8vh; right: 5%; width: 140px;
+            filter: drop-shadow(0 0 15px #8e44ad); opacity: 0.9;
         }
 
-        .foto-container {
-            margin-top: -50px;
-            position: relative;
-            display: inline-block;
+        /* --- MENU --- */
+        nav {
+            background: rgba(15, 5, 30, 0.95);
+            padding: 15px; border-bottom: 2px solid #d4af37;
+            position: sticky; top: 0; z-index: 100;
         }
+        nav a {
+            text-decoration: none; color: #d4af37; font-weight: 600;
+            margin: 0 12px; padding: 8px 18px; border-radius: 25px; transition: 0.3s;
+        }
+        nav a.active { background: #8e44ad; color: white; border: 1px solid #d4af37; }
 
-        .foto-container img {
-            width: 300px;
-            border: 10px solid white;
-            border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-            transition: transform 0.5s;
+        /* --- ABA SENTIMENTOS LUXO --- */
+        .card-sentimentos {
+            background: rgba(142, 68, 173, 0.1);
+            border: 2px solid #d4af37; border-radius: 20px;
+            padding: 30px; margin: 20px auto; max-width: 450px;
+            box-shadow: 0 0 30px rgba(142, 68, 173, 0.3);
         }
+        textarea {
+            width: 100%; height: 100px; background: rgba(0,0,0,0.3);
+            border: 1px solid #8e44ad; color: white; border-radius: 10px;
+            padding: 10px; font-family: 'Poppins'; resize: none;
+        }
+        .btn-gold {
+            background: #8e44ad; color: white; border: 1px solid #d4af37;
+            padding: 10px 20px; border-radius: 50px; cursor: pointer;
+            font-weight: bold; margin-top: 15px; transition: 0.3s;
+        }
+        .btn-gold:hover { background: #d4af37; color: #1a0a2e; transform: scale(1.05); }
 
-        /* Efeito Flash ao passar o mouse */
-        .foto-container:hover img {
-            transform: scale(1.05);
-            filter: brightness(1.2);
+        /* --- GERAL --- */
+        .tab-content { display: none; padding: 20px; animation: fadeIn 0.6s; }
+        .tab-content.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .foto-perfil {
+            width: 250px; border: 5px solid #d4af37; border-radius: 20px;
+            box-shadow: 0 0 30px #8e44ad;
         }
-
-        #timer {
-            font-size: 1.8rem;
-            font-weight: bold;
-            color: white;
-            background: #ff4d6d;
-            padding: 15px 30px;
-            border-radius: 100px;
-            display: inline-block;
-            margin-top: 20px;
-            box-shadow: 0 10px 20px rgba(255, 77, 109, 0.3);
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-
-        .heart {
-            position: fixed;
-            color: #ff4d6d;
-            font-size: 20px;
-            z-index: -1;
-            top: -10%;
-            animation: fall linear forwards;
-        }
-
-        @keyframes fall {
-            to { transform: translateY(110vh); }
-        }
-
-        .carta {
-            background: white;
-            margin: 40px auto;
-            padding: 30px;
-            max-width: 80%;
-            border-radius: 15px;
-            font-style: italic;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-        }
+        .lyrics { font-family: 'Great Vibes', cursive; font-size: 2rem; color: #d4af37; }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>Para o Meu Bem ❤️</h1>
-        <p>A melhor parte de mim é você.</p>
-    </header>
-
-    <div class="foto-container">
-        <img src="Amor.png" alt="Nossa Foto">
+    <div class="stars-container" id="stars"></div>
+    <div class="lua"></div>
+    <div class="montanha"></div>
+    <div class="gato-area">
+        <span style="font-size: 35px;">🐈‍⬛</span>
+        <div class="sombra-gato"></div>
     </div>
+    <img src="https://www.svgrepo.com/show/303494/classic-car.svg" class="impala">
 
-    <section>
-        <h2>Estamos juntos há:</h2>
-        <div id="timer">Calculando...</div>
-    </section>
+    <nav>
+        <a href="#" class="active" onclick="switchTab(event, 'home')">Início</a>
+        <a href="#" onclick="switchTab(event, 'feelings')">Sentimentos</a>
+    </nav>
 
-    <div class="carta">
-        <p>"Cada segundo ao seu lado é um novo motivo para sorrir. Te amo!"</p>
-    </div>
+    <main>
+        <div id="home" class="tab-content active">
+            <h1 style="font-family: 'Great Vibes'; font-size: 3.5rem; color: #d4af37;">Meu Abrigo</h1>
+            <img src="Amor.png" class="foto-perfil">
+            <div class="lyrics" id="melim">"O seu colo é o meu abrigo..."</div>
+            <div id="timer" style="font-weight: bold; font-size: 1.2rem; color: #9b59b6;"></div>
+        </div>
 
-    <footer>
-        Feito com ❤️ por Maria Eduarda
-    </footer>
+        <div id="feelings" class="tab-content">
+            <div class="card-sentimentos">
+                <h2 style="font-family: 'Great Vibes'; color: #d4af37; font-size: 2.5rem;">Como estou hoje...</h2>
+                <textarea id="textoSentimento" placeholder="Escreve aqui o que estás a sentir..."></textarea>
+                <br>
+                <button class="btn-gold" onclick="gravarAudio()">🎙️ Gravar Áudio</button>
+                <button class="btn-gold" onclick="enviarWhatsApp()">💝 Enviar para Ele</button>
+                <p id="audioStatus" style="font-size: 0.8rem; color: #d4af37; margin-top: 10px;"></p>
+            </div>
+        </div>
+    </main>
 
     <script>
-        // Contador configurado para 28/09/2025
-        const dataInicio = new Date(2025, 8, 28, 0, 0, 0); 
-
-        function atualizarContador() {
-            const agora = new Date();
-            const diff = agora - dataInicio;
-
-            const dias = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const horas = Math.floor((diff / (1000 * 60 * 60)) % 24);
-            const minutos = Math.floor((diff / (1000 * 60)) % 60);
-            const segundos = Math.floor((diff / 1000) % 60);
-
-            document.getElementById('timer').innerText = 
-                `${dias}d ${horas}h ${minutos}m ${segundos}s`;
+        // --- ESTRELAS ---
+        const sContainer = document.getElementById('stars');
+        for (let i = 0; i < 100; i++) {
+            const s = document.createElement('div');
+            s.className = 'star';
+            s.style.width = s.style.height = Math.random() * 3 + 'px';
+            s.style.left = Math.random() * 100 + '%';
+            s.style.top = Math.random() * 100 + '%';
+            s.style.setProperty('--d', Math.random() * 3 + 2 + 's');
+            sContainer.appendChild(s);
         }
-        setInterval(atualizarContador, 1000);
-        atualizarContador();
 
-        // Chuva de corações
-        function criarCoracao() {
-            const heart = document.createElement('div');
-            heart.classList.add('heart');
-            heart.innerText = '❤️';
-            heart.style.left = Math.random() * 100 + 'vw';
-            heart.style.animationDuration = Math.random() * 2 + 3 + 's';
-            document.body.appendChild(heart);
-            setTimeout(() => { heart.remove(); }, 5000);
+        // --- CONTADOR (28/09/2025) ---
+        const inicio = new Date(2025, 8, 28, 0, 0, 0);
+        setInterval(() => {
+            const diff = new Date() - inicio;
+            const d = Math.floor(diff / 86400000);
+            const h = Math.floor((diff / 3600000) % 24);
+            const m = Math.floor((diff / 60000) % 60);
+            const s = Math.floor((diff / 1000) % 60);
+            document.getElementById('timer').innerText = `${d} dias, ${h}h ${m}m ${s}s`;
+        }, 1000);
+
+        // --- ABAS ---
+        function switchTab(e, id) {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            e.currentTarget.classList.add('active');
         }
-        setInterval(criarCoracao, 400);
+
+        // --- MENSAGEM WHATSAPP ---
+        function enviarWhatsApp() {
+            const msg = document.getElementById('textoSentimento').value;
+            const num = "5589981472448"; // Número dele configurado
+            const url = `https://wa.me/${num}?text=${encodeURIComponent("✨ *Sentimento do dia:* \n\n" + msg)}`;
+            window.open(url, '_blank');
+        }
+
+        function gravarAudio() {
+            document.getElementById('audioStatus').innerText = "Simulando gravação... (O áudio será enviado via WhatsApp)";
+            setTimeout(() => { alert("Funcionalidade de áudio pronta! Podes gravar diretamente no WhatsApp ao abrir o link de envio."); }, 1000);
+        }
+
+        // --- LETRA MELIM ---
+        const versos = ["Você arrasa na minha felicidade...", "Não basta dizer que eu não sou sua cara metade...", "O seu colo é o meu abrigo. ❤️"];
+        let v = 0;
+        setInterval(() => {
+            v = (v + 1) % versos.length;
+            document.getElementById('melim').innerText = versos[v];
+        }, 4000);
     </script>
 </body>
 </html>
