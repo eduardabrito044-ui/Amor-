@@ -28,7 +28,7 @@
         nav a { text-decoration: none; color: #d4af37; font-weight: 600; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1px; }
         
         .card { background: rgba(142, 68, 173, 0.1); border: 2px solid #d4af37; border-radius: 20px; padding: 25px; margin: 20px auto; max-width: 350px; box-shadow: 0 0 15px rgba(212, 175, 55, 0.2); }
-        .btn-acao { background: #8e44ad; color: white; border: 1px solid #d4af37; padding: 12px 25px; border-radius: 50px; cursor: pointer; font-weight: bold; margin: 10px 5px; text-decoration: none; display: inline-block; transition: 0.3s; font-size: 0.9rem; }
+        .btn-acao { background: #8e44ad; color: white; border: 1px solid #d4af37; padding: 12px 25px; border-radius: 50px; cursor: pointer; font-weight: bold; margin: 10px 5px; transition: 0.3s; font-size: 0.9rem; border: none; }
         .btn-acao:hover { background: #d4af37; color: #0a0a1a; transform: scale(1.05); }
         .titulo { font-family: 'Great Vibes', cursive; color: #d4af37; font-size: 2.5rem; margin: 15px 0; }
         
@@ -38,8 +38,24 @@
         
         input { width: 85%; padding: 12px; background: rgba(255,255,255,0.08); border: 1px solid #8e44ad; color: white; border-radius: 12px; margin-bottom: 12px; outline: none; text-align: center; }
 
-        .grid-midia { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 20px; }
-        .midia-item { border: 1px solid #d4af37; border-radius: 10px; width: 100%; height: 150px; object-fit: cover; cursor: pointer; }
+        /* Estilo da Galeria de Fotos */
+        .grid-galeria { 
+            display: grid; 
+            grid-template-columns: repeat(2, 1fr); 
+            gap: 12px; 
+            margin-top: 20px; 
+            padding: 10px;
+        }
+        .foto-item { 
+            width: 100%; 
+            height: 160px; 
+            object-fit: cover; 
+            border-radius: 15px; 
+            border: 2px solid #d4af37;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .foto-item:hover { transform: scale(1.03); box-shadow: 0 0 10px #d4af37; }
 
         #muralChat { text-align: left; height: 300px; overflow-y: auto; padding: 15px; background: rgba(0,0,0,0.4); border-radius: 15px; display: flex; flex-direction: column; border: 1px solid rgba(212, 175, 55, 0.3); }
         .balao { max-width: 85%; padding: 12px 16px; border-radius: 20px; margin-bottom: 12px; font-size: 0.85rem; background: #2b2b2b; align-self: flex-start; border-bottom-left-radius: 4px; }
@@ -72,12 +88,13 @@
             </div>
 
             <div id="fotos-aba" class="tab-content">
-                <h2 class="titulo">Nossos Momentos</h2>
+                <h2 class="titulo">Nossa Galeria</h2>
                 <div class="card">
-                    <p>Mande uma foto para nós! ✨</p>
+                    <p>Mande fotos da gente aqui ❤️</p>
                     <input type="file" id="inputFoto" accept="image/*" style="display: none;">
-                    <button class="btn-acao" onclick="document.getElementById('inputFoto').click()">Selecionar Foto 📸</button>
-                    <div class="grid-midia" id="galeriaFotos"></div>
+                    <button class="btn-acao" onclick="document.getElementById('inputFoto').click()">Enviar Foto 📸</button>
+                    <div class="grid-galeria" id="containerFotos">
+                        </div>
                 </div>
             </div>
 
@@ -87,10 +104,10 @@
             </div>
 
             <div id="sonhos" class="tab-content">
-                <h2 class="titulo">Sonhos</h2>
+                <h2 class="titulo">Nossos Sonhos</h2>
                 <div class="card">
-                    <input type="text" id="inputSonho" placeholder="Nosso próximo passo?">
-                    <button class="btn-acao" id="btnSonho">Salvar ✅</button>
+                    <input type="text" id="inputSonho" placeholder="Qual o nosso próximo plano?">
+                    <button class="btn-acao" id="btnSonho">Eternizar ✅</button>
                     <ul id="listaSonhos" style="text-align: left; padding: 0; list-style: none;"></ul>
                 </div>
             </div>
@@ -100,7 +117,7 @@
                 <div class="card">
                     <div id="muralChat"></div>
                     <div style="margin-top:15px; display: flex; gap: 8px;">
-                        <input type="text" id="textoChat" placeholder="O que sente agora?" style="margin-bottom:0; flex:1">
+                        <input type="text" id="textoChat" placeholder="Como você está agora?" style="margin-bottom:0; flex:1">
                         <button class="btn-acao" id="btnChat" style="margin-top:0;">Postar</button>
                     </div>
                 </div>
@@ -113,6 +130,7 @@
         import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
         import { getStorage, ref as sRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-storage.js";
 
+        // Sua configuração do Firebase baseada nas imagens
         const firebaseConfig = {
             apiKey: "AIzaSyCz3H8bjiuS2gNvxUr_G3Csd21wL5J1gLw",
             authDomain: "project-3726343372287499417.firebaseapp.com",
@@ -127,22 +145,13 @@
         const db = getDatabase(app);
         const storage = getStorage(app);
 
-        const frasesSemana = [
-            "Desde aquele 28 de dezembro, meu mundo ficou mais colorido. ❤️",
-            "Você é a razão de todos os meus planos darem certo.",
-            "Nosso amor é o abrigo que eu sempre procurei. ✨",
-            "Obrigada por cada segundo ao meu lado.",
-            "Com você, a vida é uma aventura perfeita.",
-            "Você é meu presente favorito, todos os dias. 😊",
-            "Meu coração bate no ritmo da nossa história."
-        ];
-
+        // Acesso (Senha 2810 conforme sua instrução anterior)
         window.acessar = () => {
             if(document.getElementById('inputSenha').value === "2810") {
                 document.getElementById('bloqueio').style.display = 'none';
                 document.getElementById('conteudo-privado').style.display = 'block';
                 gerarEstrelas(); iniciarTimer();
-                document.getElementById('textoDoDia').innerText = frasesSemana[new Date().getDay()];
+                document.getElementById('textoDoDia').innerText = "Desde o dia 28/12, cada segundo é especial. ❤️";
             } else { alert("Senha incorreta!"); }
         };
 
@@ -152,28 +161,41 @@
             document.getElementById(id).classList.add('active');
         };
 
-        // Lógica de Fotos
+        // --- SISTEMA DE GALERIA DE FOTOS ---
         document.getElementById('inputFoto').onchange = async (e) => {
             const file = e.target.files[0];
             if (!file) return;
-            const storageRef = sRef(storage, 'fotos/' + Date.now() + file.name);
-            await uploadBytes(storageRef, file);
-            const url = await getDownloadURL(storageRef);
-            push(ref(db, 'fotos'), { url });
+
+            try {
+                // Upload para o Storage
+                const storagePath = 'galeria/' + Date.now() + "_" + file.name;
+                const storageReference = sRef(storage, storagePath);
+                
+                await uploadBytes(storageReference, file);
+                const downloadURL = await getDownloadURL(storageReference);
+
+                // Salva a URL no Realtime Database para aparecer pra ambos
+                push(ref(db, 'galeria_fotos'), { url: downloadURL });
+            } catch (error) {
+                console.error("Erro no upload:", error);
+                alert("Não foi possível enviar a foto agora.");
+            }
         };
 
-        onValue(ref(db, 'fotos'), (snap) => {
-            const galeria = document.getElementById('galeriaFotos');
-            galeria.innerHTML = "";
+        // Escuta novas fotos e atualiza a galeria automaticamente
+        onValue(ref(db, 'galeria_fotos'), (snap) => {
+            const container = document.getElementById('containerFotos');
+            container.innerHTML = "";
             snap.forEach(child => {
-                galeria.innerHTML += `<img src="${child.val().url}" class="midia-item" onclick="window.open(this.src)">`;
+                const data = child.val();
+                container.innerHTML += `<img src="${data.url}" class="foto-item" onclick="window.open(this.src)">`;
             });
         });
 
         // Chat e Sonhos
         document.getElementById('btnChat').onclick = () => {
             const txt = document.getElementById('textoChat').value;
-            if(txt.trim()) push(ref(db, 'chat'), { msg: txt, hora: new Date().toLocaleTimeString(), data: new Date().toLocaleDateString() });
+            if(txt.trim()) push(ref(db, 'chat'), { msg: txt, data: new Date().toLocaleDateString() });
             document.getElementById('textoChat').value = "";
         };
         onValue(ref(db, 'chat'), (snap) => {
@@ -203,7 +225,7 @@
         }
 
         function iniciarTimer() {
-            const dataInic = new Date(2025, 11, 28);
+            const dataInic = new Date(2025, 11, 28); // 28 de Dezembro de 2025
             setInterval(() => {
                 const diff = new Date() - dataInic;
                 document.getElementById('timer').innerText = Math.floor(diff / 86400000) + " dias de nós.";
