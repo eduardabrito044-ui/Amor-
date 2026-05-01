@@ -4,302 +4,341 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Nosso Infinito ❤️</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Great+Vibes&family=VT323&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Great+Vibes&family=Dancing+Script:wght@700&display=swap');
-
         :root {
             --primary: #ff85a2;
             --secondary: #d4af37;
             --bg: #fff0f3;
             --text: #4a4a4a;
+            --card-bg: rgba(255, 255, 255, 0.8);
+        }
+
+        body.noite {
+            --bg: #0a0a1a;
+            --text: #f0f0f0;
+            --primary: #8e44ad;
+            --card-bg: rgba(20, 20, 40, 0.8);
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
         body { 
             margin: 0; font-family: 'Poppins', sans-serif; 
             background: var(--bg); color: var(--text); 
-            overflow-x: hidden; transition: 1s; 
+            overflow: hidden; height: 100vh; transition: 1s;
         }
 
-        body.noite { --bg: #0a0a1a; --text: #f0f0f0; --primary: #8e44ad; }
-        .stars, .nuvens { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
+        /* Mascotes de Pixel */
+        .mascote {
+            position: fixed; bottom: 20px; width: 50px; z-index: 100;
+            image-rendering: pixelated; transition: 0.3s;
+        }
+        #mascote-edu { left: 15px; }
+        #mascote-amor { right: 15px; }
+        .balao-fala {
+            position: fixed; bottom: 80px; background: white; color: black;
+            padding: 8px; border-radius: 10px; font-size: 0.7rem; 
+            display: none; border: 2px solid var(--primary); z-index: 101;
+            font-family: 'VT323', monospace; width: 100px;
+        }
 
-        /* Telas de Bloqueio e Identificação */
+        /* Notificações Fake */
+        #notificacao {
+            position: fixed; top: -100px; left: 50%; transform: translateX(-50%);
+            width: 90%; background: var(--card-bg); border-radius: 20px;
+            padding: 15px; border: 2px solid var(--primary); z-index: 10000;
+            display: flex; align-items: center; gap: 10px; transition: 0.5s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        /* Carrossel de Seções */
+        .swiper { width: 100%; height: 100vh; }
+        .swiper-slide { 
+            display: flex; flex-direction: column; align-items: center; 
+            justify-content: flex-start; padding: 100px 20px 80px;
+            overflow-y: auto;
+        }
+
+        /* Estilo dos Cards */
+        .card {
+            background: var(--card-bg); border-radius: 30px;
+            padding: 25px; width: 100%; max-width: 400px;
+            border: 2px solid var(--primary); backdrop-filter: blur(10px);
+            margin-bottom: 20px; text-align: center;
+        }
+
+        .titulo { font-family: 'Great Vibes', cursive; font-size: 2.8rem; color: var(--primary); margin: 10px 0; }
+        
+        /* Botão de Batimentos */
+        .heart-btn {
+            width: 110px; height: 110px; background: #ff4757; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 2.5rem; margin: 20px auto; animation: pulse 1.5s infinite;
+            border: none; box-shadow: 0 0 20px rgba(255,71,87,0.4);
+        }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+
+        /* Cupons */
+        .coupon-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; }
+        .coupon-card {
+            background: white; border-radius: 15px; padding: 10px;
+            border: 2px dashed var(--primary); color: #4a4a4a; font-size: 0.8rem;
+            cursor: pointer; position: relative;
+        }
+        .coupon-card.used { background: #eee; border-color: #bbb; color: #999; text-decoration: line-through; }
+
+        /* Inputs */
+        input, textarea, select {
+            width: 100%; padding: 12px; border-radius: 15px; border: 1px solid var(--primary);
+            margin-bottom: 10px; background: rgba(255,255,255,0.5);
+        }
+        .btn { background: var(--primary); color: white; border: none; padding: 12px; border-radius: 50px; font-weight: bold; width: 100%; }
+
+        /* Telas de Acesso */
         .overlay {
-            position: fixed; inset: 0; background: var(--bg); z-index: 5000;
+            position: fixed; inset: 0; background: var(--bg); z-index: 9999;
             display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px;
         }
         .hidden { display: none !important; }
 
-        nav { 
-            position: fixed; top: 0; width: 100%; background: rgba(255,255,255,0.8);
-            backdrop-filter: blur(10px); display: flex; overflow-x: auto; 
-            padding: 10px; z-index: 1000; border-bottom: 2px solid var(--primary);
-        }
-        nav::-webkit-scrollbar { display: none; }
-        nav a { padding: 8px 15px; text-decoration: none; color: var(--text); font-size: 0.8rem; font-weight: 600; white-space: nowrap; }
+        /* Barra de Progresso Metas */
+        .progress-container { background: #eee; border-radius: 20px; height: 15px; margin: 10px 0; overflow: hidden; width: 100%; }
+        .progress-bar { background: var(--primary); height: 100%; width: 0%; transition: 1s; }
 
-        .container { padding: 80px 15px 30px; }
-        .card { 
-            background: rgba(255,255,255,0.15); border: 2px solid var(--primary);
-            border-radius: 25px; padding: 20px; margin-bottom: 20px;
-            backdrop-filter: blur(5px); box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-        }
-        .titulo { font-family: 'Great Vibes', cursive; font-size: 2.8rem; color: var(--primary); margin: 10px 0; text-align: center; }
-
-        .heart-btn {
-            width: 100px; height: 100px; background: #ff4757; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 2.5rem; margin: 15px auto; animation: pulse 1.5s infinite;
-            border: none; cursor: pointer;
-        }
-        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
-
-        .grid-cartas { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .envelope { 
-            height: 80px; background: var(--primary); border-radius: 15px;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            font-size: 1.2rem; color: white; cursor: pointer;
-        }
-
-        input, textarea, select { 
-            width: 100%; padding: 12px; border-radius: 15px; border: 2px solid var(--primary);
-            background: rgba(255,255,255,0.2); color: var(--text); margin-bottom: 10px; font-family: inherit;
-        }
-        .btn { 
-            background: var(--primary); color: white; border: none; padding: 12px 20px; 
-            border-radius: 50px; font-weight: bold; width: 100%; cursor: pointer;
-        }
-
-        .tab-content { display: none; }
-        .tab-content.active { display: block; animation: slideIn 0.4s ease; }
-        @keyframes slideIn { from { opacity:0; transform: translateY(10px); } to { opacity:1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
-    <div id="bloqueio" class="overlay">
-        <h1 class="titulo">Nosso Mundo</h1>
-        <input type="password" id="inputSenha" placeholder="Senha (Nossa Data)">
-        <button class="btn" onclick="acessar()">Entrar</button>
-    </div>
-
-    <div id="quem-e-voce" class="overlay hidden">
-        <h2 class="titulo">Quem está entrando?</h2>
-        <button class="btn" onclick="definirUsuario('Eduarda')" style="margin-bottom: 15px;">Sou a Eduarda 👑</button>
-        <button class="btn" onclick="definirUsuario('Amor')" style="background: var(--secondary)">Sou o Amor 🧸</button>
-    </div>
-
-    <div id="conteudo-privado" class="hidden">
-        <div id="ambiente"></div>
-        <nav>
-            <a href="#" onclick="tab(event, 'home')">🏠 Home</a>
-            <a href="#" onclick="tab(event, 'correio')">💌 Cartas</a>
-            <a href="#" onclick="tab(event, 'escrever')">✍️ Escrever</a>
-            <a href="#" onclick="tab(event, 'metas')">🚀 Metas</a>
-            <a href="#" onclick="tab(event, 'capsula')">⏳ Cápsula</a>
-        </nav>
-
-        <div class="container">
-            <div id="home" class="tab-content active">
-                <h1 class="titulo">Desde 28/12/2025</h1>
-                <p id="timer" style="font-weight: bold; font-size: 1.2rem; text-align: center;"></p>
-                <div class="card">
-                    <p style="text-align: center;">Tô pensando em você!</p>
-                    <button class="heart-btn" onclick="pensar()">❤️</button>
-                    <p id="contagemPensar" style="text-align: center;">0 vezes hoje</p>
-                </div>
-            </div>
-
-            <div id="correio" class="tab-content">
-                <h2 class="titulo">Para Você</h2>
-                <p style="text-align: center; font-size: 0.8rem;">Toque para ler o que te enviaram</p>
-                <div class="grid-cartas">
-                    <div class="envelope" onclick="lerCarta('Saudade')">📩<br><small>Saudade</small></div>
-                    <div class="envelope" onclick="lerCarta('Triste')">📩<br><small>Triste</small></div>
-                    <div class="envelope" onclick="lerCarta('Sorrir')">📩<br><small>Sorrir</small></div>
-                    <div class="envelope" onclick="lerCarta('Elogio')">📩<br><small>Elogio</small></div>
-                </div>
-                <div id="cartaAberta" class="card" style="display:none; margin-top:20px; white-space: pre-wrap;"></div>
-            </div>
-
-            <div id="escrever" class="tab-content">
-                <h2 class="titulo">Escrever Surpresa</h2>
-                <div class="card">
-                    <p>Para qual carta?</p>
-                    <select id="selectTipo">
-                        <option value="Saudade">Saudade</option>
-                        <option value="Triste">Triste</option>
-                        <option value="Sorrir">Fazer Sorrir</option>
-                        <option value="Elogio">Elogio</option>
-                    </select>
-                    <textarea id="textoMensagem" placeholder="Escreva sua mensagem fofa aqui..." rows="4"></textarea>
-                    <button class="btn" onclick="enviarMensagem()">Enviar para o Coração dele(a)</button>
-                </div>
-            </div>
-
-            <div id="metas" class="tab-content">
-                <h2 class="titulo">Nossas Metas</h2>
-                <div class="card">
-                    <div class="progress-container"><div class="progress-bar" id="progressoMetas"></div></div>
-                    <div id="listaMetas"></div>
-                    <input type="text" id="novaMeta" placeholder="Nova meta...">
-                    <button class="btn" onclick="addMeta()">Adicionar</button>
-                </div>
-            </div>
-
-            <div id="capsula" class="tab-content">
-                <h2 class="titulo">Cápsula</h2>
-                <div class="card">
-                    <textarea id="textoCapsula" placeholder="Mensagem para o futuro..."></textarea>
-                    <input type="date" id="dataCapsula">
-                    <button class="btn" onclick="salvarCapsula()">Enterrar</button>
-                    <div id="mensagensCapsula" style="margin-top:20px;"></div>
-                </div>
-            </div>
+    <div id="notificacao">
+        <span style="font-size: 1.5rem;">💌</span>
+        <div>
+            <strong id="notif-titulo">Título</strong><br>
+            <span id="notif-msg" style="font-size: 0.8rem;">Mensagem</span>
         </div>
     </div>
 
+    <div id="tela-senha" class="overlay">
+        <h1 class="titulo">Nosso Lugar</h1>
+        <input type="password" id="pass" placeholder="Data Especial (DDMM)" style="max-width: 250px; text-align: center;">
+        <button class="btn" onclick="checkPass()" style="max-width: 250px;">Entrar</button>
+    </div>
+
+    <div id="tela-quem" class="overlay hidden">
+        <h2 class="titulo">Quem é você?</h2>
+        <button class="btn" onclick="iniciar('Eduarda')" style="max-width: 250px; margin-bottom: 10px;">Eduarda 👑</button>
+        <button class="btn" onclick="iniciar('Amor')" style="max-width: 250px; background: var(--secondary);">O Amor 🧸</button>
+    </div>
+
+    <div id="app" class="swiper hidden">
+        <div class="swiper-wrapper">
+            
+            <div class="swiper-slide">
+                <h1 class="titulo">Pecado de Fofo</h1>
+                <div class="card">
+                    <p>Pensando em você...</p>
+                    <button class="heart-btn" onclick="mandarBatimento()">❤️</button>
+                    <p id="contBatimentos">0 batimentos</p>
+                </div>
+                <div class="card">
+                    <p>Raspadinha do Amor</p>
+                    <div id="rasp-area" style="background: #ccc; height: 60px; border-radius: 15px; display: flex; align-items: center; justify-content: center; cursor: crosshair;">
+                        <span id="rasp-texto">Toque para raspar</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="swiper-slide">
+                <h2 class="titulo">Cartas</h2>
+                <div class="card">
+                    <select id="tipoCarta">
+                        <option value="Saudade">Saudade</option>
+                        <option value="Triste">Triste</option>
+                        <option value="Sorrir">Fazer Sorrir</option>
+                    </select>
+                    <textarea id="textoCarta" placeholder="Escreva algo para o outro ler..."></textarea>
+                    <button class="btn" onclick="salvarCarta()">Enviar Carta</button>
+                </div>
+                <div id="listaCartas" style="width: 100%;"></div>
+            </div>
+
+            <div class="swiper-slide">
+                <h2 class="titulo">Nossa Jornada</h2>
+                <div class="card">
+                    <div class="progress-container"><div class="progress-bar" id="barraMetas"></div></div>
+                    <div id="metasContainer" style="text-align: left; font-size: 0.9rem;"></div>
+                    <input type="text" id="inputMeta" placeholder="Ex: Viagem para as Américas">
+                    <button class="btn" onclick="addMeta()">Adicionar Meta</button>
+                </div>
+            </div>
+
+            <div class="swiper-slide">
+                <h2 class="titulo">Mimos</h2>
+                <div class="card">
+                    <p>Escolha um cupom:</p>
+                    <div class="coupon-grid" id="gridCupons">
+                        </div>
+                </div>
+            </div>
+
+            <div class="swiper-slide">
+                <h2 class="titulo">Gratidão</h2>
+                <div class="card">
+                    <p>Pelo que você é grata hoje?</p>
+                    <textarea id="textoGratidao" placeholder="Escreva uma coisinha..."></textarea>
+                    <button class="btn" onclick="salvarGratidao()">Registrar no Diário</button>
+                    <div id="diarioGratidao" style="margin-top: 15px; font-size: 0.8rem;"></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div id="balao-edu" class="balao-fala" style="left: 20px;"></div>
+    <img id="mascote-edu" src="https://cdn-icons-png.flaticon.com/512/2566/2566113.png" class="mascote" onclick="falar('Edu')">
+    
+    <div id="balao-amor" class="balao-fala" style="right: 20px;"></div>
+    <img id="mascote-amor" src="https://cdn-icons-png.flaticon.com/512/2566/2566103.png" class="mascote" onclick="falar('Amor')">
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-        import { getDatabase, ref, push, onValue, set, update, increment } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
+        import { getDatabase, ref, set, push, onValue, update, increment } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyCz3H8bjiuS2gNvxUr_G3Csd21wL5J1gLw",
             authDomain: "project-3726343372287499417.firebaseapp.com",
             databaseURL: "https://project-3726343372287499417-default-rtdb.firebaseio.com",
             projectId: "project-3726343372287499417",
-            storageBucket: "project-3726343372287499417.firebasestorage.app",
+            storageBucket: "project-3726343372287499417.firebasestorage.app"
         };
 
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
-        let usuarioAtual = "";
+        let user = "";
 
-        // --- ACESSO ---
-        window.acessar = () => {
-            if(document.getElementById('inputSenha').value === "2810") {
-                document.getElementById('bloqueio').classList.add('hidden');
-                document.getElementById('quem-e-voce').classList.remove('hidden');
-            } else { alert("Senha errada!"); }
+        // Swiper Inicialização (Cards que deslizam para o lado)
+        const swiper = new Swiper('.swiper', { direction: 'horizontal', loop: false });
+
+        window.checkPass = () => {
+            if(document.getElementById('pass').value === "2810") {
+                document.getElementById('tela-senha').classList.add('hidden');
+                document.getElementById('tela-quem').classList.remove('hidden');
+            } else { alert("Senha incorreta"); }
         };
 
-        window.definirUsuario = (nome) => {
-            usuarioAtual = nome;
-            document.getElementById('quem-e-voce').classList.add('hidden');
-            document.getElementById('conteudo-privado').classList.remove('hidden');
-            configurarAmbiente();
-            iniciarTimer();
+        window.iniciar = (nome) => {
+            user = nome;
+            document.getElementById('tela-quem').classList.add('hidden');
+            document.getElementById('app').classList.remove('hidden');
+            if(new Date().getHours() >= 18 || new Date().getHours() < 6) document.body.classList.add('noite');
+            syncFirebase();
+            gerarCupons();
         };
 
-        // --- ESCRITA E LEITURA (O coração do pedido) ---
-        window.enviarMensagem = () => {
-            const tipo = document.getElementById('selectTipo').value;
-            const texto = document.getElementById('textoMensagem').value;
-            const destino = (usuarioAtual === "Eduarda") ? "Amor" : "Eduarda";
-            
-            if(!texto) return alert("Escreva algo!");
-            
-            // Salva na pasta do DESTINATÁRIO
-            set(ref(db, `cartas/${destino}/${tipo}`), { msg: texto, de: usuarioAtual });
-            alert("Sua surpresa foi enviada! ❤️");
-            document.getElementById('textoMensagem').value = "";
+        // --- FUNCIONALIDADES ---
+
+        window.falar = (quem) => {
+            const balao = document.getElementById(`balao-${quem.toLowerCase()}`);
+            balao.innerText = quem === "Edu" ? "Te amo infinito!" : "Saudade de você!";
+            balao.style.display = "block";
+            setTimeout(() => balao.style.display = "none", 3000);
         };
 
-        window.lerCarta = (tipo) => {
-            // Busca o que foi escrito para o USUÁRIO ATUAL
-            onValue(ref(db, `cartas/${usuarioAtual}/${tipo}`), (s) => {
-                const div = document.getElementById('cartaAberta');
-                div.style.display = 'block';
-                if(s.exists()) {
-                    div.innerHTML = `<strong>De: ${s.val().de}</strong><br><br>${s.val().msg}`;
-                } else {
-                    div.innerHTML = "Ainda não há mensagem aqui. Peça para ele(a) escrever! ❤️";
-                }
-            }, { onlyOnce: true });
+        window.mandarBatimento = () => {
+            update(ref(db, 'stats'), { batimentos: increment(1) });
+            notificar("💓 Batimento!", `${user} está pensando em você agora!`);
         };
 
-        // --- SISTEMA DE TEMA ---
-        function configurarAmbiente() {
-            const hora = new Date().getHours();
-            if(hora >= 18 || hora < 6) {
-                document.body.classList.add('noite');
-                document.getElementById('ambiente').innerHTML = '<div class="stars"></div>';
-                gerarEstrelas();
-            } else {
-                document.getElementById('ambiente').innerHTML = '<div class="nuvens">☁️</div>';
-            }
+        function notificar(titulo, msg) {
+            const n = document.getElementById('notificacao');
+            document.getElementById('notif-titulo').innerText = titulo;
+            document.getElementById('notif-msg').innerText = msg;
+            n.style.top = "20px";
+            setTimeout(() => n.style.top = "-100px", 4000);
         }
 
-        // --- RESTANTE DAS FUNÇÕES MANTIDAS ---
-        window.pensar = () => {
-            update(ref(db, 'interacoes'), { totalPensamentos: increment(1) });
-            if(navigator.vibrate) navigator.vibrate(100);
+        window.salvarCarta = () => {
+            const tipo = document.getElementById('tipoCarta').value;
+            const texto = document.getElementById('textoCarta').value;
+            const destino = user === "Eduarda" ? "Amor" : "Eduarda";
+            push(ref(db, `cartas/${destino}`), { tipo, texto, de: user });
+            document.getElementById('textoCarta').value = "";
+            alert("Enviado!");
         };
-        onValue(ref(db, 'interacoes/totalPensamentos'), (s) => {
-            document.getElementById('contagemPensar').innerText = (s.val() || 0) + " vezes hoje";
-        });
 
         window.addMeta = () => {
-            const t = document.getElementById('novaMeta').value;
-            if(t) push(ref(db, 'metas'), { texto: t, feito: false });
-            document.getElementById('novaMeta').value = "";
+            const m = document.getElementById('inputMeta').value;
+            if(m) push(ref(db, 'metas'), { txt: m, feito: false });
+            document.getElementById('inputMeta').value = "";
         };
-        onValue(ref(db, 'metas'), (snap) => {
-            const list = document.getElementById('listaMetas');
-            list.innerHTML = "";
-            let totais = 0, feitos = 0;
-            snap.forEach(c => {
-                totais++; if(c.val().feito) feitos++;
-                list.innerHTML += `<div class="item-lista">
-                    <input type="checkbox" ${c.val().feito ? 'checked' : ''} onchange="update(ref(getDatabase(), 'metas/${c.key}'), { feito: ${!c.val().feito} })">
-                    <span>${c.val().texto}</span>
-                </div>`;
+
+        window.toggleMeta = (id, status) => update(ref(db, `metas/${id}`), { feito: status });
+
+        // --- SISTEMA DE CUPONS ---
+        const cuponsIniciais = ["Vale 1 Cafuné", "Vale 1 Chocolate", "Vale Escolher Filme", "Vale Jantar"];
+        function gerarCupons() {
+            const grid = document.getElementById('gridCupons');
+            grid.innerHTML = "";
+            cuponsIniciais.forEach((c, index) => {
+                grid.innerHTML += `<div class="coupon-card" id="cupom-${index}" onclick="usarCupom('${c}', ${index})">🎟️ ${c}</div>`;
             });
-            document.getElementById('progressoMetas').style.width = (feitos/totais*100 || 0) + '%';
-        });
-
-        window.salvarCapsula = () => {
-            const txt = document.getElementById('textoCapsula').value;
-            const data = document.getElementById('dataCapsula').value;
-            if(txt && data) push(ref(db, 'capsula'), { txt, data });
-            document.getElementById('textoCapsula').value = "";
-        };
-        onValue(ref(db, 'capsula'), (snap) => {
-            const div = document.getElementById('mensagensCapsula');
-            div.innerHTML = "";
-            const hoje = new Date().toISOString().split('T')[0];
-            snap.forEach(c => {
-                const liberado = hoje >= c.val().data;
-                div.innerHTML += `<div class="card" style="opacity:${liberado ? 1 : 0.5}">${liberado ? c.val().txt : '🔒 Abre em: ' + c.val().data}</div>`;
-            });
-        });
-
-        window.tab = (e, id) => {
-            e.preventDefault();
-            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-        };
-
-        function iniciarTimer() {
-            const d = new Date(2025, 11, 28);
-            setInterval(() => {
-                const diff = Math.floor((new Date() - d) / 86400000);
-                document.getElementById('timer').innerText = diff + " dias infinitos";
-            }, 1000);
         }
 
-        function gerarEstrelas() {
-            const sF = document.querySelector('.stars');
-            if(!sF) return;
-            for(let i=0; i<40; i++){
-                const s = document.createElement('div');
-                s.style.position = 'absolute'; s.style.background = 'white';
-                s.style.width = s.style.height = '2px';
-                s.style.left = Math.random()*100+'%'; s.style.top = Math.random()*100+'%';
-                sF.appendChild(s);
+        window.usarCupom = (nome, id) => {
+            if(confirm(`Resgatar o cupom "${nome}"?`)) {
+                document.getElementById(`cupom-${id}`).classList.add('used');
+                notificar("🎟️ Cupom!", `${user} usou: ${nome}`);
+                // Aqui você pode salvar no Firebase também se quiser um histórico permanente
             }
+        };
+
+        window.salvarGratidao = () => {
+            const g = document.getElementById('textoGratidao').value;
+            if(g) push(ref(db, 'gratidao'), { msg: g, autor: user, data: new Date().toLocaleDateString() });
+            document.getElementById('textoGratidao').value = "";
+        };
+
+        function syncFirebase() {
+            onValue(ref(db, 'stats/batimentos'), s => document.getElementById('contBatimentos').innerText = (s.val() || 0) + " batimentos");
+            
+            onValue(ref(db, `cartas/${user}`), snap => {
+                const list = document.getElementById('listaCartas');
+                list.innerHTML = "";
+                snap.forEach(c => {
+                    list.innerHTML += `<div class="card" style="font-size:0.8rem"><strong>${c.val().tipo}:</strong> ${c.val().texto}</div>`;
+                });
+            });
+
+            onValue(ref(db, 'metas'), snap => {
+                const cont = document.getElementById('metasContainer');
+                cont.innerHTML = "";
+                let totais = 0, feitos = 0;
+                snap.forEach(m => {
+                    totais++; if(m.val().feito) feitos++;
+                    cont.innerHTML += `<p><input type="checkbox" ${m.val().feito?'checked':''} onchange="toggleMeta('${m.key}', ${!m.val().feito})"> ${m.val().txt}</p>`;
+                });
+                document.getElementById('barraMetas').style.width = (feitos/totais*100 || 0) + "%";
+            });
+
+            onValue(ref(db, 'gratidao'), snap => {
+                const d = document.getElementById('diarioGratidao');
+                d.innerHTML = "";
+                snap.forEach(g => {
+                    d.innerHTML += `<p><em>${g.val().data}</em> - ${g.val().autor}: ${g.val().msg}</p>`;
+                });
+            });
         }
+
+        // Raspadinha Simples
+        document.getElementById('rasp-area').onclick = function() {
+            const elogios = ["Você é meu mundo!", "Amo seu sorriso!", "Melhor abraço!", "Meu lugar favorito."];
+            document.getElementById('rasp-texto').innerText = elogios[Math.floor(Math.random()*elogios.length)];
+            this.style.background = "#fff";
+        };
+
     </script>
 </body>
 </html>
