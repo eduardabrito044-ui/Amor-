@@ -7,112 +7,162 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Great+Vibes&family=Dancing+Script:wght@700&display=swap');
 
-        :root { --p: #ff85a2; --s: #d4af37; --bg: #fff0f3; --txt: #4a4a4a; }
-        body.noite { --bg: #0a0a1a; --txt: #f0f0f0; --p: #a55eea; }
-        
+        :root {
+            --primary: #ff85a2;
+            --secondary: #d4af37;
+            --bg: #fff0f3;
+            --text: #4a4a4a;
+        }
+
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body { margin: 0; font-family: 'Poppins', sans-serif; background: var(--bg); color: var(--txt); transition: 0.8s; overflow-x: hidden; }
+        body { 
+            margin: 0; font-family: 'Poppins', sans-serif; 
+            background: var(--bg); color: var(--text); 
+            overflow-x: hidden; transition: 1s; 
+        }
 
-        /* Fundo Lava Lamp de Corações */
-        .lava { position: fixed; inset: 0; z-index: -1; pointer-events: none; }
-        .coracao-flutuante { position: absolute; bottom: -20px; color: var(--p); opacity: 0.6; animation: flutuar 6s linear infinite; }
-        @keyframes flutuar { to { transform: translateY(-110vh) rotate(360deg); opacity: 0; } }
+        body.noite { --bg: #0a0a1a; --text: #f0f0f0; --primary: #8e44ad; }
+        .stars, .nuvens { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
 
-        /* Telas de Acesso */
-        .full-screen { position: fixed; inset: 0; background: var(--bg); z-index: 5000; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; }
+        /* Telas de Bloqueio e Identificação */
+        .overlay {
+            position: fixed; inset: 0; background: var(--bg); z-index: 5000;
+            display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px;
+        }
         .hidden { display: none !important; }
 
-        /* Nav Estilo App */
-        nav { position: fixed; top: 0; width: 100%; background: rgba(255,255,255,0.2); backdrop-filter: blur(10px); display: flex; overflow-x: auto; padding: 10px; z-index: 1000; border-bottom: 2px solid var(--p); }
-        nav a { padding: 10px 18px; text-decoration: none; color: var(--txt); font-size: 0.8rem; font-weight: 600; white-space: nowrap; }
+        nav { 
+            position: fixed; top: 0; width: 100%; background: rgba(255,255,255,0.8);
+            backdrop-filter: blur(10px); display: flex; overflow-x: auto; 
+            padding: 10px; z-index: 1000; border-bottom: 2px solid var(--primary);
+        }
+        nav::-webkit-scrollbar { display: none; }
+        nav a { padding: 8px 15px; text-decoration: none; color: var(--text); font-size: 0.8rem; font-weight: 600; white-space: nowrap; }
 
-        /* Cards e Layout */
-        .container { padding: 80px 15px 100px; }
-        .card { background: rgba(255,255,255,0.2); border: 2px solid var(--p); border-radius: 25px; padding: 20px; margin-bottom: 20px; backdrop-filter: blur(5px); }
-        .titulo { font-family: 'Great Vibes', cursive; font-size: 2.8rem; color: var(--p); text-align: center; margin: 10px 0; }
-        
-        /* Botões */
-        .btn { background: var(--p); color: white; border: none; padding: 12px 20px; border-radius: 50px; font-weight: bold; width: 100%; margin: 5px 0; }
-        .heart-pulse { width: 100px; height: 100px; background: #ff4757; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; margin: 10px auto; animation: pulse 1.5s infinite; border: none; }
-        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
+        .container { padding: 80px 15px 30px; }
+        .card { 
+            background: rgba(255,255,255,0.15); border: 2px solid var(--primary);
+            border-radius: 25px; padding: 20px; margin-bottom: 20px;
+            backdrop-filter: blur(5px); box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+        .titulo { font-family: 'Great Vibes', cursive; font-size: 2.8rem; color: var(--primary); margin: 10px 0; text-align: center; }
 
-        /* Correio */
-        .envelope { height: 80px; background: var(--p); border-radius: 15px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: white; }
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .heart-btn {
+            width: 100px; height: 100px; background: #ff4757; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 2.5rem; margin: 15px auto; animation: pulse 1.5s infinite;
+            border: none; cursor: pointer;
+        }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
 
-        /* Mascotes */
-        .mascote { position: fixed; bottom: 10px; width: 60px; z-index: 2000; transition: 0.3s; }
-        .balao { position: fixed; bottom: 80px; background: white; color: black; padding: 10px; border-radius: 15px; font-size: 0.7rem; display: none; width: 120px; border: 2px solid var(--p); }
+        .grid-cartas { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .envelope { 
+            height: 80px; background: var(--primary); border-radius: 15px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            font-size: 1.2rem; color: white; cursor: pointer;
+        }
+
+        input, textarea, select { 
+            width: 100%; padding: 12px; border-radius: 15px; border: 2px solid var(--primary);
+            background: rgba(255,255,255,0.2); color: var(--text); margin-bottom: 10px; font-family: inherit;
+        }
+        .btn { 
+            background: var(--primary); color: white; border: none; padding: 12px 20px; 
+            border-radius: 50px; font-weight: bold; width: 100%; cursor: pointer;
+        }
+
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: slideIn 0.4s ease; }
+        @keyframes slideIn { from { opacity:0; transform: translateY(10px); } to { opacity:1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
-    <div id="tela-senha" class="full-screen">
-        <h1 class="titulo">Nosso Lugar</h1>
-        <input type="password" id="pass" placeholder="Data Especial (DDMM)" style="width:80%; padding:15px; border-radius:15px; border:2px solid var(--p); text-align:center;">
-        <button class="btn" onclick="checkPass()" style="width:80%; margin-top:15px;">Abrir Portão</button>
+    <div id="bloqueio" class="overlay">
+        <h1 class="titulo">Nosso Mundo</h1>
+        <input type="password" id="inputSenha" placeholder="Senha (Nossa Data)">
+        <button class="btn" onclick="acessar()">Entrar</button>
     </div>
 
-    <div id="tela-quem" class="full-screen hidden">
+    <div id="quem-e-voce" class="overlay hidden">
         <h2 class="titulo">Quem está entrando?</h2>
-        <button class="btn" onclick="setUser('Eduarda')">Sou a Eduarda 👑</button>
-        <button class="btn" onclick="setUser('Amor')" style="background:var(--s)">Sou o Amor 🧸</button>
+        <button class="btn" onclick="definirUsuario('Eduarda')" style="margin-bottom: 15px;">Sou a Eduarda 👑</button>
+        <button class="btn" onclick="definirUsuario('Amor')" style="background: var(--secondary)">Sou o Amor 🧸</button>
     </div>
 
-    <div id="main-content" class="hidden">
-        <div class="lava" id="lava"></div>
+    <div id="conteudo-privado" class="hidden">
+        <div id="ambiente"></div>
         <nav>
-            <a href="#" onclick="tab('home')">🏠 Home</a>
-            <a href="#" onclick="tab('correio')">💌 Cartas</a>
-            <a href="#" onclick="tab('planos')">📅 Planos</a>
-            <a href="#" onclick="tab('escrita')">✍️ Escrever</a>
+            <a href="#" onclick="tab(event, 'home')">🏠 Home</a>
+            <a href="#" onclick="tab(event, 'correio')">💌 Cartas</a>
+            <a href="#" onclick="tab(event, 'escrever')">✍️ Escrever</a>
+            <a href="#" onclick="tab(event, 'metas')">🚀 Metas</a>
+            <a href="#" onclick="tab(event, 'capsula')">⏳ Cápsula</a>
         </nav>
 
         <div class="container">
-            <div id="home" class="tab-content">
+            <div id="home" class="tab-content active">
                 <h1 class="titulo">Desde 28/12/2025</h1>
+                <p id="timer" style="font-weight: bold; font-size: 1.2rem; text-align: center;"></p>
                 <div class="card">
-                    <p style="text-align:center;">Tô pensando em você!</p>
-                    <button class="heart-pulse" onclick="mandarPensamento()">❤️</button>
-                    <p id="contPensar" style="text-align:center; font-weight:bold;">0 batimentos</p>
-                </div>
-                <div class="card" id="areaRaspadinha">
-                    <p>Elogio do dia (toque para ler):</p>
-                    <div id="elogioRevelado" style="font-weight:bold; color:var(--p); text-align:center; min-height:30px;"></div>
+                    <p style="text-align: center;">Tô pensando em você!</p>
+                    <button class="heart-btn" onclick="pensar()">❤️</button>
+                    <p id="contagemPensar" style="text-align: center;">0 vezes hoje</p>
                 </div>
             </div>
 
-            <div id="correio" class="tab-content hidden">
-                <h2 class="titulo">Suas Cartas</h2>
-                <div class="grid" id="gridCartas">
-                    </div>
-                <div id="viewCarta" class="card hidden" style="margin-top:20px; border-style:dashed;"></div>
+            <div id="correio" class="tab-content">
+                <h2 class="titulo">Para Você</h2>
+                <p style="text-align: center; font-size: 0.8rem;">Toque para ler o que te enviaram</p>
+                <div class="grid-cartas">
+                    <div class="envelope" onclick="lerCarta('Saudade')">📩<br><small>Saudade</small></div>
+                    <div class="envelope" onclick="lerCarta('Triste')">📩<br><small>Triste</small></div>
+                    <div class="envelope" onclick="lerCarta('Sorrir')">📩<br><small>Sorrir</small></div>
+                    <div class="envelope" onclick="lerCarta('Elogio')">📩<br><small>Elogio</small></div>
+                </div>
+                <div id="cartaAberta" class="card" style="display:none; margin-top:20px; white-space: pre-wrap;"></div>
             </div>
 
-            <div id="escrita" class="tab-content hidden">
-                <h2 class="titulo">Escrever para o Outro</h2>
+            <div id="escrever" class="tab-content">
+                <h2 class="titulo">Escrever Surpresa</h2>
                 <div class="card">
                     <p>Para qual carta?</p>
-                    <select id="tipoCarta" class="btn" style="background:white; color:black; border:1px solid var(--p)">
-                        <option value="Saudade">Quando sentir saudade</option>
-                        <option value="Triste">Quando estiver triste</option>
-                        <option value="Rir">Para te fazer rir</option>
-                        <option value="Elogio">Um elogio novo</option>
+                    <select id="selectTipo">
+                        <option value="Saudade">Saudade</option>
+                        <option value="Triste">Triste</option>
+                        <option value="Sorrir">Fazer Sorrir</option>
+                        <option value="Elogio">Elogio</option>
                     </select>
-                    <textarea id="msgTexto" placeholder="Escreva aqui..." style="width:100%; height:100px; border-radius:15px; padding:10px; margin-top:10px;"></textarea>
-                    <button class="btn" onclick="salvarMensagem()">Enviar para o Coração dele(a)</button>
+                    <textarea id="textoMensagem" placeholder="Escreva sua mensagem fofa aqui..." rows="4"></textarea>
+                    <button class="btn" onclick="enviarMensagem()">Enviar para o Coração dele(a)</button>
+                </div>
+            </div>
+
+            <div id="metas" class="tab-content">
+                <h2 class="titulo">Nossas Metas</h2>
+                <div class="card">
+                    <div class="progress-container"><div class="progress-bar" id="progressoMetas"></div></div>
+                    <div id="listaMetas"></div>
+                    <input type="text" id="novaMeta" placeholder="Nova meta...">
+                    <button class="btn" onclick="addMeta()">Adicionar</button>
+                </div>
+            </div>
+
+            <div id="capsula" class="tab-content">
+                <h2 class="titulo">Cápsula</h2>
+                <div class="card">
+                    <textarea id="textoCapsula" placeholder="Mensagem para o futuro..."></textarea>
+                    <input type="date" id="dataCapsula">
+                    <button class="btn" onclick="salvarCapsula()">Enterrar</button>
+                    <div id="mensagensCapsula" style="margin-top:20px;"></div>
                 </div>
             </div>
         </div>
-
-        <div id="balao-m" class="balao">Oi amor!</div>
-        <img src="https://cdn-icons-png.flaticon.com/512/2566/2566113.png" class="mascote" style="left:10px;" onclick="falar('E')">
-        <img src="https://cdn-icons-png.flaticon.com/512/2566/2566103.png" class="mascote" style="right:10px;" onclick="falar('A')">
     </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-        import { getDatabase, ref, set, push, onValue, update, increment } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
+        import { getDatabase, ref, push, onValue, set, update, increment } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyCz3H8bjiuS2gNvxUr_G3Csd21wL5J1gLw",
@@ -124,98 +174,132 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
-        let currentUser = "";
+        let usuarioAtual = "";
 
-        // --- SISTEMA DE ACESSO ---
-        window.checkPass = () => {
-            if(document.getElementById('pass').value === "2810") {
-                document.getElementById('tela-senha').classList.add('hidden');
-                document.getElementById('tela-quem').classList.remove('hidden');
-            } else { alert("Senha incorreta!"); }
+        // --- ACESSO ---
+        window.acessar = () => {
+            if(document.getElementById('inputSenha').value === "2810") {
+                document.getElementById('bloqueio').classList.add('hidden');
+                document.getElementById('quem-e-voce').classList.remove('hidden');
+            } else { alert("Senha errada!"); }
         };
 
-        window.setUser = (user) => {
-            currentUser = user;
-            document.getElementById('tela-quem').classList.add('hidden');
-            document.getElementById('main-content').classList.remove('hidden');
-            initApp();
+        window.definirUsuario = (nome) => {
+            usuarioAtual = nome;
+            document.getElementById('quem-e-voce').classList.add('hidden');
+            document.getElementById('conteudo-privado').classList.remove('hidden');
+            configurarAmbiente();
+            iniciarTimer();
         };
 
-        function initApp() {
-            gerarCorações();
-            carregarDados();
-            if(new Date().getHours() >= 18 || new Date().getHours() < 6) document.body.classList.add('noite');
-        }
-
-        // --- FUNCIONALIDADES ---
-        window.salvarMensagem = () => {
-            const tipo = document.getElementById('tipoCarta').value;
-            const txt = document.getElementById('msgTexto').value;
-            const destino = (currentUser === "Eduarda") ? "Amor" : "Eduarda";
+        // --- ESCRITA E LEITURA (O coração do pedido) ---
+        window.enviarMensagem = () => {
+            const tipo = document.getElementById('selectTipo').value;
+            const texto = document.getElementById('textoMensagem').value;
+            const destino = (usuarioAtual === "Eduarda") ? "Amor" : "Eduarda";
             
-            // Salva no Firebase: destino (quem vai ler) / tipo (qual carta é)
-            set(ref(db, `mensagens/${destino}/${tipo}`), { msg: txt, autor: currentUser });
-            alert("Enviado com sucesso!");
-            document.getElementById('msgTexto').value = "";
+            if(!texto) return alert("Escreva algo!");
+            
+            // Salva na pasta do DESTINATÁRIO
+            set(ref(db, `cartas/${destino}/${tipo}`), { msg: texto, de: usuarioAtual });
+            alert("Sua surpresa foi enviada! ❤️");
+            document.getElementById('textoMensagem').value = "";
         };
-
-        function carregarDados() {
-            // Batimentos
-            onValue(ref(db, 'batimentos'), (s) => {
-                document.getElementById('contPensar').innerText = (s.val() || 0) + " batimentos hoje";
-            });
-
-            // Cartas (Mostra o que mandaram PARA o usuário atual)
-            const tipos = ['Saudade', 'Triste', 'Rir', 'Elogio'];
-            const grid = document.getElementById('gridCartas');
-            grid.innerHTML = "";
-            tipos.forEach(t => {
-                grid.innerHTML += `<div class="envelope" onclick="lerCarta('${t}')">📩<br><span style="font-size:0.6rem">${t}</span></div>`;
-            });
-        }
 
         window.lerCarta = (tipo) => {
-            onValue(ref(db, `mensagens/${currentUser}/${tipo}`), (s) => {
-                const view = document.getElementById('viewCarta');
-                view.classList.remove('hidden');
+            // Busca o que foi escrito para o USUÁRIO ATUAL
+            onValue(ref(db, `cartas/${usuarioAtual}/${tipo}`), (s) => {
+                const div = document.getElementById('cartaAberta');
+                div.style.display = 'block';
                 if(s.exists()) {
-                    view.innerHTML = `<strong>Carta de ${s.val().autor}:</strong><br>${s.val().msg}`;
+                    div.innerHTML = `<strong>De: ${s.val().de}</strong><br><br>${s.val().msg}`;
                 } else {
-                    view.innerHTML = "Ainda não tem nada aqui... peça para ele(a) escrever!";
+                    div.innerHTML = "Ainda não há mensagem aqui. Peça para ele(a) escrever! ❤️";
                 }
             }, { onlyOnce: true });
         };
 
-        window.mandarPensamento = () => {
-            update(ref(db, 'batimentos'), increment(1));
-            if(navigator.vibrate) navigator.vibrate(50);
+        // --- SISTEMA DE TEMA ---
+        function configurarAmbiente() {
+            const hora = new Date().getHours();
+            if(hora >= 18 || hora < 6) {
+                document.body.classList.add('noite');
+                document.getElementById('ambiente').innerHTML = '<div class="stars"></div>';
+                gerarEstrelas();
+            } else {
+                document.getElementById('ambiente').innerHTML = '<div class="nuvens">☁️</div>';
+            }
+        }
+
+        // --- RESTANTE DAS FUNÇÕES MANTIDAS ---
+        window.pensar = () => {
+            update(ref(db, 'interacoes'), { totalPensamentos: increment(1) });
+            if(navigator.vibrate) navigator.vibrate(100);
+        };
+        onValue(ref(db, 'interacoes/totalPensamentos'), (s) => {
+            document.getElementById('contagemPensar').innerText = (s.val() || 0) + " vezes hoje";
+        });
+
+        window.addMeta = () => {
+            const t = document.getElementById('novaMeta').value;
+            if(t) push(ref(db, 'metas'), { texto: t, feito: false });
+            document.getElementById('novaMeta').value = "";
+        };
+        onValue(ref(db, 'metas'), (snap) => {
+            const list = document.getElementById('listaMetas');
+            list.innerHTML = "";
+            let totais = 0, feitos = 0;
+            snap.forEach(c => {
+                totais++; if(c.val().feito) feitos++;
+                list.innerHTML += `<div class="item-lista">
+                    <input type="checkbox" ${c.val().feito ? 'checked' : ''} onchange="update(ref(getDatabase(), 'metas/${c.key}'), { feito: ${!c.val().feito} })">
+                    <span>${c.val().texto}</span>
+                </div>`;
+            });
+            document.getElementById('progressoMetas').style.width = (feitos/totais*100 || 0) + '%';
+        });
+
+        window.salvarCapsula = () => {
+            const txt = document.getElementById('textoCapsula').value;
+            const data = document.getElementById('dataCapsula').value;
+            if(txt && data) push(ref(db, 'capsula'), { txt, data });
+            document.getElementById('textoCapsula').value = "";
+        };
+        onValue(ref(db, 'capsula'), (snap) => {
+            const div = document.getElementById('mensagensCapsula');
+            div.innerHTML = "";
+            const hoje = new Date().toISOString().split('T')[0];
+            snap.forEach(c => {
+                const liberado = hoje >= c.val().data;
+                div.innerHTML += `<div class="card" style="opacity:${liberado ? 1 : 0.5}">${liberado ? c.val().txt : '🔒 Abre em: ' + c.val().data}</div>`;
+            });
+        });
+
+        window.tab = (e, id) => {
+            e.preventDefault();
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
         };
 
-        // --- VISUAL ---
-        function gerarCorações() {
-            const lava = document.getElementById('lava');
+        function iniciarTimer() {
+            const d = new Date(2025, 11, 28);
             setInterval(() => {
-                const c = document.createElement('div');
-                c.innerHTML = "❤️";
-                c.className = "coracao-flutuante";
-                c.style.left = Math.random() * 100 + "vw";
-                c.style.fontSize = (Math.random() * 20 + 10) + "px";
-                lava.appendChild(c);
-                setTimeout(() => c.remove(), 6000);
+                const diff = Math.floor((new Date() - d) / 86400000);
+                document.getElementById('timer').innerText = diff + " dias infinitos";
             }, 1000);
         }
 
-        window.tab = (id) => {
-            document.querySelectorAll('.tab-content').forEach(t => t.classList.add('hidden'));
-            document.getElementById(id).classList.remove('hidden');
-        };
-
-        window.falar = (quem) => {
-            const b = document.getElementById('balao-m');
-            b.style.display = "block";
-            b.innerText = quem === 'E' ? "Eduarda te ama!" : "O Amor está com saudade!";
-            setTimeout(() => b.style.display = "none", 3000);
-        };
+        function gerarEstrelas() {
+            const sF = document.querySelector('.stars');
+            if(!sF) return;
+            for(let i=0; i<40; i++){
+                const s = document.createElement('div');
+                s.style.position = 'absolute'; s.style.background = 'white';
+                s.style.width = s.style.height = '2px';
+                s.style.left = Math.random()*100+'%'; s.style.top = Math.random()*100+'%';
+                sF.appendChild(s);
+            }
+        }
     </script>
 </body>
 </html>
