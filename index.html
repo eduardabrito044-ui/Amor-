@@ -9,7 +9,7 @@
     
     <style>
         :root { --primary: #9d4edd; --bg: #10002b; --card-bg: rgba(60, 9, 108, 0.7); --text: #e0aaff; }
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
         body { 
             margin: 0; font-family: 'Poppins', sans-serif; 
             background: linear-gradient(135deg, #10002b 0%, #240046 50%, #5a189a 100%);
@@ -28,21 +28,23 @@
         .contador { font-size: 1.1rem; font-weight: 600; color: #ff9e00; margin: 10px 0; }
         .foto-casal { width: 120px; height: 120px; border-radius: 50%; border: 3px solid var(--primary); object-fit: cover; margin-bottom: 15px; box-shadow: 0 0 20px var(--primary); }
 
-        /* Raspadinhas */
+        /* Raspadinhas - Ajustadas */
         .grid-raspadinhas { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .raspa-box { position: relative; width: 130px; height: 130px; border-radius: 50%; overflow: hidden; border: 2px solid var(--primary); background: #240046; }
-        canvas { position: absolute; top: 0; left: 0; z-index: 2; touch-action: none; }
-        .desafio-texto { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: bold; color: #ff9e00; padding: 10px; z-index: 1; text-align: center; }
+        .raspa-box { position: relative; width: 130px; height: 130px; border-radius: 50%; overflow: hidden; border: 2px solid var(--primary); background: #240046; cursor: crosshair; }
+        canvas { position: absolute; top: 0; left: 0; z-index: 2; touch-action: none; width: 100%; height: 100%; }
+        .desafio-texto { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: bold; color: #ff9e00; padding: 10px; z-index: 1; text-align: center; user-select: none; }
         .bloqueado { opacity: 0.2; filter: grayscale(1); pointer-events: none; }
 
-        /* Mural Identificado */
-        .msg-item { background: rgba(255, 255, 255, 0.05); padding: 12px; border-radius: 15px; border-left: 4px solid var(--primary); text-align: left; margin-bottom: 10px; }
-        .msg-autor { font-size: 0.65rem; font-weight: bold; color: var(--primary); text-transform: uppercase; display: block; margin-bottom: 4px; }
+        /* Metas Alinhadas */
+        .item-meta { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; text-align: left; width: 100%; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 15px; }
+        .item-meta input { width: 20px !important; height: 20px !important; margin: 0 !important; cursor: pointer; flex-shrink: 0; accent-color: var(--primary); }
+        .item-meta span { font-size: 0.9rem; color: #fff; }
 
+        /* Mimos */
         .grid-cupons { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .cupom { background: #3c096c; border: 2px dashed var(--primary); padding: 12px; border-radius: 15px; font-size: 0.7rem; color: white; position: relative; }
+        .cupom { background: #3c096c; border: 2px dashed var(--primary); padding: 12px; border-radius: 15px; font-size: 0.7rem; color: white; position: relative; min-height: 60px; display: flex; align-items: center; justify-content: center; flex-direction: column; }
         .cupom.usado { opacity: 0.3; text-decoration: line-through; }
-        .quem-usou { position: absolute; bottom: 2px; right: 5px; font-size: 0.5rem; color: #ff9e00; }
+        .quem-usou { font-size: 0.55rem; color: #ff9e00; margin-top: 4px; }
 
         .calendario { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; }
         .dia { padding: 8px; background: #240046; border: 1px solid var(--primary); border-radius: 8px; font-size: 0.6rem; color: #fff; }
@@ -73,7 +75,7 @@
                 <img src="Amor.png" class="foto-casal">
                 <div id="timer" class="contador"></div>
                 <div class="card">
-                    <p id="instrucao" style="font-size: 0.75rem; font-weight: bold;">Escolha 1 de 4 para hoje! 💜</p>
+                    <p id="instrucao" style="font-size: 0.75rem; font-weight: bold;">Arraste para raspar 1 hoje! 💜</p>
                     <div class="grid-raspadinhas" id="gridRaspa"></div>
                 </div>
             </div>
@@ -91,10 +93,10 @@
 
             <div class="swiper-slide">
                 <h2 class="titulo">Nossos Sonhos</h2>
-                <div class="card"><div id="listaMetas"></div></div>
+                <div class="card" style="width: 100%;"><div id="listaMetas"></div></div>
                 <div class="card">
                     <input type="text" id="novaMeta" placeholder="Novo objetivo...">
-                    <button class="btn" onclick="addMeta()">Salvar</button>
+                    <button class="btn" onclick="addMeta()">Salvar Sonho</button>
                 </div>
             </div>
 
@@ -140,20 +142,19 @@
         };
 
         function initApp() {
-            // Saudação e Contador
             const h = new Date().getHours();
-            document.getElementById('msg-tempo').innerText = (h >= 5 && h < 18) ? "✨ Tenha um Dia Encantado!" : "🌙 Tenha uma Noite Estrelada!";
+            document.getElementById('msg-tempo').innerText = (h >= 5 && h < 18) ? "✨ Dia Encantado, " + meuNome + "!" : "🌙 Noite Estrelada, " + meuNome + "!";
+            
             const inicio = new Date("2025-12-28");
             setInterval(() => {
                 const diff = Math.floor((new Date() - inicio) / (1000 * 60 * 60 * 24));
                 document.getElementById('timer').innerText = diff + " DIAS JUNTOS";
             }, 1000);
 
-            // Raspadinha
             const hoje = new Date().toDateString();
             if(localStorage.getItem('dataRaspa') !== hoje) {
                 localStorage.removeItem('idRaspaHoje');
-                const d = ["Um segredo", "Dê 5 beijos", "Minha mania chata", "Qual nosso melhor date?"];
+                const d = ["Um beijo demorado", "Fazer um cafuné", "Um elogio sincero", "Dançar uma música"];
                 localStorage.setItem('desafiosAtuais', JSON.stringify(d.sort(() => 0.5 - Math.random())));
             }
             renderRaspa();
@@ -167,33 +168,52 @@
             const grid = document.getElementById('gridRaspa'); grid.innerHTML = "";
             const lista = JSON.parse(localStorage.getItem('desafiosAtuais'));
             const idR = localStorage.getItem('idRaspaHoje');
-            const jaR = localStorage.getItem('dataRaspa') === new Date().toDateString();
+            const hoje = new Date().toDateString();
+            const jaR = localStorage.getItem('dataRaspa') === hoje;
 
             lista.forEach((t, i) => {
                 const box = document.createElement('div');
                 box.className = `raspa-box ${jaR && idR != i ? 'bloqueado' : ''}`;
                 box.innerHTML = `<div class="desafio-texto">${t}</div><canvas id="cv${i}"></canvas>`;
                 grid.appendChild(box);
+                
                 const cv = document.getElementById(`cv${i}`);
                 const ctx = cv.getContext('2d');
-                cv.width = 130; cv.height = 130;
-                if(jaR && idR == i) ctx.clearRect(0,0,130,130);
-                else { ctx.fillStyle = '#5a189a'; ctx.fillRect(0,0,130,130); }
                 
-                const scratch = (e) => {
-                    if(jaR) return;
-                    const r = cv.getBoundingClientRect();
-                    const x = (e.touches ? e.touches[0].clientX : e.clientX) - r.left;
-                    const y = (e.touches ? e.touches[0].clientY : e.clientY) - r.top;
-                    ctx.globalCompositeOperation = 'destination-out';
-                    ctx.beginPath(); ctx.arc(x,y,20,0,Math.PI*2); ctx.fill();
-                    if(localStorage.getItem('dataRaspa') !== new Date().toDateString()){
-                        localStorage.setItem('dataRaspa', new Date().toDateString());
-                        localStorage.setItem('idRaspaHoje', i);
-                        setTimeout(() => location.reload(), 500);
+                // Configuração vital para o canvas funcionar
+                const setupCanvas = () => {
+                    cv.width = cv.offsetWidth;
+                    cv.height = cv.offsetHeight;
+                    if(jaR && idR == i) {
+                        ctx.clearRect(0,0,cv.width,cv.height);
+                    } else {
+                        ctx.fillStyle = '#7b2cbf'; // Cor da raspadinha
+                        ctx.fillRect(0,0,cv.width,cv.height);
                     }
                 };
-                cv.onmousemove = scratch; cv.ontouchmove = scratch;
+                setupCanvas();
+
+                const draw = (e) => {
+                    if(jaR) return;
+                    e.preventDefault();
+                    const rect = cv.getBoundingClientRect();
+                    const x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
+                    const y = (e.touches ? e.touches[0].clientY : e.clientY) - rect.top;
+                    
+                    ctx.globalCompositeOperation = 'destination-out';
+                    ctx.beginPath();
+                    ctx.arc(x, y, 25, 0, Math.PI * 2);
+                    ctx.fill();
+
+                    if(localStorage.getItem('dataRaspa') !== hoje) {
+                        localStorage.setItem('dataRaspa', hoje);
+                        localStorage.setItem('idRaspaHoje', i);
+                        setTimeout(() => location.reload(), 1500); // Dá tempo de raspar um pouco antes de travar
+                    }
+                };
+
+                cv.addEventListener('mousemove', draw);
+                cv.addEventListener('touchmove', draw);
             });
         }
 
