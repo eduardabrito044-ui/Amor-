@@ -9,7 +9,7 @@
     
     <style>
         :root { --primary: #9d4edd; --bg: #10002b; --card-bg: rgba(60, 9, 108, 0.7); --text: #e0aaff; }
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; touch-action: none; }
         body { 
             margin: 0; font-family: 'Poppins', sans-serif; 
             background: linear-gradient(135deg, #10002b 0%, #240046 50%, #5a189a 100%);
@@ -20,62 +20,51 @@
         .hidden { display: none !important; }
 
         .swiper { width: 100%; height: 100vh; }
-        .swiper-slide { display: flex; flex-direction: column; align-items: center; padding: 40px 20px 120px; overflow-y: auto; }
+        .swiper-slide { display: flex; flex-direction: column; align-items: center; padding: 20px 20px 100px; overflow-y: auto; min-height: 100vh; }
 
-        .card { background: var(--card-bg); border-radius: 25px; padding: 20px; width: 100%; max-width: 400px; border: 1px solid rgba(157, 78, 221, 0.3); margin-bottom: 20px; text-align: center; backdrop-filter: blur(10px); }
-        .titulo { font-family: 'Great Vibes', cursive; font-size: 2.8rem; color: var(--primary); margin: 5px 0; }
+        .card { background: var(--card-bg); border-radius: 25px; padding: 25px; width: 100%; max-width: 450px; border: 1px solid rgba(157, 78, 221, 0.3); margin-bottom: 20px; text-align: center; backdrop-filter: blur(10px); }
+        .titulo { font-family: 'Great Vibes', cursive; font-size: 3rem; color: var(--primary); margin: 10px 0; }
         
-        .contador { font-size: 1.1rem; font-weight: 600; color: #ff9e00; margin: 10px 0; }
-        .foto-casal { width: 120px; height: 120px; border-radius: 50%; border: 3px solid var(--primary); object-fit: cover; margin-bottom: 15px; box-shadow: 0 0 20px var(--primary); }
+        .contador { font-size: 1.2rem; font-weight: 600; color: #ff9e00; margin: 15px 0; }
+        .foto-casal { width: 130px; height: 130px; border-radius: 50%; border: 3px solid var(--primary); object-fit: cover; margin-bottom: 15px; box-shadow: 0 0 20px var(--primary); }
 
-        /* Raspadinhas - Ajustadas */
-        .grid-raspadinhas { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .raspa-box { position: relative; width: 130px; height: 130px; border-radius: 50%; overflow: hidden; border: 2px solid var(--primary); background: #240046; cursor: crosshair; }
-        canvas { position: absolute; top: 0; left: 0; z-index: 2; touch-action: none; width: 100%; height: 100%; }
-        .desafio-texto { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: bold; color: #ff9e00; padding: 10px; z-index: 1; text-align: center; user-select: none; }
-        .bloqueado { opacity: 0.2; filter: grayscale(1); pointer-events: none; }
+        /* Raspadinha Realista */
+        .grid-raspadinhas { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; width: 100%; justify-items: center; }
+        .raspa-box { position: relative; width: 140px; height: 140px; border-radius: 50%; overflow: hidden; border: 3px solid var(--primary); background: #f0f0f0; }
+        .desafio-texto { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: bold; color: #240046; padding: 15px; z-index: 1; text-align: center; line-height: 1.2; user-select: none; }
+        canvas { position: absolute; top: 0; left: 0; z-index: 2; width: 100%; height: 100%; }
 
-        /* Metas Alinhadas */
-        .item-meta { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; text-align: left; width: 100%; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 15px; }
-        .item-meta input { width: 20px !important; height: 20px !important; margin: 0 !important; cursor: pointer; flex-shrink: 0; accent-color: var(--primary); }
-        .item-meta span { font-size: 0.9rem; color: #fff; }
+        /* Metas */
+        .item-meta { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px; text-align: left; background: rgba(255,255,255,0.08); padding: 12px; border-radius: 18px; width: 100%; }
+        .item-meta input { width: 20px !important; height: 20px !important; accent-color: var(--primary); flex-shrink: 0; margin-top: 4px !important; }
+        .meta-autor { font-size: 0.6rem; color: var(--primary); font-weight: bold; display: block; margin-top: 2px; }
 
-        /* Mimos */
-        .grid-cupons { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .cupom { background: #3c096c; border: 2px dashed var(--primary); padding: 12px; border-radius: 15px; font-size: 0.7rem; color: white; position: relative; min-height: 60px; display: flex; align-items: center; justify-content: center; flex-direction: column; }
-        .cupom.usado { opacity: 0.3; text-decoration: line-through; }
-        .quem-usou { font-size: 0.55rem; color: #ff9e00; margin-top: 4px; }
-
-        .calendario { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; }
-        .dia { padding: 8px; background: #240046; border: 1px solid var(--primary); border-radius: 8px; font-size: 0.6rem; color: #fff; }
-        .dia.marcado { background: var(--primary); }
-
-        .btn { background: var(--primary); color: white; border: none; padding: 14px; border-radius: 50px; font-weight: bold; width: 100%; cursor: pointer; }
-        input, textarea, select { width: 100%; padding: 14px; border-radius: 15px; border: 1px solid var(--primary); margin-bottom: 10px; background: rgba(36, 0, 70, 0.5); color: white; text-align: center; font-family: inherit; }
+        .btn { background: var(--primary); color: white; border: none; padding: 16px; border-radius: 50px; font-weight: bold; width: 100%; cursor: pointer; }
+        input, textarea, select { width: 100%; padding: 15px; border-radius: 18px; border: 1px solid var(--primary); margin-bottom: 12px; background: rgba(36, 0, 70, 0.6); color: white; text-align: center; }
     </style>
 </head>
 <body>
 
     <div id="tela-login" class="overlay">
-        <h1 class="titulo">Nosso Portal</h1>
+        <h1 class="titulo">Nosso Infinito</h1>
         <input type="password" id="pass" placeholder="Senha DDMM">
         <select id="user-name">
-            <option value="Eduarda">Eu sou a Eduarda</option>
-            <option value="Amor">Eu sou o Amor</option>
+            <option value="Eduarda">Eduarda</option>
+            <option value="Amor">Amor</option>
         </select>
-        <button class="btn" style="max-width: 200px;" onclick="entrar()">Acessar 💜</button>
+        <button class="btn" style="max-width: 250px;" onclick="entrar()">Entrar 💜</button>
     </div>
 
     <div id="app" class="swiper hidden">
         <div class="swiper-wrapper">
             
             <div class="swiper-slide">
-                <div id="msg-tempo" style="color: #c77dff; font-size: 0.9rem;"></div>
+                <div id="msg-tempo" style="color: #c77dff;"></div>
                 <h1 class="titulo">Pecado de Fofo</h1>
                 <img src="Amor.png" class="foto-casal">
                 <div id="timer" class="contador"></div>
                 <div class="card">
-                    <p id="instrucao" style="font-size: 0.75rem; font-weight: bold;">Arraste para raspar 1 hoje! 💜</p>
+                    <p style="font-size: 0.8rem; margin-bottom: 15px;">Passe o dedo para raspar! 👆</p>
                     <div class="grid-raspadinhas" id="gridRaspa"></div>
                 </div>
             </div>
@@ -83,8 +72,8 @@
             <div class="swiper-slide">
                 <h2 class="titulo">Correio Elegante</h2>
                 <div class="card">
-                    <textarea id="textoCorreio" rows="3" placeholder="Escreva para seu amor..."></textarea>
-                    <button class="btn" onclick="enviarCorreio()">Enviar Mensagem 💌</button>
+                    <textarea id="textoCorreio" rows="3" placeholder="Escreva algo..."></textarea>
+                    <button class="btn" onclick="enviarCorreio()">Enviar 💌</button>
                 </div>
                 <div class="card" style="max-height: 400px; overflow-y: auto; width: 100%;">
                     <div id="muralMensagens"></div>
@@ -95,20 +84,8 @@
                 <h2 class="titulo">Nossos Sonhos</h2>
                 <div class="card" style="width: 100%;"><div id="listaMetas"></div></div>
                 <div class="card">
-                    <input type="text" id="novaMeta" placeholder="Novo objetivo...">
+                    <input type="text" id="novaMeta" placeholder="Nova meta...">
                     <button class="btn" onclick="addMeta()">Salvar Sonho</button>
-                </div>
-            </div>
-
-            <div class="swiper-slide">
-                <h2 class="titulo">Mimos e Datas</h2>
-                <div class="card">
-                    <p style="font-size: 0.8rem; margin-bottom: 10px;">Cupons Renováveis 🎟️</p>
-                    <div class="grid-cupons" id="containerCupons"></div>
-                </div>
-                <div class="card">
-                    <p style="font-size: 0.8rem; margin-bottom: 10px;">Calendário 📅</p>
-                    <div class="calendario" id="calGrid"></div>
                 </div>
             </div>
 
@@ -118,7 +95,7 @@
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-        import { getDatabase, ref, push, onValue, update } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
+        import { getDatabase, ref, push, onValue, update, set } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyCz3H8bjiuS2gNvxUr_G3Csd21wL5J1gLw",
@@ -130,6 +107,8 @@
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
         let meuNome = "";
+
+        const desafios = ["Pagar um lanche", "PIX de 2 Reais", "10 Beijos", "Massagem", "Chocolate", "Cafuné", "Açaí", "Dançar", "Elogio", "Mímica"];
 
         window.entrar = () => {
             if(document.getElementById('pass').value === "2810") {
@@ -143,7 +122,7 @@
 
         function initApp() {
             const h = new Date().getHours();
-            document.getElementById('msg-tempo').innerText = (h >= 5 && h < 18) ? "✨ Dia Encantado, " + meuNome + "!" : "🌙 Noite Estrelada, " + meuNome + "!";
+            document.getElementById('msg-tempo').innerText = (h < 18) ? "✨ Bom dia, " + meuNome : "🌙 Boa noite, " + meuNome;
             
             const inicio = new Date("2025-12-28");
             setInterval(() => {
@@ -151,69 +130,56 @@
                 document.getElementById('timer').innerText = diff + " DIAS JUNTOS";
             }, 1000);
 
-            const hoje = new Date().toDateString();
-            if(localStorage.getItem('dataRaspa') !== hoje) {
-                localStorage.removeItem('idRaspaHoje');
-                const d = ["Um beijo demorado", "Fazer um cafuné", "Um elogio sincero", "Dançar uma música"];
-                localStorage.setItem('desafiosAtuais', JSON.stringify(d.sort(() => 0.5 - Math.random())));
-            }
-            renderRaspa();
+            onValue(ref(db, 'raspa_v2'), s => {
+                let d = s.val();
+                if(!d || d.completas >= 4) {
+                    const novos = desafios.sort(() => 0.5 - Math.random()).slice(0, 4);
+                    set(ref(db, 'raspa_v2'), { itens: novos, completas: 0 });
+                } else {
+                    renderRaspa(d.itens);
+                }
+            });
             syncData();
-
-            const cal = document.getElementById('calGrid');
-            for(let i=1; i<=31; i++) cal.innerHTML += `<div class="dia" onclick="this.classList.toggle('marcado')">${i}</div>`;
         }
 
-        function renderRaspa() {
+        function renderRaspa(itens) {
             const grid = document.getElementById('gridRaspa'); grid.innerHTML = "";
-            const lista = JSON.parse(localStorage.getItem('desafiosAtuais'));
-            const idR = localStorage.getItem('idRaspaHoje');
-            const hoje = new Date().toDateString();
-            const jaR = localStorage.getItem('dataRaspa') === hoje;
-
-            lista.forEach((t, i) => {
+            itens.forEach((txt, i) => {
                 const box = document.createElement('div');
-                box.className = `raspa-box ${jaR && idR != i ? 'bloqueado' : ''}`;
-                box.innerHTML = `<div class="desafio-texto">${t}</div><canvas id="cv${i}"></canvas>`;
+                box.className = "raspa-box";
+                box.innerHTML = `<div class="desafio-texto">${txt}</div><canvas id="cv${i}"></canvas>`;
                 grid.appendChild(box);
                 
                 const cv = document.getElementById(`cv${i}`);
-                const ctx = cv.getContext('2d');
-                
-                // Configuração vital para o canvas funcionar
-                const setupCanvas = () => {
-                    cv.width = cv.offsetWidth;
-                    cv.height = cv.offsetHeight;
-                    if(jaR && idR == i) {
-                        ctx.clearRect(0,0,cv.width,cv.height);
-                    } else {
-                        ctx.fillStyle = '#7b2cbf'; // Cor da raspadinha
-                        ctx.fillRect(0,0,cv.width,cv.height);
-                    }
-                };
-                setupCanvas();
+                const ctx = cv.getContext('2d', { willReadFrequently: true });
+                cv.width = 140; cv.height = 140;
 
-                const draw = (e) => {
-                    if(jaR) return;
+                ctx.fillStyle = '#7b2cbf';
+                ctx.fillRect(0,0,140,140);
+
+                const scratch = (e) => {
                     e.preventDefault();
-                    const rect = cv.getBoundingClientRect();
-                    const x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
-                    const y = (e.touches ? e.touches[0].clientY : e.clientY) - rect.top;
+                    const r = cv.getBoundingClientRect();
+                    const x = (e.touches ? e.touches[0].clientX : e.clientX) - r.left;
+                    const y = (e.touches ? e.touches[0].clientY : e.clientY) - r.top;
                     
                     ctx.globalCompositeOperation = 'destination-out';
                     ctx.beginPath();
-                    ctx.arc(x, y, 25, 0, Math.PI * 2);
+                    ctx.arc(x, y, 20, 0, Math.PI * 2);
                     ctx.fill();
 
-                    if(localStorage.getItem('dataRaspa') !== hoje) {
-                        localStorage.setItem('dataRaspa', hoje);
-                        localStorage.setItem('idRaspaHoje', i);
-                        setTimeout(() => location.reload(), 1500); // Dá tempo de raspar um pouco antes de travar
+                    // Detecta se já raspou o bastante (mais de 40% do canvas)
+                    const pixels = ctx.getImageData(0, 0, 140, 140).data;
+                    let clear = 0;
+                    for(let p=3; p<pixels.length; p+=4) { if(pixels[p] === 0) clear++; }
+                    if(clear > (pixels.length/4) * 0.4) {
+                        cv.style.pointerEvents = 'none';
+                        cv.style.opacity = '0'; // Faz o resto sumir suavemente
                     }
                 };
 
-                cv.addEventListener('mousemove', draw);
-                cv.addEventListener('touchmove', draw);
+                cv.addEventListener('mousemove', scratch);
+                cv.addEventListener('touchmove', scratch);
             });
         }
 
@@ -225,7 +191,7 @@
 
         window.addMeta = () => {
             const t = document.getElementById('novaMeta').value;
-            if(t) push(ref(db, 'metas'), { texto: t, feito: false });
+            if(t) push(ref(db, 'metas'), { texto: t, feito: false, autor: meuNome });
             document.getElementById('novaMeta').value = "";
         };
 
@@ -237,18 +203,15 @@
             onValue(ref(db, 'metas'), s => {
                 const l = document.getElementById('listaMetas'); l.innerHTML = "";
                 s.forEach(m => {
-                    l.innerHTML += `<div class="item-meta"><input type="checkbox" ${m.val().feito?'checked':''} onchange="update(ref(getDatabase(), 'metas/${m.key}'), {feito:${!m.val().feito}})"><span>${m.val().texto}</span></div>`;
+                    const d = m.val();
+                    l.innerHTML += `<div class="item-meta">
+                        <input type="checkbox" ${d.feito?'checked':''} onchange="update(ref(getDatabase(), 'metas/${m.key}'), {feito:${!d.feito}})">
+                        <div>
+                            <span style="color:#fff;font-size:0.9rem">${d.texto}</span>
+                            <span class="meta-autor">✍️ Por: ${d.autor || 'Nós'}</span>
+                        </div>
+                    </div>`;
                 });
-            });
-            onValue(ref(db, 'cupons_controle'), s => {
-                const d = s.val() || { usados: 0, pacote: 0, quem: "" };
-                const p = [["Vale Beijo", "Vale Massagem", "Vale Cinema", "Vale Jantar"], ["Vale Abraço", "Vale Doce", "Vale Cafuné", "Vale Filme"]];
-                const cont = document.getElementById('containerCupons'); cont.innerHTML = "";
-                p[d.pacote % 2].forEach((c, i) => {
-                    const isUsado = i < d.usados;
-                    cont.innerHTML += `<div class="cupom ${isUsado?'usado':''}" onclick="if(!${isUsado}) update(ref(getDatabase(), 'cupons_controle'), {usados: ${d.usados + 1}, quem: '${meuNome}'})">🎟️ ${c} ${isUsado?`<span class="quem-usou">por ${d.quem}</span>`:''}</div>`;
-                });
-                if(d.usados >= 4) update(ref(db, 'cupons_controle'), { usados: 0, pacote: d.pacote + 1, quem: "" });
             });
         }
     </script>
