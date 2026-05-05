@@ -10,8 +10,7 @@
         :root { 
             --gold: #d4af37; 
             --purple-soft: #9d4edd;
-            --bg-glass: rgba(255, 255, 255, 0.08);
-            --transition: all 0.4s ease;
+            --transition: all 0.5s ease;
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
@@ -20,144 +19,123 @@
             margin: 0; font-family: 'Montserrat', sans-serif; 
             overflow: hidden; height: 100vh; width: 100vw;
             transition: var(--transition);
+            background: #000;
         }
 
-        /* Fundo Dinâmico Minimalista */
+        /* Temas Poéticos */
         body.dia-claro { 
-            background: radial-gradient(circle at top, #ffffff, #f3e5f5); 
-            color: #2d005d; --card-bg: rgba(255, 255, 255, 0.7);
+            background: radial-gradient(circle at top, #fff5f8, #e0c3fc); 
+            color: #2d005d; --card-bg: rgba(255, 255, 255, 0.6);
         }
         body.noite-estrelada { 
             background: radial-gradient(circle at bottom, #10002b, #240046, #000);
             color: #e0aaff; --card-bg: rgba(60, 9, 108, 0.3);
         }
 
-        /* Estrutura de Abas */
         .secao { 
             display: none; height: 100vh; width: 100%; 
-            padding: 40px 20px 120px; overflow-y: auto; 
-            animation: fadeIn 0.5s ease;
+            padding: 40px 20px 130px; overflow-y: auto; 
+            animation: fadeIn 0.6s ease;
         }
         .secao.ativa { display: flex; flex-direction: column; align-items: center; }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* Menu de Navegação */
         .nav-bar {
-            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-            width: 90%; max-width: 400px;
-            background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(20px);
-            border-radius: 30px; display: flex; justify-content: space-around;
-            padding: 15px; border: 1px solid rgba(255, 255, 255, 0.1); z-index: 1000;
+            position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%);
+            width: 92%; max-width: 400px;
+            background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(25px);
+            border-radius: 35px; display: flex; justify-content: space-around;
+            padding: 12px; border: 1px solid rgba(255, 255, 255, 0.1); z-index: 1000;
         }
-        .nav-item { color: #fff; opacity: 0.5; font-size: 0.7rem; cursor: pointer; text-align: center; flex: 1; transition: var(--transition); }
-        .nav-item.ativo { opacity: 1; color: var(--gold); transform: translateY(-5px); }
-        .nav-item span { display: block; font-size: 1.2rem; margin-bottom: 3px; }
+        .nav-item { color: #fff; opacity: 0.4; font-size: 0.65rem; cursor: pointer; text-align: center; flex: 1; transition: 0.3s; }
+        .nav-item.ativo { opacity: 1; color: var(--gold); }
+        .nav-item span { display: block; font-size: 1.3rem; margin-bottom: 2px; }
 
-        /* Cards e Estilo */
         .glass-card {
-            background: var(--card-bg); backdrop-filter: blur(15px);
+            background: var(--card-bg); backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 30px; padding: 25px; width: 100%; max-width: 400px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.1); margin-bottom: 20px; text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15); margin-bottom: 20px; text-align: center;
         }
 
         .titulo-lux {
-            font-family: 'Playfair Display', serif; font-size: 2.5rem; font-style: italic; margin: 5px 0;
-            background: linear-gradient(to right, var(--purple-soft), var(--gold));
+            font-family: 'Playfair Display', serif; font-size: 2.6rem; font-style: italic; margin: 5px 0;
+            background: linear-gradient(45deg, var(--purple-soft), var(--gold));
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
 
-        /* Foto Inteira Premium (Corrigido) */
-        .foto-inteira-container {
-            width: 100%; max-width: 350px;
-            margin-bottom: 15px;
-            display: flex; justify-content: center; align-items: center;
-        }
-        .foto-inteira-img {
-            width: 100%; height: auto; /* Mantém a proporção original */
-            max-height: 30vh; /* Limita a altura para não poluir a tela */
-            object-fit: contain; /* Garante que a imagem inteira apareça sem cortes */
-            border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-            border: 2px solid rgba(255,255,255,0.1);
-        }
+        .foto-inteira-container { width: 100%; max-width: 350px; margin-bottom: 15px; }
+        .foto-inteira-img { width: 100%; height: auto; max-height: 35vh; object-fit: contain; border-radius: 25px; border: 1px solid rgba(255,255,255,0.2); }
 
-        /* Raspadinha */
-        .grid-raspa { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; width: 100%; }
-        .raspa-item { position: relative; width: 100%; aspect-ratio: 1; border-radius: 20px; overflow: hidden; border: 1px solid rgba(255,255,255,0.2); background: #fff; }
-        .texto-escondido { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: bold; color: #240046; padding: 10px; text-align: center; }
-        canvas { position: absolute; inset: 0; z-index: 2; }
+        .grid-raspa { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width: 100%; }
+        .raspa-item { position: relative; aspect-ratio: 1; border-radius: 20px; overflow: hidden; background: #fff; border: 1px solid rgba(0,0,0,0.05); }
+        .texto-escondido { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 600; color: #240046; text-align: center; padding: 5px; }
+        canvas { position: absolute; inset: 0; z-index: 2; cursor: crosshair; }
 
-        /* Inputs e Botões */
-        .btn-lux {
-            background: var(--purple-soft); color: white; border: none; padding: 15px 25px;
-            border-radius: 50px; font-weight: 600; width: 100%; cursor: pointer; margin-top: 10px;
-        }
-        .overlay { position: fixed; inset: 0; background: #000; z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .btn-lux { background: var(--purple-soft); color: white; border: none; padding: 16px; border-radius: 50px; font-weight: 600; width: 100%; cursor: pointer; transition: 0.3s; }
+
+        .overlay { position: fixed; inset: 0; background: radial-gradient(circle, #1a1a1a, #000); z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; }
         .hidden { display: none !important; }
 
-        .dia-cal { padding: 8px; border: 1px solid rgba(157,78,221,0.2); border-radius: 8px; text-align: center; cursor: pointer;}
-        .marcado { background: var(--purple-soft); color: #fff; }
+        .dia-cal { padding: 10px 5px; border: 1px solid rgba(157,78,221,0.15); border-radius: 10px; text-align: center; font-size: 0.75rem; }
+        .marcado { background: var(--purple-soft) !important; color: #fff !important; }
+        
+        input, textarea { width: 100%; background: rgba(255,255,255,0.05); border: 1px solid var(--purple-soft); border-radius: 15px; padding: 12px; color: inherit; margin-bottom: 10px; }
     </style>
 </head>
-<body class="noite-estrelada">
+<body>
 
     <div id="login" class="overlay">
-        <h1 class="titulo-lux">Para Você</h1>
-        <input type="password" id="pw" placeholder="Sua senha" style="background:transparent; border:1px solid #444; color:#fff; padding:12px; border-radius:15px; text-align:center;">
-        <button class="btn-lux" style="max-width: 200px;" onclick="entrar()">Abrir Portal</button>
+        <h1 class="titulo-lux" style="color: #fff; -webkit-text-fill-color: initial;">Para Você</h1>
+        <input type="password" id="pw" placeholder="Sua senha secreta" style="max-width: 250px; text-align: center;">
+        <button class="btn-lux" style="max-width: 200px;" onclick="entrar()">Entrar</button>
     </div>
 
     <nav class="nav-bar hidden" id="menu">
         <div class="nav-item ativo" onclick="irPara('home', this)"><span>🏠</span>Home</div>
         <div class="nav-item" onclick="irPara('sonhos', this)"><span>✨</span>Sonhos</div>
         <div class="nav-item" onclick="irPara('mimos', this)"><span>🎟️</span>Mimos</div>
-        <div class="nav-item" onclick="irPara('correio', this)"><span>💌</span>Correio</div>
+        <div class="nav-item" onclick="irPara('correio', this)"><span>💌</span>Mensagens</div>
     </nav>
 
     <main id="app" class="hidden">
         <section id="home" class="secao ativa">
-            <div id="saudacao" style="font-size: 0.7rem; letter-spacing: 3px; opacity: 0.7;"></div>
+            <div id="saudacao" style="font-size: 0.65rem; letter-spacing: 4px; opacity: 0.8; font-weight: 600;"></div>
             <h1 class="titulo-lux">Para Você</h1>
-            
-            <div class="foto-inteira-container">
-                <img src="Amor.png" class="foto-inteira-img" alt="Foto Inteira">
-            </div>
-
-            <div id="timer" style="font-size: 0.9rem; font-weight: 300; margin-bottom: 20px;"></div>
-            
+            <div class="foto-inteira-container"><img src="Amor.png" class="foto-inteira-img"></div>
+            <div id="timer" style="font-size: 0.85rem; letter-spacing: 1px; margin-bottom: 20px; font-weight: 300;"></div>
             <div class="glass-card">
-                <p style="font-size: 0.7rem; margin-bottom: 15px; font-weight: 600;">RASPE O PRESENTE DE HOJE</p>
+                <p style="font-size: 0.7rem; margin-bottom: 15px; font-weight: 600;">SURPRESA DO DIA</p>
                 <div class="grid-raspa" id="raspaGrid"></div>
             </div>
         </section>
 
         <section id="sonhos" class="secao">
-            <h2 class="titulo-lux">Nossos Sonhos</h2>
+            <h2 class="titulo-lux">Desejos & Planos</h2>
             <div id="listaSonhos" style="width: 100%; max-width: 400px; margin-bottom: 20px;"></div>
             <div class="glass-card">
-                <input type="text" id="inputSonho" placeholder="O que vamos fazer?" style="width:100%; background:transparent; border:none; border-bottom:1px solid var(--purple-soft); color:inherit; padding:10px;">
-                <button class="btn-lux" onclick="addSonho()">Salvar</button>
+                <input type="text" id="inputSonho" placeholder="O que vamos realizar juntos?">
+                <button class="btn-lux" onclick="addSonho()">Adicionar Sonho</button>
             </div>
         </section>
 
         <section id="mimos" class="secao">
-            <h2 class="titulo-lux">Datas e Cupons</h2>
+            <h2 class="titulo-lux">Mimos & Datas</h2>
             <div class="glass-card">
-                <p style="font-size: 0.8rem; margin-bottom: 10px;">Calendário do Mês 📅</p>
-                <div id="calGrid" style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; font-size: 0.7rem;"></div>
+                <p style="font-size: 0.75rem; margin-bottom: 12px;">Nosso Calendário 📅</p>
+                <div id="calGrid" style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px;"></div>
             </div>
-            <div id="cuponsGrid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; max-width: 400px;"></div>
+            <div id="cuponsGrid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width: 100%; max-width: 400px;"></div>
         </section>
 
         <section id="correio" class="secao">
             <h2 class="titulo-lux">Correio Elegante</h2>
             <div class="glass-card">
-                <textarea id="textoC" rows="3" placeholder="Sua mensagem para mim..." style="width:100%; background:transparent; border:none; color:inherit; border-bottom:1px solid var(--purple-soft);"></textarea>
-                <button class="btn-lux" onclick="enviarC()">Enviar Message 💌</button>
+                <textarea id="textoC" rows="3" placeholder="Escreva algo especial..."></textarea>
+                <button class="btn-lux" onclick="enviarC()">Enviar 💌</button>
             </div>
-            <div id="muralC" style="width: 100%; max-width: 400px; margin-top: 10px;"></div>
+            <div id="muralC" style="width: 100%; max-width: 400px;"></div>
         </section>
     </main>
 
@@ -174,7 +152,7 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
-        const desafios = ["Jantar Especial", "Massagem", "Vale Açaí", "Cinema", "PIX Surpresa", "100 Beijos", "Cafuné", "Passeio"];
+        const desafios = ["Jantar Romântico", "Massagem Relax", "Açaí Geladinho", "Cinema em Casa", "PIX de Carinho", "Noite de Jogos", "Cozinhar Juntos", "Passeio Surpresa"];
 
         window.irPara = (id, el) => {
             document.querySelectorAll('.secao').forEach(s => s.classList.remove('ativa'));
@@ -196,110 +174,13 @@
             const h = new Date().getHours();
             if(h >= 5 && h < 18) {
                 document.body.className = "dia-claro";
-                document.getElementById('saudacao').innerText = "ENCANTADA POR VOCÊ";
+                document.getElementById('saudacao').innerText = "CAMPOS FLORIDOS & ENCANTO";
             } else {
                 document.body.className = "noite-estrelada";
-                document.getElementById('saudacao').innerText = "NOITE ESTRELADA";
+                document.getElementById('saudacao').innerText = "CÉU ESTRELADO & INFINITO";
             }
 
-            const inicio = new Date("2015-10-28");
+            const inicio = new Date("2025-10-28"); // DATA ATUALIZADA
             setInterval(() => {
                 const diff = Math.floor((new Date() - inicio) / (1000 * 60 * 60 * 24));
-                document.getElementById('timer').innerText = diff + " DIAS DE NÓS";
-            }, 1000);
-
-            // Gerar Calendário
-            const cal = document.getElementById('calGrid');
-            for(let i=1; i<=31; i++) {
-                const d = document.createElement('div'); d.className="dia-cal"; d.innerText=i;
-                d.onclick=()=>d.classList.toggle('marcado'); cal.appendChild(d);
-            }
-
-            // Raspadinha Firebase
-            onValue(ref(db, 'raspa_btn'), s => {
-                let d = s.val();
-                if(!d || d.completas >= 4) {
-                    const sorteio = desafios.sort(() => 0.5 - Math.random()).slice(0,4);
-                    set(ref(db, 'raspa_btn'), { itens: sorteio, completas: 0, ultimaData: "", raspados: [false,false,false,false] });
-                } else { renderRaspa(d); }
-            });
-
-            sync();
-        }
-
-        function renderRaspa(dados) {
-            const grid = document.getElementById('raspaGrid'); grid.innerHTML = "";
-            const hoje = new Date().toLocaleDateString();
-            const jaFez = dados.ultimaData === hoje;
-
-            dados.itens.forEach((txt, i) => {
-                const item = document.createElement('div'); item.className = "raspa-item";
-                item.innerHTML = `<div class="texto-escondido">${txt}</div><canvas id="c${i}"></canvas>`;
-                grid.appendChild(item);
-                const cv = document.getElementById(`c${i}`);
-                const ctx = cv.getContext('2d');
-                cv.width = 150; cv.height = 150;
-                if(dados.raspados[i]) { ctx.clearRect(0,0,150,150); }
-                else {
-                    ctx.fillStyle = '#9d4edd'; ctx.fillRect(0,0,150,150);
-                    const scratch = (e) => {
-                        if(jaFez) return;
-                        e.preventDefault();
-                        const r = cv.getBoundingClientRect();
-                        const x = (e.touches ? e.touches[0].clientX : e.clientX) - r.left;
-                        const y = (e.touches ? e.touches[0].clientY : e.clientY) - r.top;
-                        ctx.globalCompositeOperation = 'destination-out';
-                        ctx.beginPath(); ctx.arc(x,y,20,0,Math.PI*2); ctx.fill();
-                        
-                        const pix = ctx.getImageData(0,0,150,150).data;
-                        let count = 0; for(let p=3; p<pix.length; p+=4) if(pix[p]===0) count++;
-                        if(count > (pix.length/4)*0.4) {
-                            dados.raspados[i] = true;
-                            update(ref(db, 'raspa_btn'), { raspados: dados.raspados, completas: dados.completas+1, ultimaData: hoje });
-                        }
-                    };
-                    cv.addEventListener('touchmove', scratch); cv.addEventListener('mousemove', scratch);
-                }
-            });
-        }
-
-        window.addSonho = () => {
-            const val = document.getElementById('inputSonho').value;
-            if(val) push(ref(db, 'sonhos_v2'), { texto: val, status: false, autor: "Eduarda" });
-            document.getElementById('inputSonho').value = "";
-        };
-
-        window.enviarC = () => {
-            const val = document.getElementById('textoC').value;
-            if(val) push(ref(db, 'correio_v2'), { texto: val });
-            document.getElementById('textoC').value = "";
-        };
-
-        function sync() {
-            onValue(ref(db, 'sonhos_v2'), s => {
-                const l = document.getElementById('listaSonhos'); l.innerHTML = "";
-                s.forEach(item => {
-                    const d = item.val();
-                    l.innerHTML += `<div class="glass-card" style="padding:15px; margin-bottom:10px; display:flex; align-items:center; gap:10px; text-align:left;">
-                        <input type="checkbox" ${d.status?'checked':''} onchange="update(ref(getDatabase(), 'sonhos_v2/${item.key}'), {status:!${d.status}})">
-                        <span style="font-size:0.8rem; color:inherit;">${d.texto} <br> <small style="color:var(--gold)">por ${d.autor || 'Nós'}</small></span>
-                    </div>`;
-                });
-            });
-            onValue(ref(db, 'correio_v2'), s => {
-                const m = document.getElementById('muralC'); m.innerHTML = "";
-                s.forEach(c => { m.innerHTML = `<div class="glass-card" style="padding:15px; font-size:0.8rem; text-align:left; margin-bottom:10px;">${c.val().texto}</div>` + m.innerHTML; });
-            });
-            onValue(ref(db, 'cupons_v2'), s => {
-                const d = s.val() || { u: 0 };
-                const cGrid = document.getElementById('cuponsGrid'); cGrid.innerHTML = "";
-                ["Vale Beijo", "Massagem", "Cinema", "Jantar"].forEach((c, i) => {
-                    const isU = i < d.u;
-                    cont.innerHTML += `<div class="glass-card" style="font-size:0.6rem; padding:10px; opacity:${isU?0.3:1}; cursor:pointer;" onclick="if(!${isU}) update(ref(getDatabase(), 'cupons_v2'), {u:${d.u+1}})">🎟️ ${c}</div>`;
-                });
-                if(d.u >= 4) set(ref(db, 'cupons_v2'), { u: 0 });
-            });
-        }
-    </script>
-</body>
-</html>
+                document.getElementById('timer').innerText = diff
