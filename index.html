@@ -5,196 +5,293 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nosso Infinito 💜</title>
     <style>
-        /* Estilo Geral */
+        /* TEMA ROXO ESCURO */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #faf8f5;
-            color: #333;
+            background-color: #0f051d;
+            color: #e0d0f0;
             margin: 0;
             padding: 0;
             display: flex;
             flex-direction: column;
             align-items: center;
+            min-height: 100vh;
         }
 
-        header {
-            text-align: center;
-            padding: 20px 10px;
-        }
-
-        h1 {
-            color: #8a2be2;
-            margin: 0;
-            font-size: 1.8rem;
-        }
-
-        /* Navegação por Abas */
+        /* NAVEGAÇÃO POR 6 ABAS */
         .tab-container {
             display: flex;
             justify-content: center;
-            gap: 8px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
+            gap: 5px;
+            padding: 10px;
             position: sticky;
             top: 0;
-            z-index: 100;
-            background: #faf8f5;
-            padding: 15px 5px;
+            background: #0f051d;
             width: 100%;
+            z-index: 1000;
+            border-bottom: 1px solid #3d1d5a;
+            flex-wrap: wrap;
         }
 
         .tab-button {
-            padding: 10px 15px;
-            border: 2px solid #8a2be2;
-            background-color: white;
-            color: #8a2be2;
-            border-radius: 20px;
+            padding: 8px 10px;
+            border: 1px solid #8a2be2;
+            background: #1a0a2e;
+            color: #bc8cf2;
+            border-radius: 10px;
             cursor: pointer;
-            font-weight: 600;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
+            font-size: 0.75rem;
+            font-weight: bold;
+            transition: 0.3s;
+            flex: 1 1 30%; /* Ajuste para caber as 6 em telas pequenas */
+            max-width: 100px;
         }
 
         .tab-button.active {
-            background-color: #8a2be2;
+            background: #8a2be2;
             color: white;
+            box-shadow: 0 0 10px rgba(138, 43, 226, 0.6);
         }
 
-        /* Conteúdo das Abas */
         .tab-content {
             display: none;
             width: 90%;
-            max-width: 600px;
-            animation: fadeIn 0.4s ease-in;
+            max-width: 450px;
+            padding: 20px 0;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .card {
+            background: #1a0a2e;
+            padding: 20px;
+            border-radius: 20px;
+            border: 1px solid #3d1d5a;
             text-align: center;
-            padding-bottom: 40px;
+            margin-bottom: 20px;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Foto Inteira (Sem o círculo) */
+        /* FOTO INTEIRA */
         .foto-inteira {
             width: 100%;
             height: auto;
-            border-radius: 12px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            margin: 10px 0;
-            display: block;
-        }
-
-        .card {
-            background: white;
-            padding: 20px;
             border-radius: 15px;
-            margin-bottom: 15px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border: 2px solid #8a2be2;
         }
 
-        .btn-acao {
-            background-color: #8a2be2;
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-weight: bold;
-            margin-top: 10px;
+        /* RASPADINHA ARRASTÁVEL */
+        .scratch-area {
+            position: relative;
             width: 100%;
+            height: 150px;
+            background: #2d134d;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border: 2px dashed #8a2be2;
+            margin: 15px 0;
         }
 
-        .input-estilizado {
+        .scratch-content {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #fff;
+            padding: 10px;
+        }
+
+        canvas {
+            position: absolute;
+            top: 0; left: 0;
+            touch-action: none;
+        }
+
+        /* CUPONS E METAS */
+        .coupon {
+            background: linear-gradient(45deg, #4b0082, #8a2be2);
+            padding: 15px;
+            border-radius: 12px;
+            margin: 10px 0;
+            cursor: pointer;
+            border: 2px dashed #bc8cf2;
+            font-weight: bold;
+        }
+
+        .input-box {
+            width: 100%;
             padding: 12px;
             border-radius: 10px;
-            border: 1px solid #ddd;
-            width: 100%;
-            box-sizing: border-box;
+            border: none;
+            background: #0f051d;
+            color: white;
             margin-bottom: 10px;
+            box-sizing: border-box;
         }
 
-        ul {
-            text-align: left;
-            padding-left: 20px;
-            line-height: 1.8;
+        .btn-main {
+            background: #8a2be2;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 12px;
+            width: 100%;
+            font-weight: bold;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
 
-<header>
-    <h1>Nosso Infinito 💜</h1>
-</header>
-
 <div class="tab-container">
     <button class="tab-button active" onclick="openTab(event, 'inicio')">Início</button>
-    <button class="tab-button" onclick="openTab(event, 'planos')">Planos</button>
-    <button class="tab-button" onclick="openTab(event, 'sonhos')">Sonhos</button>
-    <button class="tab-button" onclick="openTab(event, 'mimos')">Mimos</button>
+    <button class="tab-button" onclick="openTab(event, 'raspadinha')">Raspadinha</button>
+    <button class="tab-button" onclick="openTab(event, 'correio')">Correio</button>
+    <button class="tab-button" onclick="openTab(event, 'metas')">Metas</button>
+    <button class="tab-button" onclick="openTab(event, 'calendario')">Datas</button>
+    <button class="tab-button" onclick="openTab(event, 'mimos')">Cupons</button>
 </div>
 
 <div id="inicio" class="tab-content" style="display: block;">
     <div class="card">
-        <img src="Amor.png" alt="Nossa Foto" class="foto-inteira">
-        <p style="margin-top: 15px; font-weight: 500;">Nosso cantinho especial.</p>
+        <img src="Amor.png" class="foto-inteira" alt="Nossa Foto">
+        <h3>Bem-vindo ao Nosso Infinito 💜</h3>
+        <p>Um lugar só nosso.</p>
     </div>
 </div>
 
-<div id="planos" class="tab-content">
+<div id="raspadinha" class="tab-content">
     <div class="card">
-        <h3>Plano do Dia</h3>
-        <p>Uma por dia! Raspe para ver o plano: 👇</p>
-        <div style="background: #f0f0f0; height: 180px; display: flex; align-items: center; justify-content: center; border-radius: 10px; border: 2px dashed #8a2be2; cursor: pointer;">
-            <span style="color: #8a2be2; font-weight: bold;">[Área da Raspadinha]</span>
+        <h3>O que faremos hoje? 🎁</h3>
+        <p>Arraste para descobrir o plano!</p>
+        <div class="scratch-area" id="scratch-container">
+            <div class="scratch-content" id="scratch-text">Carregando...</div>
+            <canvas id="scratch-canvas"></canvas>
         </div>
+        <p id="counter-text" style="font-size: 0.8rem; color: #bc8cf2;">Plano 1 de 4</p>
     </div>
 </div>
 
-<div id="sonhos" class="tab-content">
+<div id="correio" class="tab-content">
     <div class="card">
-        <h3>Nossos Sonhos</h3>
-        <input type="text" class="input-estilizado" placeholder="O que vamos realizar juntos?">
-        <button class="btn-acao">Salvar no Coração</button>
-        <ul>
-            <li>🌌 Ver o pôr do sol em um lugar novo</li>
-            <li>🏠 Decorar nossa futura casa</li>
-            <li>🍕 Noite de filmes e pizza</li>
-        </ul>
+        <h3>Mensagem para você 💌</h3>
+        <textarea class="input-box" rows="4" placeholder="Escreva aqui..."></textarea>
+        <button class="btn-main" onclick="alert('Mensagem enviada com amor!')">Enviar Mensagem</button>
+    </div>
+</div>
+
+<div id="metas" class="tab-content">
+    <div class="card">
+        <h3>Nossas Metas ✨</h3>
+        <div id="list-metas" style="text-align: left; margin-bottom: 10px;">
+            <p>⬜ Viajar para a praia</p>
+            <p>⬜ Fazer um piquenique</p>
+        </div>
+        <input type="text" id="meta-input" class="input-box" placeholder="Novo sonho...">
+        <button class="btn-main" onclick="addMeta()">Salvar Meta</button>
+    </div>
+</div>
+
+<div id="calendario" class="tab-content">
+    <div class="card">
+        <h3>Datas Especiais 📅</h3>
+        <p>Nosso dia: 16 de Julho</p>
+        <button class="btn-main" style="background: #3d1d5a;">Ver Calendário Completo</button>
     </div>
 </div>
 
 <div id="mimos" class="tab-content">
     <div class="card">
-        <h3>Datas e Mimos</h3>
-        <button class="btn-acao">Abrir Nosso Calendário 📅</button>
-        <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #eee;">
-            <h4>Cupons Disponíveis 🎟️</h4>
-            <div style="background: #fff5ff; border: 1px solid #ffccff; padding: 10px; border-radius: 8px; margin-bottom: 10px;">
-                <strong>Vale um abraço apertado</strong>
-            </div>
-            <div style="background: #fff5ff; border: 1px solid #ffccff; padding: 10px; border-radius: 8px;">
-                <strong>Vale um jantar especial</strong>
-            </div>
-        </div>
+        <h3>Meus Cupons 🎟️</h3>
+        <p>Clique para usar (pede confirmação)</p>
+        <div class="coupon" onclick="useCoupon('Vale um Beijo')">Cupom: Beijo de 1 Minuto</div>
+        <div class="coupon" onclick="useCoupon('Vale uma Massagem')">Cupom: Massagem Relaxante</div>
+        <div class="coupon" onclick="useCoupon('Vale um Jantar')">Cupom: Jantar Favorito</div>
     </div>
 </div>
 
 <script>
-    function openTab(evt, tabName) {
-        var i, tabcontent, tablinks;
-        tabcontent = document.getElementsByClassName("tab-content");
-        for (i = 0; i < tabcontent.length; i++) {
-            tabcontent[i].style.display = "none";
-        }
-        tablinks = document.getElementsByClassName("tab-button");
-        for (i = 0; i < tablinks.length; i++) {
-            tablinks[i].className = tablinks[i].className.replace(" active", "");
-        }
-        document.getElementById(tabName).style.display = "block";
+    // SISTEMA DE ABAS
+    function openTab(evt, name) {
+        let contents = document.getElementsByClassName("tab-content");
+        for (let c of contents) c.style.display = "none";
+        let buttons = document.getElementsByClassName("tab-button");
+        for (let b of buttons) b.className = b.className.replace(" active", "");
+        document.getElementById(name).style.display = "block";
         evt.currentTarget.className += " active";
-        window.scrollTo({top: 0, behavior: 'smooth'});
+        if(name === 'raspadinha') initScratch();
     }
+
+    // RASPADINHA (LÓGICA DE 4 OPÇÕES)
+    let currentOption = 1;
+    const planos = [
+        "Noite de Filmes e Pipoca 🍿",
+        "Passeio Especial 🚗",
+        "Jantar Romântico feito por nós 🍝",
+        "Uma surpresa inesperada! ✨"
+    ];
+
+    function initScratch() {
+        const canvas = document.getElementById('scratch-canvas');
+        const ctx = canvas.getContext('2d');
+        const container = document.getElementById('scratch-container');
+        canvas.width = container.offsetWidth;
+        canvas.height = container.offsetHeight;
+
+        document.getElementById('scratch-text').innerText = planos[currentOption - 1];
+        document.getElementById('counter-text').innerText = "Plano " + currentOption + " de 4";
+
+        ctx.fillStyle = '#777';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = '#fff'; ctx.font = "bold 18px Arial"; ctx.textAlign = "center";
+        ctx.fillText("ARRASTE AQUI", canvas.width/2, canvas.height/2 + 6);
+
+        let isDrawing = false;
+        function scratch(e) {
+            if (!isDrawing) return;
+            const rect = canvas.getBoundingClientRect();
+            const x = (e.clientX || e.touches[0].clientX) - rect.left;
+            const y = (e.clientY || e.touches[0].clientY) - rect.top;
+            ctx.globalCompositeOperation = 'destination-out';
+            ctx.beginPath(); ctx.arc(x, y, 20, 0, Math.PI * 2); ctx.fill();
+            checkScratch();
+        }
+
+        canvas.addEventListener('mousedown', () => isDrawing = true);
+        canvas.addEventListener('mouseup', () => isDrawing = false);
+        canvas.addEventListener('mousemove', scratch);
+        canvas.addEventListener('touchstart', () => isDrawing = true);
+        canvas.addEventListener('touchend', () => isDrawing = false);
+        canvas.addEventListener('touchmove', scratch);
+    }
+
+    function checkScratch() {
+        if (!window.scratchTimer) {
+            window.scratchTimer = setTimeout(() => {
+                currentOption = currentOption >= 4 ? 1 : currentOption + 1;
+                initScratch();
+                window.scratchTimer = null;
+            }, 5000); // Carrega a próxima após 5 segundos raspando
+        }
+    }
+
+    // METAS E CUPONS
+    function addMeta() {
+        let input = document.getElementById('meta-input');
+        if(input.value) {
+            document.getElementById('list-metas').innerHTML += "<p>⬜ " + input.value + "</p>";
+            input.value = "";
+        }
+    }
+
+    function useCoupon(text) {
+        if(confirm("Deseja realmente usar o cupom: " + text + "?")) {
+            alert("Cupom confirmado! Mostre para o seu amor. ❤️");
+        }
+    }
+
+    window.onload = initScratch;
 </script>
 
 </body>
