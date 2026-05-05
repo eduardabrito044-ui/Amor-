@@ -2,297 +2,304 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nosso Infinito 💜</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Para Você 💜</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    
     <style>
-        /* TEMA ROXO ESCURO */
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #0f051d;
-            color: #e0d0f0;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
+        :root { 
+            --gold: #d4af37; 
+            --purple-soft: #9d4edd;
+            --bg-glass: rgba(255, 255, 255, 0.08);
+            --transition: all 0.4s ease;
         }
 
-        /* NAVEGAÇÃO POR 6 ABAS */
-        .tab-container {
-            display: flex;
-            justify-content: center;
-            gap: 5px;
-            padding: 10px;
-            position: sticky;
-            top: 0;
-            background: #0f051d;
-            width: 100%;
-            z-index: 1000;
-            border-bottom: 1px solid #3d1d5a;
-            flex-wrap: wrap;
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
+        
+        body { 
+            margin: 0; font-family: 'Montserrat', sans-serif; 
+            overflow: hidden; height: 100vh; width: 100vw;
+            transition: var(--transition);
         }
 
-        .tab-button {
-            padding: 8px 10px;
-            border: 1px solid #8a2be2;
-            background: #1a0a2e;
-            color: #bc8cf2;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 0.75rem;
-            font-weight: bold;
-            transition: 0.3s;
-            flex: 1 1 30%; /* Ajuste para caber as 6 em telas pequenas */
-            max-width: 100px;
+        /* Fundo Dinâmico Minimalista */
+        body.dia-claro { 
+            background: radial-gradient(circle at top, #ffffff, #f3e5f5); 
+            color: #2d005d; --card-bg: rgba(255, 255, 255, 0.7);
+        }
+        body.noite-estrelada { 
+            background: radial-gradient(circle at bottom, #10002b, #240046, #000);
+            color: #e0aaff; --card-bg: rgba(60, 9, 108, 0.3);
         }
 
-        .tab-button.active {
-            background: #8a2be2;
-            color: white;
-            box-shadow: 0 0 10px rgba(138, 43, 226, 0.6);
+        /* Estrutura de Abas */
+        .secao { 
+            display: none; height: 100vh; width: 100%; 
+            padding: 40px 20px 120px; overflow-y: auto; 
+            animation: fadeIn 0.5s ease;
+        }
+        .secao.ativa { display: flex; flex-direction: column; align-items: center; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Menu de Navegação */
+        .nav-bar {
+            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+            width: 90%; max-width: 400px;
+            background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(20px);
+            border-radius: 30px; display: flex; justify-content: space-around;
+            padding: 15px; border: 1px solid rgba(255, 255, 255, 0.1); z-index: 1000;
+        }
+        .nav-item { color: #fff; opacity: 0.5; font-size: 0.7rem; cursor: pointer; text-align: center; flex: 1; transition: var(--transition); }
+        .nav-item.ativo { opacity: 1; color: var(--gold); transform: translateY(-5px); }
+        .nav-item span { display: block; font-size: 1.2rem; margin-bottom: 3px; }
+
+        /* Cards e Estilo */
+        .glass-card {
+            background: var(--card-bg); backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 30px; padding: 25px; width: 100%; max-width: 400px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1); margin-bottom: 20px; text-align: center;
         }
 
-        .tab-content {
-            display: none;
-            width: 90%;
-            max-width: 450px;
-            padding: 20px 0;
-            animation: fadeIn 0.5s;
+        .titulo-lux {
+            font-family: 'Playfair Display', serif; font-size: 2.5rem; font-style: italic; margin: 5px 0;
+            background: linear-gradient(to right, var(--purple-soft), var(--gold));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
 
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-        .card {
-            background: #1a0a2e;
-            padding: 20px;
+        /* Foto Inteira Premium (Corrigido) */
+        .foto-inteira-container {
+            width: 100%; max-width: 350px;
+            margin-bottom: 15px;
+            display: flex; justify-content: center; align-items: center;
+        }
+        .foto-inteira-img {
+            width: 100%; height: auto; /* Mantém a proporção original */
+            max-height: 30vh; /* Limita a altura para não poluir a tela */
+            object-fit: contain; /* Garante que a imagem inteira apareça sem cortes */
             border-radius: 20px;
-            border: 1px solid #3d1d5a;
-            text-align: center;
-            margin-bottom: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            border: 2px solid rgba(255,255,255,0.1);
         }
 
-        /* FOTO INTEIRA */
-        .foto-inteira {
-            width: 100%;
-            height: auto;
-            border-radius: 15px;
-            border: 2px solid #8a2be2;
-        }
+        /* Raspadinha */
+        .grid-raspa { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; width: 100%; }
+        .raspa-item { position: relative; width: 100%; aspect-ratio: 1; border-radius: 20px; overflow: hidden; border: 1px solid rgba(255,255,255,0.2); background: #fff; }
+        .texto-escondido { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: bold; color: #240046; padding: 10px; text-align: center; }
+        canvas { position: absolute; inset: 0; z-index: 2; }
 
-        /* RASPADINHA ARRASTÁVEL */
-        .scratch-area {
-            position: relative;
-            width: 100%;
-            height: 150px;
-            background: #2d134d;
-            border-radius: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            border: 2px dashed #8a2be2;
-            margin: 15px 0;
+        /* Inputs e Botões */
+        .btn-lux {
+            background: var(--purple-soft); color: white; border: none; padding: 15px 25px;
+            border-radius: 50px; font-weight: 600; width: 100%; cursor: pointer; margin-top: 10px;
         }
+        .overlay { position: fixed; inset: 0; background: #000; z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .hidden { display: none !important; }
 
-        .scratch-content {
-            font-size: 1.1rem;
-            font-weight: bold;
-            color: #fff;
-            padding: 10px;
-        }
-
-        canvas {
-            position: absolute;
-            top: 0; left: 0;
-            touch-action: none;
-        }
-
-        /* CUPONS E METAS */
-        .coupon {
-            background: linear-gradient(45deg, #4b0082, #8a2be2);
-            padding: 15px;
-            border-radius: 12px;
-            margin: 10px 0;
-            cursor: pointer;
-            border: 2px dashed #bc8cf2;
-            font-weight: bold;
-        }
-
-        .input-box {
-            width: 100%;
-            padding: 12px;
-            border-radius: 10px;
-            border: none;
-            background: #0f051d;
-            color: white;
-            margin-bottom: 10px;
-            box-sizing: border-box;
-        }
-
-        .btn-main {
-            background: #8a2be2;
-            color: white;
-            border: none;
-            padding: 12px;
-            border-radius: 12px;
-            width: 100%;
-            font-weight: bold;
-            cursor: pointer;
-        }
+        .dia-cal { padding: 8px; border: 1px solid rgba(157,78,221,0.2); border-radius: 8px; text-align: center; cursor: pointer;}
+        .marcado { background: var(--purple-soft); color: #fff; }
     </style>
 </head>
-<body>
+<body class="noite-estrelada">
 
-<div class="tab-container">
-    <button class="tab-button active" onclick="openTab(event, 'inicio')">Início</button>
-    <button class="tab-button" onclick="openTab(event, 'raspadinha')">Raspadinha</button>
-    <button class="tab-button" onclick="openTab(event, 'correio')">Correio</button>
-    <button class="tab-button" onclick="openTab(event, 'metas')">Metas</button>
-    <button class="tab-button" onclick="openTab(event, 'calendario')">Datas</button>
-    <button class="tab-button" onclick="openTab(event, 'mimos')">Cupons</button>
-</div>
-
-<div id="inicio" class="tab-content" style="display: block;">
-    <div class="card">
-        <img src="Amor.png" class="foto-inteira" alt="Nossa Foto">
-        <h3>Bem-vindo ao Nosso Infinito 💜</h3>
-        <p>Um lugar só nosso.</p>
+    <div id="login" class="overlay">
+        <h1 class="titulo-lux">Para Você</h1>
+        <input type="password" id="pw" placeholder="Sua senha" style="background:transparent; border:1px solid #444; color:#fff; padding:12px; border-radius:15px; text-align:center;">
+        <button class="btn-lux" style="max-width: 200px;" onclick="entrar()">Abrir Portal</button>
     </div>
-</div>
 
-<div id="raspadinha" class="tab-content">
-    <div class="card">
-        <h3>O que faremos hoje? 🎁</h3>
-        <p>Arraste para descobrir o plano!</p>
-        <div class="scratch-area" id="scratch-container">
-            <div class="scratch-content" id="scratch-text">Carregando...</div>
-            <canvas id="scratch-canvas"></canvas>
-        </div>
-        <p id="counter-text" style="font-size: 0.8rem; color: #bc8cf2;">Plano 1 de 4</p>
-    </div>
-</div>
+    <nav class="nav-bar hidden" id="menu">
+        <div class="nav-item ativo" onclick="irPara('home', this)"><span>🏠</span>Home</div>
+        <div class="nav-item" onclick="irPara('sonhos', this)"><span>✨</span>Sonhos</div>
+        <div class="nav-item" onclick="irPara('mimos', this)"><span>🎟️</span>Mimos</div>
+        <div class="nav-item" onclick="irPara('correio', this)"><span>💌</span>Correio</div>
+    </nav>
 
-<div id="correio" class="tab-content">
-    <div class="card">
-        <h3>Mensagem para você 💌</h3>
-        <textarea class="input-box" rows="4" placeholder="Escreva aqui..."></textarea>
-        <button class="btn-main" onclick="alert('Mensagem enviada com amor!')">Enviar Mensagem</button>
-    </div>
-</div>
+    <main id="app" class="hidden">
+        <section id="home" class="secao ativa">
+            <div id="saudacao" style="font-size: 0.7rem; letter-spacing: 3px; opacity: 0.7;"></div>
+            <h1 class="titulo-lux">Para Você</h1>
+            
+            <div class="foto-inteira-container">
+                <img src="Amor.png" class="foto-inteira-img" alt="Foto Inteira">
+            </div>
 
-<div id="metas" class="tab-content">
-    <div class="card">
-        <h3>Nossas Metas ✨</h3>
-        <div id="list-metas" style="text-align: left; margin-bottom: 10px;">
-            <p>⬜ Viajar para a praia</p>
-            <p>⬜ Fazer um piquenique</p>
-        </div>
-        <input type="text" id="meta-input" class="input-box" placeholder="Novo sonho...">
-        <button class="btn-main" onclick="addMeta()">Salvar Meta</button>
-    </div>
-</div>
+            <div id="timer" style="font-size: 0.9rem; font-weight: 300; margin-bottom: 20px;"></div>
+            
+            <div class="glass-card">
+                <p style="font-size: 0.7rem; margin-bottom: 15px; font-weight: 600;">RASPE O PRESENTE DE HOJE</p>
+                <div class="grid-raspa" id="raspaGrid"></div>
+            </div>
+        </section>
 
-<div id="calendario" class="tab-content">
-    <div class="card">
-        <h3>Datas Especiais 📅</h3>
-        <p>Nosso dia: 16 de Julho</p>
-        <button class="btn-main" style="background: #3d1d5a;">Ver Calendário Completo</button>
-    </div>
-</div>
+        <section id="sonhos" class="secao">
+            <h2 class="titulo-lux">Nossos Sonhos</h2>
+            <div id="listaSonhos" style="width: 100%; max-width: 400px; margin-bottom: 20px;"></div>
+            <div class="glass-card">
+                <input type="text" id="inputSonho" placeholder="O que vamos fazer?" style="width:100%; background:transparent; border:none; border-bottom:1px solid var(--purple-soft); color:inherit; padding:10px;">
+                <button class="btn-lux" onclick="addSonho()">Salvar</button>
+            </div>
+        </section>
 
-<div id="mimos" class="tab-content">
-    <div class="card">
-        <h3>Meus Cupons 🎟️</h3>
-        <p>Clique para usar (pede confirmação)</p>
-        <div class="coupon" onclick="useCoupon('Vale um Beijo')">Cupom: Beijo de 1 Minuto</div>
-        <div class="coupon" onclick="useCoupon('Vale uma Massagem')">Cupom: Massagem Relaxante</div>
-        <div class="coupon" onclick="useCoupon('Vale um Jantar')">Cupom: Jantar Favorito</div>
-    </div>
-</div>
+        <section id="mimos" class="secao">
+            <h2 class="titulo-lux">Datas e Cupons</h2>
+            <div class="glass-card">
+                <p style="font-size: 0.8rem; margin-bottom: 10px;">Calendário do Mês 📅</p>
+                <div id="calGrid" style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; font-size: 0.7rem;"></div>
+            </div>
+            <div id="cuponsGrid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; max-width: 400px;"></div>
+        </section>
 
-<script>
-    // SISTEMA DE ABAS
-    function openTab(evt, name) {
-        let contents = document.getElementsByClassName("tab-content");
-        for (let c of contents) c.style.display = "none";
-        let buttons = document.getElementsByClassName("tab-button");
-        for (let b of buttons) b.className = b.className.replace(" active", "");
-        document.getElementById(name).style.display = "block";
-        evt.currentTarget.className += " active";
-        if(name === 'raspadinha') initScratch();
-    }
+        <section id="correio" class="secao">
+            <h2 class="titulo-lux">Correio Elegante</h2>
+            <div class="glass-card">
+                <textarea id="textoC" rows="3" placeholder="Sua mensagem para mim..." style="width:100%; background:transparent; border:none; color:inherit; border-bottom:1px solid var(--purple-soft);"></textarea>
+                <button class="btn-lux" onclick="enviarC()">Enviar Message 💌</button>
+            </div>
+            <div id="muralC" style="width: 100%; max-width: 400px; margin-top: 10px;"></div>
+        </section>
+    </main>
 
-    // RASPADINHA (LÓGICA DE 4 OPÇÕES)
-    let currentOption = 1;
-    const planos = [
-        "Noite de Filmes e Pipoca 🍿",
-        "Passeio Especial 🚗",
-        "Jantar Romântico feito por nós 🍝",
-        "Uma surpresa inesperada! ✨"
-    ];
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+        import { getDatabase, ref, push, onValue, update, set } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
 
-    function initScratch() {
-        const canvas = document.getElementById('scratch-canvas');
-        const ctx = canvas.getContext('2d');
-        const container = document.getElementById('scratch-container');
-        canvas.width = container.offsetWidth;
-        canvas.height = container.offsetHeight;
+        const firebaseConfig = {
+            apiKey: "AIzaSyCz3H8bjiuS2gNvxUr_G3Csd21wL5J1gLw",
+            authDomain: "project-3726343372287499417.firebaseapp.com",
+            databaseURL: "https://project-3726343372287499417-default-rtdb.firebaseio.com",
+            projectId: "project-3726343372287499417"
+        };
 
-        document.getElementById('scratch-text').innerText = planos[currentOption - 1];
-        document.getElementById('counter-text').innerText = "Plano " + currentOption + " de 4";
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        const desafios = ["Jantar Especial", "Massagem", "Vale Açaí", "Cinema", "PIX Surpresa", "100 Beijos", "Cafuné", "Passeio"];
 
-        ctx.fillStyle = '#777';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle = '#fff'; ctx.font = "bold 18px Arial"; ctx.textAlign = "center";
-        ctx.fillText("ARRASTE AQUI", canvas.width/2, canvas.height/2 + 6);
+        window.irPara = (id, el) => {
+            document.querySelectorAll('.secao').forEach(s => s.classList.remove('ativa'));
+            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('ativo'));
+            document.getElementById(id).classList.add('ativa');
+            el.classList.add('ativo');
+        };
 
-        let isDrawing = false;
-        function scratch(e) {
-            if (!isDrawing) return;
-            const rect = canvas.getBoundingClientRect();
-            const x = (e.clientX || e.touches[0].clientX) - rect.left;
-            const y = (e.clientY || e.touches[0].clientY) - rect.top;
-            ctx.globalCompositeOperation = 'destination-out';
-            ctx.beginPath(); ctx.arc(x, y, 20, 0, Math.PI * 2); ctx.fill();
-            checkScratch();
+        window.entrar = () => {
+            if(document.getElementById('pw').value === "2810") {
+                document.getElementById('login').classList.add('hidden');
+                document.getElementById('app').classList.remove('hidden');
+                document.getElementById('menu').classList.remove('hidden');
+                start();
+            }
+        };
+
+        function start() {
+            const h = new Date().getHours();
+            if(h >= 5 && h < 18) {
+                document.body.className = "dia-claro";
+                document.getElementById('saudacao').innerText = "ENCANTADA POR VOCÊ";
+            } else {
+                document.body.className = "noite-estrelada";
+                document.getElementById('saudacao').innerText = "NOITE ESTRELADA";
+            }
+
+            const inicio = new Date("2015-10-28");
+            setInterval(() => {
+                const diff = Math.floor((new Date() - inicio) / (1000 * 60 * 60 * 24));
+                document.getElementById('timer').innerText = diff + " DIAS DE NÓS";
+            }, 1000);
+
+            // Gerar Calendário
+            const cal = document.getElementById('calGrid');
+            for(let i=1; i<=31; i++) {
+                const d = document.createElement('div'); d.className="dia-cal"; d.innerText=i;
+                d.onclick=()=>d.classList.toggle('marcado'); cal.appendChild(d);
+            }
+
+            // Raspadinha Firebase
+            onValue(ref(db, 'raspa_btn'), s => {
+                let d = s.val();
+                if(!d || d.completas >= 4) {
+                    const sorteio = desafios.sort(() => 0.5 - Math.random()).slice(0,4);
+                    set(ref(db, 'raspa_btn'), { itens: sorteio, completas: 0, ultimaData: "", raspados: [false,false,false,false] });
+                } else { renderRaspa(d); }
+            });
+
+            sync();
         }
 
-        canvas.addEventListener('mousedown', () => isDrawing = true);
-        canvas.addEventListener('mouseup', () => isDrawing = false);
-        canvas.addEventListener('mousemove', scratch);
-        canvas.addEventListener('touchstart', () => isDrawing = true);
-        canvas.addEventListener('touchend', () => isDrawing = false);
-        canvas.addEventListener('touchmove', scratch);
-    }
+        function renderRaspa(dados) {
+            const grid = document.getElementById('raspaGrid'); grid.innerHTML = "";
+            const hoje = new Date().toLocaleDateString();
+            const jaFez = dados.ultimaData === hoje;
 
-    function checkScratch() {
-        if (!window.scratchTimer) {
-            window.scratchTimer = setTimeout(() => {
-                currentOption = currentOption >= 4 ? 1 : currentOption + 1;
-                initScratch();
-                window.scratchTimer = null;
-            }, 5000); // Carrega a próxima após 5 segundos raspando
+            dados.itens.forEach((txt, i) => {
+                const item = document.createElement('div'); item.className = "raspa-item";
+                item.innerHTML = `<div class="texto-escondido">${txt}</div><canvas id="c${i}"></canvas>`;
+                grid.appendChild(item);
+                const cv = document.getElementById(`c${i}`);
+                const ctx = cv.getContext('2d');
+                cv.width = 150; cv.height = 150;
+                if(dados.raspados[i]) { ctx.clearRect(0,0,150,150); }
+                else {
+                    ctx.fillStyle = '#9d4edd'; ctx.fillRect(0,0,150,150);
+                    const scratch = (e) => {
+                        if(jaFez) return;
+                        e.preventDefault();
+                        const r = cv.getBoundingClientRect();
+                        const x = (e.touches ? e.touches[0].clientX : e.clientX) - r.left;
+                        const y = (e.touches ? e.touches[0].clientY : e.clientY) - r.top;
+                        ctx.globalCompositeOperation = 'destination-out';
+                        ctx.beginPath(); ctx.arc(x,y,20,0,Math.PI*2); ctx.fill();
+                        
+                        const pix = ctx.getImageData(0,0,150,150).data;
+                        let count = 0; for(let p=3; p<pix.length; p+=4) if(pix[p]===0) count++;
+                        if(count > (pix.length/4)*0.4) {
+                            dados.raspados[i] = true;
+                            update(ref(db, 'raspa_btn'), { raspados: dados.raspados, completas: dados.completas+1, ultimaData: hoje });
+                        }
+                    };
+                    cv.addEventListener('touchmove', scratch); cv.addEventListener('mousemove', scratch);
+                }
+            });
         }
-    }
 
-    // METAS E CUPONS
-    function addMeta() {
-        let input = document.getElementById('meta-input');
-        if(input.value) {
-            document.getElementById('list-metas').innerHTML += "<p>⬜ " + input.value + "</p>";
-            input.value = "";
+        window.addSonho = () => {
+            const val = document.getElementById('inputSonho').value;
+            if(val) push(ref(db, 'sonhos_v2'), { texto: val, status: false, autor: "Eduarda" });
+            document.getElementById('inputSonho').value = "";
+        };
+
+        window.enviarC = () => {
+            const val = document.getElementById('textoC').value;
+            if(val) push(ref(db, 'correio_v2'), { texto: val });
+            document.getElementById('textoC').value = "";
+        };
+
+        function sync() {
+            onValue(ref(db, 'sonhos_v2'), s => {
+                const l = document.getElementById('listaSonhos'); l.innerHTML = "";
+                s.forEach(item => {
+                    const d = item.val();
+                    l.innerHTML += `<div class="glass-card" style="padding:15px; margin-bottom:10px; display:flex; align-items:center; gap:10px; text-align:left;">
+                        <input type="checkbox" ${d.status?'checked':''} onchange="update(ref(getDatabase(), 'sonhos_v2/${item.key}'), {status:!${d.status}})">
+                        <span style="font-size:0.8rem; color:inherit;">${d.texto} <br> <small style="color:var(--gold)">por ${d.autor || 'Nós'}</small></span>
+                    </div>`;
+                });
+            });
+            onValue(ref(db, 'correio_v2'), s => {
+                const m = document.getElementById('muralC'); m.innerHTML = "";
+                s.forEach(c => { m.innerHTML = `<div class="glass-card" style="padding:15px; font-size:0.8rem; text-align:left; margin-bottom:10px;">${c.val().texto}</div>` + m.innerHTML; });
+            });
+            onValue(ref(db, 'cupons_v2'), s => {
+                const d = s.val() || { u: 0 };
+                const cGrid = document.getElementById('cuponsGrid'); cGrid.innerHTML = "";
+                ["Vale Beijo", "Massagem", "Cinema", "Jantar"].forEach((c, i) => {
+                    const isU = i < d.u;
+                    cont.innerHTML += `<div class="glass-card" style="font-size:0.6rem; padding:10px; opacity:${isU?0.3:1}; cursor:pointer;" onclick="if(!${isU}) update(ref(getDatabase(), 'cupons_v2'), {u:${d.u+1}})">🎟️ ${c}</div>`;
+                });
+                if(d.u >= 4) set(ref(db, 'cupons_v2'), { u: 0 });
+            });
         }
-    }
-
-    function useCoupon(text) {
-        if(confirm("Deseja realmente usar o cupom: " + text + "?")) {
-            alert("Cupom confirmado! Mostre para o seu amor. ❤️");
-        }
-    }
-
-    window.onload = initScratch;
-</script>
-
+    </script>
 </body>
 </html>
