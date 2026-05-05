@@ -2,262 +2,200 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nosso Infinito 💜</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Great+Vibes&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-    
     <style>
-        :root { --primary: #9d4edd; --text: #fff; }
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; touch-action: none; }
-        
-        body { 
-            margin: 0; font-family: 'Poppins', sans-serif; 
-            transition: background 1.5s ease, color 1s ease;
-            overflow: hidden; height: 100vh; 
+        /* Estilo Geral */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #faf8f5;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
-        /* Temas Dinâmicos */
-        body.dia-claro { 
-            background: linear-gradient(135deg, #e0aaff 0%, #f7f0ff 100%); 
-            color: #240046; --card-bg: rgba(255, 255, 255, 0.8); --text-meta: #240046;
-        }
-        body.noite-estrelada { 
-            background: linear-gradient(135deg, #10002b 0%, #240046 50%, #5a189a 100%);
-            color: #e0aaff; --card-bg: rgba(60, 9, 108, 0.6); --text-meta: #fff;
+        header {
+            text-align: center;
+            padding: 20px 10px;
         }
 
-        .overlay { position: fixed; inset: 0; background: #10002b; z-index: 5000; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; }
-        .hidden { display: none !important; }
+        h1 {
+            color: #8a2be2;
+            margin: 0;
+            font-size: 1.8rem;
+        }
 
-        .swiper { width: 100%; height: 100vh; }
-        .swiper-slide { display: flex; flex-direction: column; align-items: center; padding: 20px 20px 100px; overflow-y: auto; }
+        /* Navegação por Abas */
+        .tab-container {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: #faf8f5;
+            padding: 15px 5px;
+            width: 100%;
+        }
 
-        .card { background: var(--card-bg); border-radius: 25px; padding: 20px; width: 100%; max-width: 450px; border: 1px solid var(--primary); margin-bottom: 20px; text-align: center; backdrop-filter: blur(10px); }
-        .titulo { font-family: 'Great Vibes', cursive; font-size: 2.8rem; color: var(--primary); margin: 5px 0; }
-        
-        .foto-casal { width: 130px; height: 130px; border-radius: 50%; border: 4px solid var(--primary); object-fit: cover; margin-bottom: 10px; box-shadow: 0 0 20px var(--primary); }
+        .tab-button {
+            padding: 10px 15px;
+            border: 2px solid #8a2be2;
+            background-color: white;
+            color: #8a2be2;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
 
-        /* Raspadinha */
-        .grid-raspadinhas { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; width: 100%; }
-        .raspa-box { position: relative; width: 100%; aspect-ratio: 1; border-radius: 20px; overflow: hidden; border: 2px solid var(--primary); background: #fff; }
-        .desafio-texto { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: bold; color: #240046; padding: 10px; z-index: 1; text-align: center; }
-        canvas { position: absolute; top: 0; left: 0; z-index: 2; width: 100%; height: 100%; }
+        .tab-button.active {
+            background-color: #8a2be2;
+            color: white;
+        }
 
-        /* Calendário e Cupons */
-        .calendario { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
-        .dia { padding: 6px; border: 1px solid var(--primary); border-radius: 6px; font-size: 0.6rem; text-align: center; }
-        .dia.marcado { background: var(--primary); color: white; }
-        .cupom { border: 2px dashed var(--primary); padding: 10px; border-radius: 12px; font-size: 0.7rem; margin-bottom: 5px; }
+        /* Conteúdo das Abas */
+        .tab-content {
+            display: none;
+            width: 90%;
+            max-width: 600px;
+            animation: fadeIn 0.4s ease-in;
+            text-align: center;
+            padding-bottom: 40px;
+        }
 
-        .item-meta { display: flex; align-items: center; gap: 10px; padding: 12px; border-bottom: 1px solid rgba(157, 78, 221, 0.2); text-align: left; color: var(--text-meta); }
-        .btn { background: var(--primary); color: white; border: none; padding: 15px; border-radius: 50px; font-weight: bold; width: 100%; margin-top: 10px; cursor: pointer; }
-        input, textarea, select { width: 100%; padding: 12px; border-radius: 15px; border: 1px solid var(--primary); margin-bottom: 10px; background: rgba(255,255,255,0.1); color: inherit; text-align: center; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Foto Inteira (Sem o círculo) */
+        .foto-inteira {
+            width: 100%;
+            height: auto;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin: 10px 0;
+            display: block;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .btn-acao {
+            background-color: #8a2be2;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 10px;
+            width: 100%;
+        }
+
+        .input-estilizado {
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+            width: 100%;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+        }
+
+        ul {
+            text-align: left;
+            padding-left: 20px;
+            line-height: 1.8;
+        }
     </style>
 </head>
-<body class="noite-estrelada">
+<body>
 
-    <div id="tela-login" class="overlay">
-        <h1 class="titulo" style="color: white;">Nosso Infinito</h1>
-        <input type="password" id="pass" placeholder="Senha (Ex: 2810)">
-        <select id="user-name">
-            <option value="Eduarda">Sou a Eduarda</option>
-            <option value="Amor">Sou o Amor</option>
-        </select>
-        <button class="btn" style="max-width: 200px;" onclick="entrar()">Entrar 💜</button>
+<header>
+    <h1>Nosso Infinito 💜</h1>
+</header>
+
+<div class="tab-container">
+    <button class="tab-button active" onclick="openTab(event, 'inicio')">Início</button>
+    <button class="tab-button" onclick="openTab(event, 'planos')">Planos</button>
+    <button class="tab-button" onclick="openTab(event, 'sonhos')">Sonhos</button>
+    <button class="tab-button" onclick="openTab(event, 'mimos')">Mimos</button>
+</div>
+
+<div id="inicio" class="tab-content" style="display: block;">
+    <div class="card">
+        <img src="Amor.png" alt="Nossa Foto" class="foto-inteira">
+        <p style="margin-top: 15px; font-weight: 500;">Nosso cantinho especial.</p>
     </div>
+</div>
 
-    <div id="app" class="swiper hidden">
-        <div class="swiper-wrapper">
-            
-            <div class="swiper-slide">
-                <div id="saudacao" style="font-weight: 600; margin-top: 10px;"></div>
-                <h1 class="titulo">Pecado de Fofo</h1>
-                <img src="Amor.png" class="foto-casal">
-                <div id="timer" style="font-size: 1.1rem; color: #ff9e00; font-weight: bold; margin-bottom: 15px;"></div>
-                
-                <div class="card">
-                    <p id="aviso-raspa" style="font-size: 0.8rem; font-weight: bold;">Uma por dia! Raspe para ver o plano: 👇</p>
-                    <div class="grid-raspadinhas" id="gridRaspa"></div>
-                </div>
-            </div>
-
-            <div class="swiper-slide">
-                <h2 class="titulo">Nossos Sonhos</h2>
-                <div class="card" id="listaMetas" style="max-height: 350px; overflow-y: auto;"></div>
-                <div class="card">
-                    <input type="text" id="novaMeta" placeholder="Qual nosso próximo sonho?">
-                    <button class="btn" onclick="addMeta()">Salvar Sonho</button>
-                </div>
-            </div>
-
-            <div class="swiper-slide">
-                <h2 class="titulo">Datas e Mimos</h2>
-                <div class="card">
-                    <p style="font-size: 0.8rem; margin-bottom: 8px;">Nosso Calendário 📅</p>
-                    <div class="calendario" id="calGrid"></div>
-                </div>
-                <div class="card">
-                    <p style="font-size: 0.8rem; margin-bottom: 10px;">Cupons Ativos 🎟️</p>
-                    <div id="containerCupons" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;"></div>
-                </div>
-            </div>
-
-            <div class="swiper-slide">
-                <h2 class="titulo">Correio Elegante</h2>
-                <div class="card">
-                    <textarea id="textoCorreio" rows="2" placeholder="Escreva algo para mim..."></textarea>
-                    <button class="btn" onclick="enviarCorreio()">Enviar Mensagem 💌</button>
-                </div>
-                <div id="muralMensagens" style="width: 100%;"></div>
-            </div>
-
+<div id="planos" class="tab-content">
+    <div class="card">
+        <h3>Plano do Dia</h3>
+        <p>Uma por dia! Raspe para ver o plano: 👇</p>
+        <div style="background: #f0f0f0; height: 180px; display: flex; align-items: center; justify-content: center; border-radius: 10px; border: 2px dashed #8a2be2; cursor: pointer;">
+            <span style="color: #8a2be2; font-weight: bold;">[Área da Raspadinha]</span>
         </div>
     </div>
+</div>
 
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-        import { getDatabase, ref, push, onValue, update, set } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
+<div id="sonhos" class="tab-content">
+    <div class="card">
+        <h3>Nossos Sonhos</h3>
+        <input type="text" class="input-estilizado" placeholder="O que vamos realizar juntos?">
+        <button class="btn-acao">Salvar no Coração</button>
+        <ul>
+            <li>🌌 Ver o pôr do sol em um lugar novo</li>
+            <li>🏠 Decorar nossa futura casa</li>
+            <li>🍕 Noite de filmes e pizza</li>
+        </ul>
+    </div>
+</div>
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyCz3H8bjiuS2gNvxUr_G3Csd21wL5J1gLw",
-            authDomain: "project-3726343372287499417.firebaseapp.com",
-            databaseURL: "https://project-3726343372287499417-default-rtdb.firebaseio.com",
-            projectId: "project-3726343372287499417"
-        };
+<div id="mimos" class="tab-content">
+    <div class="card">
+        <h3>Datas e Mimos</h3>
+        <button class="btn-acao">Abrir Nosso Calendário 📅</button>
+        <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #eee;">
+            <h4>Cupons Disponíveis 🎟️</h4>
+            <div style="background: #fff5ff; border: 1px solid #ffccff; padding: 10px; border-radius: 8px; margin-bottom: 10px;">
+                <strong>Vale um abraço apertado</strong>
+            </div>
+            <div style="background: #fff5ff; border: 1px solid #ffccff; padding: 10px; border-radius: 8px;">
+                <strong>Vale um jantar especial</strong>
+            </div>
+        </div>
+    </div>
+</div>
 
-        const app = initializeApp(firebaseConfig);
-        const db = getDatabase(app);
-        let meuNome = "";
-
-        const desafios = ["Jantar Especial", "Cinema em Casa", "Massagem 15min", "PIX de 2 Reais", "10 Beijos", "Cafuné Infinito", "Comprar Açaí", "Passeio no Parque"];
-
-        window.entrar = () => {
-            if(document.getElementById('pass').value === "2810") {
-                meuNome = document.getElementById('user-name').value;
-                document.getElementById('tela-login').classList.add('hidden');
-                document.getElementById('app').classList.remove('hidden');
-                new Swiper('.swiper');
-                checkTime();
-                initApp();
-            }
-        };
-
-        function checkTime() {
-            const h = new Date().getHours();
-            if(h >= 5 && h < 18) {
-                document.body.className = "dia-claro";
-                document.getElementById('saudacao').innerText = "☀️ Manhã Encantada por você, " + meuNome;
-            } else {
-                document.body.className = "noite-estrelada";
-                document.getElementById('saudacao').innerText = "🌙 Noite Estrelada, " + meuNome;
-            }
+<script>
+    function openTab(evt, tabName) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tab-content");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
         }
-
-        function initApp() {
-            const inicio = new Date("2025-10-28");
-            setInterval(() => {
-                const diff = Math.floor((new Date() - inicio) / (1000 * 60 * 60 * 24));
-                document.getElementById('timer').innerText = diff + " DIAS JUNTOS";
-            }, 1000);
-
-            // Gerar Calendário
-            const cal = document.getElementById('calGrid');
-            for(let i=1; i<=31; i++){
-                const d = document.createElement('div'); d.className='dia'; d.innerText=i;
-                d.onclick=()=>d.classList.toggle('marcado'); cal.appendChild(d);
-            }
-
-            // Lógica Raspadinha Firebase
-            onValue(ref(db, 'raspa_final'), s => {
-                let d = s.val();
-                if(!d || d.completas >= 4) {
-                    const novos = desafios.sort(() => 0.5 - Math.random()).slice(0, 4);
-                    set(ref(db, 'raspa_final'), { itens: novos, completas: 0, ultimaData: "", raspados: [false,false,false,false] });
-                } else { renderRaspa(d); }
-            });
-
-            syncData();
+        tablinks = document.getElementsByClassName("tab-button");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
         }
+        document.getElementById(tabName).style.display = "block";
+        evt.currentTarget.className += " active";
+        window.scrollTo({top: 0, behavior: 'smooth'});
+    }
+</script>
 
-        function renderRaspa(dados) {
-            const grid = document.getElementById('gridRaspa'); grid.innerHTML = "";
-            const hoje = new Date().toLocaleDateString();
-            const jaFezHoje = dados.ultimaData === hoje;
-            if(jaFezHoje) document.getElementById('aviso-raspa').innerText = "Você já raspou hoje! Amanhã tem mais. ✨";
-
-            dados.itens.forEach((txt, i) => {
-                const box = document.createElement('div'); box.className = "raspa-box";
-                box.innerHTML = `<div class="desafio-texto">${txt}</div><canvas id="cv${i}"></canvas>`;
-                grid.appendChild(box);
-                const cv = document.getElementById(`cv${i}`);
-                const ctx = cv.getContext('2d', { willReadFrequently: true });
-                cv.width = 150; cv.height = 150;
-
-                if(dados.raspados[i]) { ctx.clearRect(0,0,150,150); }
-                else {
-                    ctx.fillStyle = '#7b2cbf'; ctx.fillRect(0,0,150,150);
-                    const scratch = (e) => {
-                        if(jaFezHoje) return;
-                        e.preventDefault();
-                        const r = cv.getBoundingClientRect();
-                        const x = (e.touches ? e.touches[0].clientX : e.clientX) - r.left;
-                        const y = (e.touches ? e.touches[0].clientY : e.clientY) - r.top;
-                        ctx.globalCompositeOperation = 'destination-out';
-                        ctx.beginPath(); ctx.arc(x, y, 20, 0, Math.PI*2); ctx.fill();
-                        
-                        const pix = ctx.getImageData(0,0,150,150).data;
-                        let count = 0; for(let p=3; p<pix.length; p+=4) if(pix[p]===0) count++;
-                        if(count > (pix.length/4)*0.4) {
-                            dados.raspados[i] = true;
-                            update(ref(db, 'raspa_final'), { raspados: dados.raspados, completas: dados.completas+1, ultimaData: hoje });
-                        }
-                    };
-                    cv.addEventListener('touchmove', scratch); cv.addEventListener('mousemove', scratch);
-                }
-            });
-        }
-
-        window.addMeta = () => {
-            const t = document.getElementById('novaMeta').value;
-            if(t) push(ref(db, 'metas'), { texto: t, feito: false, autor: meuNome });
-            document.getElementById('novaMeta').value = "";
-        };
-
-        window.enviarCorreio = () => {
-            const t = document.getElementById('textoCorreio').value;
-            if(t) push(ref(db, 'correio'), { texto: t, autor: meuNome });
-            document.getElementById('textoCorreio').value = "";
-        };
-
-        function syncData() {
-            onValue(ref(db, 'metas'), s => {
-                const l = document.getElementById('listaMetas'); l.innerHTML = "";
-                s.forEach(m => {
-                    const d = m.val();
-                    l.innerHTML += `<div class="item-meta">
-                        <input type="checkbox" ${d.feito?'checked':''} onchange="update(ref(getDatabase(), 'metas/${m.key}'), {feito:${!d.feito}})">
-                        <div><span style="font-weight:600">${d.texto}</span><br><small style="color:var(--primary); font-weight:bold;">✍️ Por: ${d.autor}</small></div>
-                    </div>`;
-                });
-            });
-
-            onValue(ref(db, 'correio'), s => {
-                const m = document.getElementById('muralMensagens'); m.innerHTML = "";
-                s.forEach(c => { m.innerHTML = `<div class="card" style="text-align:left; padding:12px;"><small style="color:var(--primary); font-weight:bold;">${c.val().autor}:</small><br>${c.val().texto}</div>` + m.innerHTML; });
-            });
-
-            onValue(ref(db, 'cupons_controle'), s => {
-                const d = s.val() || { usados: 0, pacote: 0, quem: "" };
-                const p = ["Vale Beijo", "Vale Cinema", "Vale Jantar", "Massagem"];
-                const cont = document.getElementById('containerCupons'); cont.innerHTML = "";
-                p.forEach((c, i) => {
-                    const isUsado = i < d.usados;
-                    cont.innerHTML += `<div class="cupom" style="${isUsado?'opacity:0.4;text-decoration:line-through':''}" onclick="if(!${isUsado}) update(ref(getDatabase(), 'cupons_controle'), {usados: ${d.usados + 1}, quem: '${meuNome}'})">🎟️ ${c} ${isUsado?`<br><small>por ${d.quem}</small>`:''}</div>`;
-                });
-            });
-        }
-    </script>
 </body>
 </html>
