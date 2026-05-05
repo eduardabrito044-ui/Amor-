@@ -15,8 +15,26 @@
             background: var(--dark); color: white; transition: 1s;
         }
 
+        /* Corações Pulsantes */
         .coracao-bg { position: absolute; animation: pulsar 4s infinite ease-in-out; z-index: 0; pointer-events: none; opacity: 0.3; }
-        @keyframes pulsar { 0%, 100% { transform: scale(1); opacity: 0.2; } 50% { transform: scale(1.4); opacity: 0.5; } }
+        @keyframes pulsar { 
+            0%, 100% { transform: scale(1) translateY(0); opacity: 0.2; } 
+            50% { transform: scale(1.4) translateY(-10px); opacity: 0.6; } 
+        }
+
+        /* Mensagem "Seu amor está pensando em você" */
+        .pensamento-amor {
+            position: fixed; top: 15%; width: 100%; text-align: center;
+            font-family: 'Playfair Display', serif; font-style: italic;
+            font-size: 1rem; color: var(--gold); z-index: 5;
+            animation: brilhoMensagem 6s infinite ease-in-out;
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+        }
+        @keyframes brilhoMensagem {
+            0%, 100% { opacity: 0; transform: translateY(5px); }
+            50% { opacity: 1; transform: translateY(0); }
+        }
+
         .astro { position: absolute; top: 20px; right: 20px; font-size: 3rem; z-index: 1; }
 
         .secao { display: none; height: 100vh; width: 100%; padding: 20px 20px 120px; overflow-y: auto; position: relative; z-index: 2; }
@@ -63,6 +81,7 @@
 
     <div id="astro-icon" class="astro">☀️</div>
     <div id="bg-coracoes"></div>
+    <div class="pensamento-amor">Seu amor está pensando em você...</div>
 
     <nav class="nav-bar hidden" id="menu">
         <div class="nav-item ativo" onclick="irPara('home', this)"><span>🏠</span>Home</div>
@@ -78,7 +97,7 @@
             <div id="timer" style="font-weight: bold; color: var(--gold); margin-bottom: 10px;"></div>
             
             <div class="glass-card">
-                <p style="font-size:0.6rem; font-weight:bold; letter-spacing:1px;">RASPADINHAS</p>
+                <p id="label-raspa" style="font-size:0.6rem; font-weight:bold; letter-spacing:1px;">RASPADINHA DO DIA (SÓ 1)</p>
                 <div class="grid-raspa" id="raspaGrid"></div>
             </div>
 
@@ -152,7 +171,7 @@
             document.getElementById('astro-icon').innerText = isDia ? "☀️" : "🌙";
             
             const bg = document.getElementById('bg-coracoes');
-            for(let i=0; i<15; i++) {
+            for(let i=0; i<20; i++) {
                 const c = document.createElement('div'); c.className = 'coracao-bg'; c.innerText = '❤️';
                 c.style.left = Math.random() * 100 + 'vw'; c.style.top = Math.random() * 100 + 'vh';
                 c.style.animationDelay = Math.random() * 4 + 's'; bg.appendChild(c);
@@ -172,31 +191,38 @@
         }
 
         function sync() {
-            onValue(ref(db, 'raspa_v7'), s => {
-                const d = s.val() || { itens: ["Beijo", "Açaí", "Massagem", "Jantar"], raspados: [false,false,false,false] };
+            const hojeStr = new Date().toLocaleDateString();
+
+            onValue(ref(db, 'raspa_v8'), s => {
+                const d = s.val() || { itens: ["Beijo", "Açaí", "Massagem", "Jantar"], dataUltima: "" };
                 const grid = document.getElementById('raspaGrid'); grid.innerHTML = "";
+                const jaRaspoHoje = d.dataUltima === hojeStr;
+                if(jaRaspoHoje) document.getElementById('label-raspa').innerText = "VOLTE AMANHÃ! ✨";
+
                 d.itens.forEach((txt, i) => {
                     const item = document.createElement('div'); item.className = "raspa-item";
                     item.innerHTML = `<div class="texto-escondido">${txt}</div><canvas id="cv${i}"></canvas>`;
                     grid.appendChild(item);
                     const cv = document.getElementById(`cv${i}`); const ctx = cv.getContext('2d'); cv.width=150; cv.height=150;
-                    
-                    // Preenche com a camada para raspar
-                    ctx.fillStyle = '#9d4edd'; 
-                    ctx.fillRect(0,0,150,150);
-                    ctx.globalCompositeOperation = 'destination-out';
-
-                    const draw = (e) => {
-                        e.preventDefault(); const r = cv.getBoundingClientRect();
-                        const x = (e.touches ? e.touches[0].clientX : e.clientX) - r.left;
-                        const y = (e.touches ? e.touches[0].clientY : e.clientY) - r.top;
-                        ctx.beginPath(); ctx.arc(x,y,20,0,Math.PI*2); ctx.fill();
-                    };
-                    cv.addEventListener('touchmove', draw); cv.addEventListener('mousemove', draw);
+                    if(jaRaspoHoje) ctx.clearRect(0,0,150,150);
+                    else {
+                        ctx.fillStyle = '#9d4edd'; ctx.fillRect(0,0,150,150);
+                        ctx.globalCompositeOperation = 'destination-out';
+                        const draw = (e) => {
+                            e.preventDefault(); const r = cv.getBoundingClientRect();
+                            const x = (e.touches ? e.touches[0].clientX : e.clientX) - r.left;
+                            const y = (e.touches ? e.touches[0].clientY : e.clientY) - r.top;
+                            ctx.beginPath(); ctx.arc(x,y,20,0,Math.PI*2); ctx.fill();
+                            const pix = ctx.getImageData(0,0,150,150).data;
+                            let count = 0; for(let p=3; p<pix.length; p+=4) if(pix[p]===0) count++;
+                            if(count > 4000 && d.dataUltima !== hojeStr) { update(ref(db, 'raspa_v8'), { dataUltima: hojeStr }); }
+                        };
+                        cv.addEventListener('touchmove', draw); cv.addEventListener('mousemove', draw);
+                    }
                 });
             });
 
-            onValue(ref(db, 'cupons_v7'), s => {
+            onValue(ref(db, 'cupons_v8'), s => {
                 const d = s.val() || { d: ["Massagem", "Vale Jantar", "Vale Beijo", "Açaí"], u: [false,false,false,false], autores: ["","","",""] };
                 const grid = document.getElementById('cuponsGrid'); grid.innerHTML = "";
                 d.d.forEach((c, i) => {
@@ -206,10 +232,9 @@
                         <div style="font-size:0.5rem; margin-top:5px;">${isU?'Por: '+d.autores[i]:'Disponível'}</div>
                     </div>`;
                 });
-                window.usarC = (i) => { if(!d.u[i]) { d.u[i]=true; d.autores[i]=usuarioAtivo; update(ref(db, 'cupons_v7'), d); } };
+                window.usarC = (i) => { if(!d.u[i]) { d.u[i]=true; d.autores[i]=usuarioAtivo; update(ref(db, 'cupons_v8'), d); } };
             });
 
-            // Lista de Sonhos Grudada
             onValue(ref(db, 'sonhos_v2'), s => {
                 const l = document.getElementById('listaSonhos'); l.innerHTML = "";
                 s.forEach(item => {
