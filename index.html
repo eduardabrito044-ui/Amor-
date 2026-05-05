@@ -3,116 +3,115 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Nosso Refúgio 💜</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <title>Nosso Jardim 💜</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
     
     <style>
-        :root { --gold: #d4af37; --purple-soft: #9d4edd; --transition: all 0.5s ease; }
+        :root { --gold: #d4af37; --purple: #7b2cbf; --dark: #0a001a; }
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
         
-        body { margin: 0; font-family: 'Montserrat', sans-serif; overflow: hidden; height: 100vh; width: 100vw; transition: var(--transition); background: #000; }
-
-        /* Fundo Jardim Encantado */
-        body.dia-claro { 
-            background: radial-gradient(circle at center, #fff5f8, #f1e4fc 60%, #e0c3fc 100%); 
-            background-size: 200% 200%; animation: Jardim 10s ease infinite; color: #2d005d; --card-bg: rgba(255, 255, 255, 0.7);
-        }
-        @keyframes Jardim { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
-
-        body.noite-estrelada { 
-            background: radial-gradient(circle at bottom, #10002b, #240046, #000); color: #e0aaff; --card-bg: rgba(60, 9, 108, 0.4);
+        body { 
+            margin: 0; font-family: 'Montserrat', sans-serif; overflow: hidden; height: 100vh; width: 100vw;
+            background: var(--dark); color: white; transition: 1s;
         }
 
-        .secao { display: none; height: 100vh; width: 100%; padding: 40px 20px 130px; overflow-y: auto; animation: fadeIn 0.6s ease; }
+        /* Fundo Animado */
+        .coracao-bg { position: absolute; animation: pulsar 4s infinite ease-in-out; z-index: 0; pointer-events: none; opacity: 0.3; }
+        @keyframes pulsar { 0%, 100% { transform: scale(1); opacity: 0.2; } 50% { transform: scale(1.4); opacity: 0.5; } }
+        .astro { position: absolute; top: 20px; right: 20px; font-size: 3rem; z-index: 1; }
+
+        .secao { display: none; height: 100vh; width: 100%; padding: 20px 20px 120px; overflow-y: auto; position: relative; z-index: 2; }
         .secao.ativa { display: flex; flex-direction: column; align-items: center; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
         .nav-bar {
-            position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%); width: 92%; max-width: 400px;
-            background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(25px); border-radius: 35px; display: flex; justify-content: space-around;
-            padding: 12px; border: 1px solid rgba(255, 255, 255, 0.1); z-index: 1000;
+            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 92%; max-width: 400px;
+            background: rgba(0,0,0,0.8); backdrop-filter: blur(15px); border-radius: 30px; display: flex; padding: 10px; border: 1px solid var(--purple); z-index: 1000;
         }
-        .nav-item { color: #fff; opacity: 0.4; font-size: 0.65rem; cursor: pointer; text-align: center; flex: 1; transition: 0.3s; }
+        .nav-item { color: #fff; opacity: 0.4; font-size: 0.6rem; cursor: pointer; text-align: center; flex: 1; }
         .nav-item.ativo { opacity: 1; color: var(--gold); }
-        .nav-item span { display: block; font-size: 1.3rem; margin-bottom: 2px; }
+        .nav-item span { display: block; font-size: 1.2rem; }
 
         .glass-card {
-            background: var(--card-bg); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 25px; padding: 20px; width: 100%; max-width: 400px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); margin-bottom: 15px;
+            background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px; padding: 15px; width: 100%; max-width: 400px; margin-bottom: 15px; text-align: center;
         }
 
-        .titulo-lux {
-            font-family: 'Playfair Display', serif; font-size: 2.4rem; font-style: italic; margin: 10px 0;
-            background: linear-gradient(45deg, var(--purple-soft), var(--gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-        }
+        .titulo-lux { font-family: 'Playfair Display', serif; font-size: 2rem; color: var(--gold); margin: 10px 0; }
 
-        .foto-inteira-img { width: 100%; height: auto; max-height: 35vh; object-fit: contain; border-radius: 20px; margin-bottom: 15px; }
-
+        /* Raspadinha */
         .grid-raspa { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; }
-        .raspa-item { position: relative; aspect-ratio: 1; border-radius: 15px; overflow: hidden; background: #fff; }
-        .texto-escondido { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: 600; color: #240046; text-align: center; padding: 5px; }
-        canvas { position: absolute; inset: 0; z-index: 2; cursor: crosshair; }
+        .raspa-item { position: relative; aspect-ratio: 1; border-radius: 15px; overflow: hidden; background: #fff; border: 1.5px solid var(--purple); }
+        .texto-escondido { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; color: #1a0033; font-weight: bold; text-align: center; }
+        canvas { position: absolute; inset: 0; z-index: 2; }
 
-        .btn-lux { background: var(--purple-soft); color: white; border: none; padding: 14px; border-radius: 50px; font-weight: 600; width: 100%; cursor: pointer; transition: 0.2s; }
-        .btn-lux:active { transform: scale(0.96); }
+        /* Calendário */
+        .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; margin-top: 10px; }
+        .dia-cal { font-size: 0.6rem; padding: 8px 0; border: 1px solid rgba(255,255,255,0.1); border-radius: 5px; }
+        .marcado { background: var(--purple) !important; color: white; }
 
-        .overlay { position: fixed; inset: 0; background: #121212; z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 25px; }
+        .btn-lux { background: var(--purple); color: white; border: none; padding: 14px; border-radius: 50px; font-weight: bold; width: 100%; cursor: pointer; margin-top: 10px; }
+        .overlay { position: fixed; inset: 0; background: #000; z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; }
+        input, textarea { width: 100%; background: rgba(255,255,255,0.15); border: 1px solid var(--gold); border-radius: 10px; padding: 12px; color: white; margin-bottom: 10px; }
         .hidden { display: none !important; }
-        
-        input, textarea { width: 100%; background: rgba(255,255,255,0.1); border: 1px solid var(--purple-soft); border-radius: 15px; padding: 12px; color: inherit; margin-bottom: 10px; }
     </style>
 </head>
 <body>
 
     <div id="login" class="overlay">
-        <h1 class="titulo-lux" style="-webkit-text-fill-color: white;">Olá, Amor</h1>
-        <input type="text" id="user-name" placeholder="Seu nome" style="max-width: 250px; text-align: center; color: white;">
-        <input type="password" id="pw" placeholder="Senha do dia" style="max-width: 250px; text-align: center; color: white;">
-        <button class="btn-lux" style="max-width: 200px;" onclick="entrar()">Entrar no Jardim</button>
+        <h1 class="titulo-lux" style="color: white;">Nosso Jardim 💜</h1>
+        <input type="text" id="user-name" placeholder="Seu Nome">
+        <input type="password" id="pw" placeholder="Senha do Dia">
+        <button class="btn-lux" onclick="entrar()">Abrir Portal</button>
     </div>
+
+    <div id="astro-icon" class="astro">☀️</div>
+    <div id="bg-coracoes"></div>
 
     <nav class="nav-bar hidden" id="menu">
         <div class="nav-item ativo" onclick="irPara('home', this)"><span>🏠</span>Home</div>
-        <div class="nav-item" onclick="irPara('sonhos', this)"><span>✨</span>Sonhos</div>
         <div class="nav-item" onclick="irPara('mimos', this)"><span>🎟️</span>Mimos</div>
-        <div class="nav-item" onclick="irPara('correio', this)"><span>💌</span>Mensagens</div>
+        <div class="nav-item" onclick="irPara('sonhos', this)"><span>✨</span>Sonhos</div>
+        <div class="nav-item" onclick="irPara('correio', this)"><span>💌</span>Correio</div>
     </nav>
 
     <main id="app" class="hidden">
         <section id="home" class="secao ativa">
             <h1 class="titulo-lux">Para Você</h1>
-            <img src="Amor.png" class="foto-inteira-img">
-            <div id="timer" style="font-size: 0.8rem; letter-spacing: 1px; margin-bottom: 20px;"></div>
+            <img src="Amor.png" style="width:100%; border-radius:15px; border: 2px solid var(--gold); margin-bottom: 10px;">
+            <div id="timer" style="font-weight: bold; color: var(--gold); margin-bottom: 10px;"></div>
+            
             <div class="glass-card">
-                <p style="font-size: 0.65rem; font-weight: 600; margin-bottom: 12px;">RASPADINHA DO DIA</p>
+                <p style="font-size:0.6rem; font-weight:bold; letter-spacing:1px;">RASPADINHAS</p>
                 <div class="grid-raspa" id="raspaGrid"></div>
             </div>
-        </section>
 
-        <section id="sonhos" class="secao">
-            <h2 class="titulo-lux">Nossos Sonhos</h2>
-            <div id="listaSonhos" style="width: 100%; max-width: 400px; margin-bottom: 15px;"></div>
             <div class="glass-card">
-                <input type="text" id="inputSonho" placeholder="Novo objetivo...">
-                <button class="btn-lux" onclick="addSonho()">Adicionar à Lista</button>
+                <p style="font-size:0.6rem; font-weight:bold;">NOSSO CALENDÁRIO</p>
+                <div class="cal-grid" id="calGrid"></div>
             </div>
         </section>
 
         <section id="mimos" class="secao">
-            <h2 class="titulo-lux">Cupons & Mimos</h2>
-            <div class="glass-card" style="text-align: left;">
-                <p id="aviso-cupom" style="font-size: 0.7rem; font-weight: bold; margin-bottom: 10px;">Escolha um (apenas 1 por dia):</p>
-                <div id="cuponsGrid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;"></div>
+            <h2 class="titulo-lux">Cupons de Mimo</h2>
+            <div id="cuponsGrid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width:100%; max-width:400px;"></div>
+        </section>
+
+        <section id="sonhos" class="secao">
+            <h2 class="titulo-lux">Nossos Sonhos</h2>
+            <div id="listaSonhos" style="width:100%; max-width:400px; margin-bottom: 10px;"></div>
+            <div class="glass-card">
+                <input type="text" id="inputSonho" placeholder="Adicionar desejo...">
+                <button class="btn-lux" onclick="addSonho()">Salvar Sonho</button>
             </div>
         </section>
 
         <section id="correio" class="secao">
-            <h2 class="titulo-lux">Correio</h2>
+            <h2 class="titulo-lux">Correio Elegante</h2>
             <div class="glass-card">
                 <textarea id="textoC" rows="3" placeholder="Sua mensagem..."></textarea>
                 <button class="btn-lux" onclick="enviarC()">Enviar 💌</button>
             </div>
-            <div id="muralC" style="width: 100%; max-width: 400px;"></div>
+            <div id="muralC" style="width:100%; max-width:400px;"></div>
         </section>
     </main>
 
@@ -139,94 +138,108 @@
         };
 
         window.entrar = () => {
-            const nomeInput = document.getElementById('user-name').value;
-            if(document.getElementById('pw').value === "2810" && nomeInput) {
-                usuarioAtivo = nomeInput;
+            if(document.getElementById('pw').value === "2810") {
+                usuarioAtivo = document.getElementById('user-name').value || "Amor";
                 document.getElementById('login').classList.add('hidden');
                 document.getElementById('app').classList.remove('hidden');
                 document.getElementById('menu').classList.remove('hidden');
-                start();
-            } else { alert("Verifique o nome e a senha! 💜"); }
+                initVisual();
+                sync();
+            }
         };
 
-        function start() {
+        function initVisual() {
             const h = new Date().getHours();
-            document.body.className = (h >= 5 && h < 18) ? "dia-claro" : "noite-estrelada";
+            const isDia = h >= 6 && h < 18;
+            document.body.style.background = isDia ? "radial-gradient(circle, #7b2cbf, #1a0033)" : "#050010";
+            document.getElementById('astro-icon').innerText = isDia ? "☀️" : "🌙";
+            
+            const bg = document.getElementById('bg-coracoes');
+            for(let i=0; i<15; i++) {
+                const c = document.createElement('div'); c.className = 'coracao-bg'; c.innerText = '❤️';
+                c.style.left = Math.random() * 100 + 'vw'; c.style.top = Math.random() * 100 + 'vh';
+                c.style.animationDelay = Math.random() * 4 + 's'; bg.appendChild(c);
+            }
 
-            const inicio = new Date("2025-10-28");
-            setInterval(() => {
-                const diff = Math.floor((new Date() - inicio) / (1000 * 60 * 60 * 24));
-                document.getElementById('timer').innerText = diff + " dias de nós";
-            }, 1000);
+            const timerUpdate = () => {
+                const diff = Math.floor((new Date() - new Date("2025-10-28")) / (1000 * 60 * 60 * 24));
+                document.getElementById('timer').innerText = diff + " Dias de Nós";
+            };
+            timerUpdate();
 
-            sync();
+            const cal = document.getElementById('calGrid');
+            for(let i=1; i<=31; i++) {
+                const d = document.createElement('div'); d.className="dia-cal"; d.innerText=i;
+                d.onclick=()=>d.classList.toggle('marcado'); cal.appendChild(d);
+            }
         }
 
-        // Lógica de Cupons com Nome de quem usou
         function sync() {
-            const mimosLista = ["Vale Beijo", "Vale Massagem", "Vale Cinema", "Vale Jantar", "Vale Açaí", "Vale Abraço", "Vale Dormir Juntinhos"];
-            
-            onValue(ref(db, 'cupons_v3'), s => {
-                const d = s.val() || { u: [false,false,false,false], autores: ["","","",""], c: 0, d: mimosLista.sort(() => 0.5 - Math.random()).slice(0,4), ultimaData: "" };
-                const grid = document.getElementById('cuponsGrid'); grid.innerHTML = "";
-                const hoje = new Date().toLocaleDateString();
-                const jaUsouHoje = d.ultimaData === hoje;
-
-                if(jaUsouHoje) document.getElementById('aviso-cupom').innerText = "Mimo de hoje já resgatado! ✨";
-
-                d.d.forEach((nomeCupom, i) => {
-                    const foiUsado = d.u[i];
-                    const quemUsou = d.autores[i];
-                    grid.innerHTML += `
-                        <div class="glass-card" style="padding:15px; font-size:0.7rem; 
-                            ${foiUsado ? 'text-decoration:line-through; opacity:0.4; background:#999;' : ''}"
-                            onclick="if(!${foiUsado} && !${jaUsouHoje}) usarCupom(${i})">
-                            ${nomeCupom} <br>
-                            <small>${foiUsado ? 'Por: ' + quemUsou : 'Disponível'}</small>
-                        </div>`;
+            onValue(ref(db, 'raspa_v6'), s => {
+                const d = s.val() || { itens: ["Beijo", "Açaí", "Massagem", "Jantar"], raspados: [false,false,false,false] };
+                const grid = document.getElementById('raspaGrid'); grid.innerHTML = "";
+                d.itens.forEach((txt, i) => {
+                    const item = document.createElement('div'); item.className = "raspa-item";
+                    item.innerHTML = `<div class="texto-escondido">${txt}</div><canvas id="cv${i}"></canvas>`;
+                    grid.appendChild(item);
+                    const cv = document.getElementById(`cv${i}`); const ctx = cv.getContext('2d'); cv.width=150; cv.height=150;
+                    if(d.raspados[i]) ctx.clearRect(0,0,150,150);
+                    else {
+                        ctx.fillStyle = '#9d4edd'; ctx.fillRect(0,0,150,150);
+                        const draw = (e) => {
+                            e.preventDefault(); const r = cv.getBoundingClientRect();
+                            const x = (e.touches ? e.touches[0].clientX : e.clientX) - r.left;
+                            const y = (e.touches ? e.touches[0].clientY : e.clientY) - r.top;
+                            ctx.globalCompositeOperation = 'destination-out';
+                            ctx.beginPath(); ctx.arc(x,y,20,0,Math.PI*2); ctx.fill();
+                            const pix = ctx.getImageData(0,0,150,150).data;
+                            let count = 0; for(let p=3; p<pix.length; p+=4) if(pix[p]===0) count++;
+                            if(count > 8000 && !d.raspados[i]) { d.raspados[i] = true; update(ref(db, 'raspa_v6'), { raspados: d.raspados }); }
+                        };
+                        cv.addEventListener('touchmove', draw); cv.addEventListener('mousemove', draw);
+                    }
                 });
-
-                window.usarCupom = (idx) => {
-                    d.u[idx] = true;
-                    d.autores[idx] = usuarioAtivo;
-                    d.c += 1;
-                    update(ref(db, 'cupons_v3'), { u: d.u, autores: d.autores, c: d.c, ultimaData: hoje });
-                };
-
-                if(d.c >= 4) {
-                    const novos = mimosLista.sort(() => 0.5 - Math.random()).slice(0,4);
-                    set(ref(db, 'cupons_v3'), { u: [false,false,false,false], autores: ["","","",""], c: 0, d: novos, ultimaData: d.ultimaData });
-                }
             });
 
-            // Lista de Sonhos - Estilo Mercado (Grudado)
+            onValue(ref(db, 'cupons_v6'), s => {
+                const d = s.val() || { d: ["Massagem", "Vale Jantar", "Vale Beijo", "Açaí"], u: [false,false,false,false], autores: ["","","",""] };
+                const grid = document.getElementById('cuponsGrid'); grid.innerHTML = "";
+                d.d.forEach((c, i) => {
+                    const isU = d.u[i];
+                    grid.innerHTML += `<div class="glass-card" style="padding:15px; ${isU?'opacity:0.4;':''}" onclick="usarC(${i})">
+                        <span style="${isU?'text-decoration:line-through; color:red;':''}">🎟️ ${c}</span>
+                        <div style="font-size:0.5rem; margin-top:5px;">${isU?'Por: '+d.autores[i]:'Disponível'}</div>
+                    </div>`;
+                });
+                window.usarC = (i) => { if(!d.u[i]) { d.u[i]=true; d.autores[i]=usuarioAtivo; update(ref(db, 'cupons_v6'), d); } };
+            });
+
             onValue(ref(db, 'sonhos_v2'), s => {
                 const l = document.getElementById('listaSonhos'); l.innerHTML = "";
                 s.forEach(item => {
-                    const data = item.val();
-                    l.innerHTML += `
-                        <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px; background:var(--card-bg); padding:10px; border-radius:15px;">
-                            <input type="checkbox" ${data.status?'checked':''} onchange="update(ref(getDatabase(), 'sonhos_v2/${item.key}'), {status:!${data.status}})">
-                            <span style="font-size:0.8rem; ${data.status?'text-decoration:line-through; opacity:0.5;':''}">${data.texto}</span>
-                        </div>`;
+                    const v = item.val();
+                    l.innerHTML += `<div style="display:flex; align-items:center; gap:8px; margin-bottom:5px; background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">
+                        <input type="checkbox" ${v.status?'checked':''} onchange="update(ref(getDatabase(), 'sonhos_v2/${item.key}'), {status:!${v.status}})">
+                        <span style="font-size:0.8rem; ${v.status?'text-decoration:line-through; opacity:0.5;':''}">${v.texto}</span>
+                    </div>`;
                 });
             });
 
             onValue(ref(db, 'correio_v2'), s => {
                 const m = document.getElementById('muralC'); m.innerHTML = "";
-                s.forEach(c => { m.innerHTML = `<div class="glass-card" style="font-size:0.8rem; text-align:left;">${c.val().texto}</div>` + m.innerHTML; });
+                s.forEach(c => { m.innerHTML = `<div class="glass-card" style="text-align:left; font-size:0.75rem;">${c.val().texto}</div>` + m.innerHTML; });
             });
         }
 
         window.addSonho = () => {
-            const val = document.getElementById('inputSonho').value;
-            if(val) push(ref(db, 'sonhos_v2'), { texto: val, status: false });
+            const v = document.getElementById('inputSonho').value;
+            if(v) push(ref(db, 'sonhos_v2'), { texto: v, status: false });
             document.getElementById('inputSonho').value = "";
         };
 
         window.enviarC = () => {
-            const val = document.getElementById('textoC').value;
-            if(val) push(ref(db, 'correio_v2'), { texto: `${val}\n\n— De: ${usuarioAtivo} 💌` });
+            const v = document.getElementById('textoC').value;
+            if(v) push(ref(db, 'correio_v2'), { texto: `${v}\n\n— De: ${usuarioAtivo} 💌` });
             document.getElementById('textoC').value = "";
         };
     </script>
