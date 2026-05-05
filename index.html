@@ -7,7 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@400;600&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
     
     <style>
-        :root { --gold: #d4af37; --purple: #7b2cbf; --dark: #0a001a; --pink: #ff4d6d; }
+        :root { --gold: #d4af37; --purple: #7b2cbf; --dark: #0a001a; }
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
         
         body { 
@@ -23,14 +23,9 @@
 
         .pensamento-amor {
             position: fixed; top: 12%; width: 100%; text-align: center;
-            font-family: 'Great Vibes', cursive;
-            font-size: 1.8rem; color: var(--gold); z-index: 5;
-            animation: brilhoMensagem 6s infinite ease-in-out;
+            font-family: 'Great Vibes', cursive; font-size: 1.8rem; color: var(--gold); z-index: 5;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
         }
-        @keyframes brilhoMensagem { 0%, 100% { opacity: 0; transform: scale(0.9); } 50% { opacity: 1; transform: scale(1.1); } }
-
-        .astro { position: absolute; top: 20px; right: 20px; font-size: 3rem; z-index: 1; filter: drop-shadow(0 0 10px var(--gold)); }
 
         .secao { display: none; height: 100vh; width: 100%; padding: 20px 20px 120px; overflow-y: auto; position: relative; z-index: 2; }
         .secao.ativa { display: flex; flex-direction: column; align-items: center; }
@@ -46,40 +41,18 @@
         .glass-card {
             background: rgba(255,255,255,0.08); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.15);
             border-radius: 25px; padding: 20px; width: 100%; max-width: 400px; margin-bottom: 15px; text-align: center;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
         }
 
-        .titulo-lux { 
-            font-family: 'Great Vibes', cursive; 
-            font-size: 2.8rem; 
-            color: var(--gold); 
-            margin: 15px 0; 
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
+        .titulo-lux { font-family: 'Great Vibes', cursive; font-size: 2.8rem; color: var(--gold); margin: 15px 0; }
 
         .grid-raspa { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; width: 100%; }
-        .raspa-item { position: relative; aspect-ratio: 1; border-radius: 20px; overflow: hidden; background: #fff; border: 2.5px solid var(--purple); box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
-        .texto-escondido { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; color: #1a0033; font-weight: bold; text-align: center; z-index: 1; font-family: 'Montserrat', sans-serif; padding: 10px; }
+        .raspa-item { position: relative; aspect-ratio: 1; border-radius: 20px; overflow: hidden; background: #fff; border: 2.5px solid var(--purple); }
+        .texto-escondido { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; color: #1a0033; font-weight: bold; text-align: center; font-family: 'Montserrat', sans-serif; padding: 10px; z-index: 1; }
         canvas { position: absolute; inset: 0; z-index: 2; touch-action: none; }
 
-        .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; margin-top: 10px; }
-        .dia-cal { font-size: 0.7rem; padding: 10px 0; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; background: rgba(255,255,255,0.05); }
-        .marcado { background: var(--purple) !important; color: white; border-color: var(--gold); box-shadow: 0 0 10px var(--purple); }
-
-        .btn-lux { 
-            background: linear-gradient(45deg, var(--purple), #9d4edd); 
-            color: white; border: none; padding: 16px; border-radius: 50px; 
-            font-weight: bold; width: 100%; cursor: pointer; margin-top: 10px;
-            font-family: 'Montserrat', sans-serif; letter-spacing: 1px;
-            box-shadow: 0 4px 15px rgba(123, 44, 191, 0.4);
-        }
-
-        input, textarea { 
-            width: 100%; background: rgba(255,255,255,0.1); border: 1.5px solid var(--purple); 
-            border-radius: 15px; padding: 14px; color: white; margin-bottom: 12px;
-            font-family: 'Montserrat', sans-serif;
-        }
+        .btn-lux { background: linear-gradient(45deg, var(--purple), #9d4edd); color: white; border: none; padding: 14px; border-radius: 50px; font-weight: bold; width: 100%; cursor: pointer; margin-top: 10px; }
         
+        input { width: 100%; background: rgba(255,255,255,0.1); border: 1.5px solid var(--purple); border-radius: 15px; padding: 14px; color: white; margin-bottom: 12px; }
         .overlay { position: fixed; inset: 0; background: radial-gradient(circle, #1a0033, #050010); z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; }
         .hidden { display: none !important; }
     </style>
@@ -88,67 +61,45 @@
 
     <div id="login" class="overlay">
         <h1 class="titulo-lux" style="font-size: 3.5rem;">Nosso Jardim</h1>
-        <p style="font-family: 'Great Vibes', cursive; color: var(--gold); font-size: 1.5rem; margin-bottom: 20px;">Onde o amor floresce...</p>
         <input type="text" id="user-name" placeholder="Seu Nome">
         <input type="password" id="pw" placeholder="Senha Especial">
-        <button class="btn-lux" onclick="entrar()">Entrar no Coração</button>
+        <button class="btn-lux" onclick="entrar()">Entrar no Portal</button>
     </div>
 
-    <div id="astro-icon" class="astro">☀️</div>
     <div id="bg-coracoes"></div>
-    <div class="pensamento-amor" id="msgAmor">Seu amor está pensando em você...</div>
+    <div class="pensamento-amor">Seu amor está pensando em você...</div>
 
     <nav class="nav-bar hidden" id="menu">
         <div class="nav-item ativo" onclick="irPara('home', this)"><span>🏠</span>Início</div>
         <div class="nav-item" onclick="irPara('mimos', this)"><span>🎟️</span>Mimos</div>
         <div class="nav-item" onclick="irPara('sonhos', this)"><span>✨</span>Sonhos</div>
-        <div class="nav-item" onclick="irPara('correio', this)"><span>💌</span>Correio</div>
     </nav>
 
     <main id="app" class="hidden">
         <section id="home" class="secao ativa">
             <h1 class="titulo-lux" id="saudacao">Para Meu Amor</h1>
-            <img src="Amor.png" style="width:100%; max-width:350px; border-radius:25px; border: 3px solid var(--gold); margin-bottom: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
             <div id="timer" style="font-family: 'Great Vibes', cursive; font-size: 2rem; color: var(--gold); margin-bottom: 15px;"></div>
             
             <div class="glass-card">
-                <p id="label-raspa" style="font-size:0.7rem; font-weight:bold; letter-spacing:2px; color: var(--gold);">SURPRESA DO DIA</p>
+                <p id="label-raspa" style="font-size:0.7rem; font-weight:bold; color: var(--gold);">SURPRESA DE HOJE (1 POR DIA) ✨</p>
                 <div class="grid-raspa" id="raspaGrid"></div>
-            </div>
-
-            <div class="glass-card">
-                <p style="font-size:0.7rem; font-weight:bold; letter-spacing:1px;">NOSSO CALENDÁRIO</p>
-                <div class="cal-grid" id="calGrid"></div>
             </div>
         </section>
 
         <section id="mimos" class="secao">
             <h2 class="titulo-lux">Cupons de Carinho</h2>
-            <div id="cuponsGrid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width:100%; max-width:400px;"></div>
+            <div id="cuponsGrid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width:100%;"></div>
         </section>
 
         <section id="sonhos" class="secao">
             <h2 class="titulo-lux">Nossos Sonhos</h2>
-            <div id="listaSonhos" style="width:100%; max-width:400px; margin-bottom: 15px;"></div>
-            <div class="glass-card">
-                <input type="text" id="inputSonho" placeholder="O que vamos realizar?">
-                <button class="btn-lux" onclick="addSonho()">Adicionar Sonho</button>
-            </div>
-        </section>
-
-        <section id="correio" class="secao">
-            <h2 class="titulo-lux">Cartinhas de Amor</h2>
-            <div class="glass-card">
-                <textarea id="textoC" rows="4" placeholder="Escreva algo lindo..."></textarea>
-                <button class="btn-lux" onclick="enviarC()">Enviar com Amor 💌</button>
-            </div>
-            <div id="muralC" style="width:100%; max-width:400px;"></div>
+            <div id="listaSonhos" style="width:100%; margin-bottom: 15px;"></div>
         </section>
     </main>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-        import { getDatabase, ref, push, onValue, update, set } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
+        import { getDatabase, ref, onValue, update } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyCz3H8bjiuS2gNvxUr_G3Csd21wL5J1gLw",
@@ -182,53 +133,33 @@
         };
 
         function initVisual() {
-            const h = new Date().getHours();
-            const isDia = h >= 6 && h < 18;
-            document.body.style.background = isDia ? "radial-gradient(circle, #7b2cbf, #1a0033)" : "linear-gradient(to bottom, #050010, #1a0033)";
-            document.getElementById('astro-icon').innerText = isDia ? "☀️" : "🌙";
-            
             const bg = document.getElementById('bg-coracoes');
             bg.innerHTML = "";
             const emojis = ['❤️', '💖', '💘', '💜'];
             for(let i=0; i<25; i++) {
-                const c = document.createElement('div'); 
-                c.className = 'coracao-bg'; 
+                const c = document.createElement('div'); c.className = 'coracao-bg'; 
                 c.innerText = emojis[Math.floor(Math.random() * emojis.length)];
-                c.style.left = Math.random() * 100 + 'vw'; 
-                c.style.top = Math.random() * 100 + 'vh';
-                c.style.fontSize = (Math.random() * 20 + 30) + 'px'; // Corações grandes
-                c.style.animationDelay = Math.random() * 5 + 's'; 
-                bg.appendChild(c);
+                c.style.left = Math.random() * 100 + 'vw'; c.style.top = Math.random() * 100 + 'vh';
+                c.style.fontSize = (Math.random() * 20 + 30) + 'px';
+                c.style.animationDelay = Math.random() * 5 + 's'; bg.appendChild(c);
             }
-
             const diff = Math.floor((new Date() - new Date("2025-10-28")) / (1000 * 60 * 60 * 24));
             document.getElementById('timer').innerText = diff + " Dias Juntos";
-
-            const cal = document.getElementById('calGrid');
-            cal.innerHTML = "";
-            for(let i=1; i<=31; i++) {
-                const d = document.createElement('div'); d.className="dia-cal"; d.innerText=i;
-                d.onclick=()=>d.classList.toggle('marcado'); cal.appendChild(d);
-            }
         }
 
         function sync() {
-            const hojeStr = new Date().toLocaleDateString();
-            
-            // Definição de itens variados por usuário
+            const hoje = new Date().toLocaleDateString();
             const itensDuda = ["Beijo de 5 min 💋", "Açaí com tudo 🍧", "Massagem relax 💆‍♀️", "Sessão de fotos 📸"];
             const itensDele = ["Jantar especial 🍕", "Cafuné infinito 💆‍♂️", "Vale um filme 🎬", "Abraço de urso 🫂"];
-            
             const meusItens = (usuarioAtivo.includes("eduarda") || usuarioAtivo.includes("duda")) ? itensDuda : itensDele;
 
-            // Raspadinha Individual (o nó no Firebase inclui o nome do usuário)
-            onValue(ref(db, 'raspa_vIndividual_' + usuarioAtivo), s => {
-                const dataNo = s.val() || { data: "" };
+            onValue(ref(db, 'raspa_vFinal_' + usuarioAtivo), s => {
+                const d = s.val() || { raspadas: [false, false, false, false], dataUltima: "" };
                 const grid = document.getElementById('raspaGrid');
                 grid.innerHTML = "";
-                const jaRaspoHoje = dataNo.data === hojeStr;
-
-                if(jaRaspoHoje) document.getElementById('label-raspa').innerText = "VEM AMANHÃ! ✨";
+                
+                // Verifica se o usuário já gastou a raspadinha do dia hoje
+                const jaUsouHoje = d.dataUltima === hoje;
 
                 meusItens.forEach((txt, i) => {
                     const item = document.createElement('div'); item.className = "raspa-item";
@@ -237,70 +168,50 @@
                     
                     const cv = document.getElementById(`cv${i}`); const ctx = cv.getContext('2d'); cv.width=150; cv.height=150;
                     
-                    // Se já raspou hoje, deixa o canvas limpo para o prêmio ficar visível
-                    if(jaRaspoHoje) {
-                        ctx.clearRect(0,0,150,150);
+                    if(d.raspadas[i]) {
+                        ctx.clearRect(0,0,150,150); // Fica aberto se já foi raspado
                     } else {
                         ctx.fillStyle = '#9d4edd'; ctx.fillRect(0,0,150,150);
                         ctx.globalCompositeOperation = 'destination-out';
+
                         const draw = (e) => {
+                            // SÓ DEIXA RASPAR SE NÃO USOU A CHANCE DO DIA OU SE É UMA QUE JÁ ESTAVA ABERTA
+                            if(jaUsouHoje && !d.raspadas[i]) {
+                                return; // Trava a raspagem
+                            }
+
                             e.preventDefault(); const r = cv.getBoundingClientRect();
                             const x = (e.touches ? e.touches[0].clientX : e.clientX) - r.left;
                             const y = (e.touches ? e.touches[0].clientY : e.clientY) - r.top;
                             ctx.beginPath(); ctx.arc(x,y,25,0,Math.PI*2); ctx.fill();
+                            
                             const pix = ctx.getImageData(0,0,150,150).data;
                             let vago = 0; for(let p=3; p<pix.length; p+=4) if(pix[p]===0) vago++;
-                            if(vago > 5000 && dataNo.data !== hojeStr) { 
-                                update(ref(db, 'raspa_vIndividual_' + usuarioAtivo), { data: hojeStr }); 
+                            
+                            if(vago > 5000 && !d.raspadas[i]) { 
+                                let novas = d.raspadas; novas[i] = true;
+                                update(ref(db, 'raspa_vFinal_' + usuarioAtivo), { raspadas: novas, dataUltima: hoje });
                             }
                         };
                         cv.addEventListener('touchmove', draw); cv.addEventListener('mousemove', draw);
                     }
                 });
+                
+                if(jaUsouHoje) document.getElementById('label-raspa').innerText = "VOLTE AMANHÃ! 🌸";
             });
 
-            // Sincronização de Cupons, Sonhos e Correio
-            onValue(ref(db, 'cupons_vFinal'), s => {
-                const d = s.val() || { d: ["Massagem", "Vale Jantar", "Beijo de 1 min", "Açaí Médio"], u: [false,false,false,false], autores: ["","","",""] };
-                const grid = document.getElementById('cuponsGrid'); grid.innerHTML = "";
-                d.d.forEach((c, i) => {
-                    const isU = d.u[i];
-                    grid.innerHTML += `<div class="glass-card" style="padding:15px; cursor:pointer; ${isU?'opacity:0.4;':''}" onclick="usarC(${i})">
-                        <span style="font-family:'Playfair Display'; ${isU?'text-decoration:line-through; color:red;':''}">🎟️ ${c}</span>
-                        <div style="font-size:0.5rem; margin-top:5px;">${isU?'Usado por: '+d.autores[i]:'Disponível'}</div>
-                    </div>`;
-                });
-                window.usarC = (i) => { if(!d.u[i]) { d.u[i]=true; d.autores[i]=usuarioAtivo; update(ref(db, 'cupons_vFinal'), d); } };
-            });
-
+            // Sonhos Compartilhados
             onValue(ref(db, 'sonhos_v2'), s => {
                 const l = document.getElementById('listaSonhos'); l.innerHTML = "";
                 s.forEach(item => {
                     const v = item.val();
-                    l.innerHTML += `<div style="display:flex; align-items:center; background:rgba(255,255,255,0.1); padding:10px 15px; border-radius:15px; margin-bottom:8px;">
-                        <input type="checkbox" style="margin-right:12px; width:22px; height:22px;" ${v.status?'checked':''} onchange="update(ref(db, 'sonhos_v2/${item.key}'), {status:!${v.status}})">
-                        <span style="font-size:0.95rem; flex:1; text-align:left; font-family:'Playfair Display'; ${v.status?'text-decoration:line-through; opacity:0.5;':''}">${v.texto}</span>
+                    l.innerHTML += `<div style="display:flex; align-items:center; background:rgba(255,255,255,0.1); padding:10px; border-radius:15px; margin-bottom:8px;">
+                        <input type="checkbox" style="width:20px; height:20px; margin-right:10px;" ${v.status?'checked':''} onchange="update(ref(db, 'sonhos_v2/${item.key}'), {status:!${v.status}})">
+                        <span style="font-family:'Playfair Display'; ${v.status?'text-decoration:line-through; opacity:0.5;':''}">${v.texto}</span>
                     </div>`;
                 });
             });
-
-            onValue(ref(db, 'correio_v2'), s => {
-                const m = document.getElementById('muralC'); m.innerHTML = "";
-                s.forEach(c => { m.innerHTML = `<div class="glass-card" style="text-align:left; font-family:'Playfair Display'; font-size:0.9rem; font-style:italic;">${c.val().texto}</div>` + m.innerHTML; });
-            });
         }
-
-        window.addSonho = () => {
-            const v = document.getElementById('inputSonho').value;
-            if(v) push(ref(db, 'sonhos_v2'), { texto: v, status: false });
-            document.getElementById('inputSonho').value = "";
-        };
-
-        window.enviarC = () => {
-            const v = document.getElementById('textoC').value;
-            if(v) push(ref(db, 'correio_v2'), { texto: `${v}\n\n— Com carinho: ${usuarioAtivo} 🌹` });
-            document.getElementById('textoC').value = "";
-        };
     </script>
 </body>
 </html>
