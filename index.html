@@ -15,7 +15,6 @@
             background: var(--dark); color: white; transition: 1s;
         }
 
-        /* Fundo Animado */
         .coracao-bg { position: absolute; animation: pulsar 4s infinite ease-in-out; z-index: 0; pointer-events: none; opacity: 0.3; }
         @keyframes pulsar { 0%, 100% { transform: scale(1); opacity: 0.2; } 50% { transform: scale(1.4); opacity: 0.5; } }
         .astro { position: absolute; top: 20px; right: 20px; font-size: 3rem; z-index: 1; }
@@ -38,13 +37,11 @@
 
         .titulo-lux { font-family: 'Playfair Display', serif; font-size: 2rem; color: var(--gold); margin: 10px 0; }
 
-        /* Raspadinha */
         .grid-raspa { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; }
         .raspa-item { position: relative; aspect-ratio: 1; border-radius: 15px; overflow: hidden; background: #fff; border: 1.5px solid var(--purple); }
-        .texto-escondido { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; color: #1a0033; font-weight: bold; text-align: center; }
-        canvas { position: absolute; inset: 0; z-index: 2; }
+        .texto-escondido { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; color: #1a0033; font-weight: bold; text-align: center; z-index: 1; }
+        canvas { position: absolute; inset: 0; z-index: 2; touch-action: none; }
 
-        /* Calendário */
         .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; margin-top: 10px; }
         .dia-cal { font-size: 0.6rem; padding: 8px 0; border: 1px solid rgba(255,255,255,0.1); border-radius: 5px; }
         .marcado { background: var(--purple) !important; color: white; }
@@ -175,7 +172,7 @@
         }
 
         function sync() {
-            onValue(ref(db, 'raspa_v6'), s => {
+            onValue(ref(db, 'raspa_v7'), s => {
                 const d = s.val() || { itens: ["Beijo", "Açaí", "Massagem", "Jantar"], raspados: [false,false,false,false] };
                 const grid = document.getElementById('raspaGrid'); grid.innerHTML = "";
                 d.itens.forEach((txt, i) => {
@@ -183,25 +180,23 @@
                     item.innerHTML = `<div class="texto-escondido">${txt}</div><canvas id="cv${i}"></canvas>`;
                     grid.appendChild(item);
                     const cv = document.getElementById(`cv${i}`); const ctx = cv.getContext('2d'); cv.width=150; cv.height=150;
-                    if(d.raspados[i]) ctx.clearRect(0,0,150,150);
-                    else {
-                        ctx.fillStyle = '#9d4edd'; ctx.fillRect(0,0,150,150);
-                        const draw = (e) => {
-                            e.preventDefault(); const r = cv.getBoundingClientRect();
-                            const x = (e.touches ? e.touches[0].clientX : e.clientX) - r.left;
-                            const y = (e.touches ? e.touches[0].clientY : e.clientY) - r.top;
-                            ctx.globalCompositeOperation = 'destination-out';
-                            ctx.beginPath(); ctx.arc(x,y,20,0,Math.PI*2); ctx.fill();
-                            const pix = ctx.getImageData(0,0,150,150).data;
-                            let count = 0; for(let p=3; p<pix.length; p+=4) if(pix[p]===0) count++;
-                            if(count > 8000 && !d.raspados[i]) { d.raspados[i] = true; update(ref(db, 'raspa_v6'), { raspados: d.raspados }); }
-                        };
-                        cv.addEventListener('touchmove', draw); cv.addEventListener('mousemove', draw);
-                    }
+                    
+                    // Preenche com a camada para raspar
+                    ctx.fillStyle = '#9d4edd'; 
+                    ctx.fillRect(0,0,150,150);
+                    ctx.globalCompositeOperation = 'destination-out';
+
+                    const draw = (e) => {
+                        e.preventDefault(); const r = cv.getBoundingClientRect();
+                        const x = (e.touches ? e.touches[0].clientX : e.clientX) - r.left;
+                        const y = (e.touches ? e.touches[0].clientY : e.clientY) - r.top;
+                        ctx.beginPath(); ctx.arc(x,y,20,0,Math.PI*2); ctx.fill();
+                    };
+                    cv.addEventListener('touchmove', draw); cv.addEventListener('mousemove', draw);
                 });
             });
 
-            onValue(ref(db, 'cupons_v6'), s => {
+            onValue(ref(db, 'cupons_v7'), s => {
                 const d = s.val() || { d: ["Massagem", "Vale Jantar", "Vale Beijo", "Açaí"], u: [false,false,false,false], autores: ["","","",""] };
                 const grid = document.getElementById('cuponsGrid'); grid.innerHTML = "";
                 d.d.forEach((c, i) => {
@@ -211,16 +206,17 @@
                         <div style="font-size:0.5rem; margin-top:5px;">${isU?'Por: '+d.autores[i]:'Disponível'}</div>
                     </div>`;
                 });
-                window.usarC = (i) => { if(!d.u[i]) { d.u[i]=true; d.autores[i]=usuarioAtivo; update(ref(db, 'cupons_v6'), d); } };
+                window.usarC = (i) => { if(!d.u[i]) { d.u[i]=true; d.autores[i]=usuarioAtivo; update(ref(db, 'cupons_v7'), d); } };
             });
 
+            // Lista de Sonhos Grudada
             onValue(ref(db, 'sonhos_v2'), s => {
                 const l = document.getElementById('listaSonhos'); l.innerHTML = "";
                 s.forEach(item => {
                     const v = item.val();
-                    l.innerHTML += `<div style="display:flex; align-items:center; gap:8px; margin-bottom:5px; background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">
-                        <input type="checkbox" ${v.status?'checked':''} onchange="update(ref(getDatabase(), 'sonhos_v2/${item.key}'), {status:!${v.status}})">
-                        <span style="font-size:0.8rem; ${v.status?'text-decoration:line-through; opacity:0.5;':''}">${v.texto}</span>
+                    l.innerHTML += `<div style="display:flex; align-items:center; background:rgba(255,255,255,0.1); padding:8px 12px; border-radius:10px; margin-bottom:5px;">
+                        <input type="checkbox" style="margin:0 8px 0 0; width:18px; height:18px;" ${v.status?'checked':''} onchange="update(ref(getDatabase(), 'sonhos_v2/${item.key}'), {status:!${v.status}})">
+                        <span style="font-size:0.85rem; flex:1; text-align:left; ${v.status?'text-decoration:line-through; opacity:0.5;':''}">${v.texto}</span>
                     </div>`;
                 });
             });
