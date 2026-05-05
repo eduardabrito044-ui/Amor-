@@ -73,7 +73,8 @@
         .texto-escondido { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 600; color: #240046; text-align: center; padding: 5px; }
         canvas { position: absolute; inset: 0; z-index: 2; cursor: crosshair; }
 
-        .btn-lux { background: var(--purple-soft); color: white; border: none; padding: 16px; border-radius: 50px; font-weight: 600; width: 100%; cursor: pointer; transition: 0.3s; }
+        .btn-lux { background: var(--purple-soft); color: white; border: none; padding: 16px; border-radius: 50px; font-weight: 600; width: 100%; cursor: pointer; transition: 0.2s; }
+        .btn-lux:active { transform: scale(0.95); opacity: 0.8; }
 
         .overlay { position: fixed; inset: 0; background: radial-gradient(circle, #1a1a1a, #000); z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; }
         .hidden { display: none !important; }
@@ -88,8 +89,8 @@
 
     <div id="login" class="overlay">
         <h1 class="titulo-lux" style="color: #fff; -webkit-text-fill-color: initial;">Para Você</h1>
-        <input type="password" id="pw" placeholder="Sua senha secreta" style="max-width: 250px; text-align: center;">
-        <button class="btn-lux" style="max-width: 200px;" onclick="entrar()">Entrar</button>
+        <input type="password" id="pw" placeholder="Sua senha secreta" style="max-width: 250px; text-align: center; color: white;">
+        <button class="btn-lux" id="btnEntrar" style="max-width: 200px;">Entrar</button>
     </div>
 
     <nav class="nav-bar hidden" id="menu">
@@ -152,6 +153,13 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
+
+        // Tornar funções globais para os botões funcionarem
+        window.db = db;
+        window.getDatabase = getDatabase;
+        window.ref = ref;
+        window.update = update;
+
         const desafios = ["Jantar Romântico", "Massagem Relax", "Açaí Geladinho", "Cinema em Casa", "PIX de Carinho", "Noite de Jogos", "Cozinhar Juntos", "Passeio Surpresa"];
 
         window.irPara = (id, el) => {
@@ -161,12 +169,16 @@
             el.classList.add('ativo');
         };
 
-        window.entrar = () => {
-            if(document.getElementById('pw').value === "2810") {
+        // Função de entrada corrigida
+        document.getElementById('btnEntrar').onclick = () => {
+            const senha = document.getElementById('pw').value;
+            if(senha === "2810") {
                 document.getElementById('login').classList.add('hidden');
                 document.getElementById('app').classList.remove('hidden');
                 document.getElementById('menu').classList.remove('hidden');
                 start();
+            } else {
+                alert("Senha incorreta, tente novamente 💜");
             }
         };
 
@@ -180,7 +192,104 @@
                 document.getElementById('saudacao').innerText = "CÉU ESTRELADO & INFINITO";
             }
 
-            const inicio = new Date("2025-10-28"); // DATA ATUALIZADA
-            setInterval(() => {
+            const inicio = new Date("2025-10-28");
+            const updateTimer = () => {
                 const diff = Math.floor((new Date() - inicio) / (1000 * 60 * 60 * 24));
-                document.getElementById('timer').innerText = diff
+                document.getElementById('timer').innerText = diff + " dias de história";
+            };
+            updateTimer();
+            setInterval(updateTimer, 86400000);
+
+            const cal = document.getElementById('calGrid');
+            cal.innerHTML = "";
+            for(let i=1; i<=31; i++) {
+                const d = document.createElement('div'); d.className="dia-cal"; d.innerText=i;
+                d.onclick=()=>d.classList.toggle('marcado'); cal.appendChild(d);
+            }
+
+            onValue(ref(db, 'raspa_btn'), s => {
+                let d = s.val();
+                if(!d || d.completas >= 4) {
+                    const sorteio = desafios.sort(() => 0.5 - Math.random()).slice(0,4);
+                    set(ref(db, 'raspa_btn'), { itens: sorteio, completas: 0, ultimaData: "", raspados: [false,false,false,false] });
+                } else { renderRaspa(d); }
+            });
+
+            sync();
+        }
+
+        function renderRaspa(dados) {
+            const grid = document.getElementById('raspaGrid'); grid.innerHTML = "";
+            const hoje = new Date().toLocaleDateString();
+            const jaFez = dados.ultimaData === hoje;
+
+            dados.itens.forEach((txt, i) => {
+                const item = document.createElement('div'); item.className = "raspa-item";
+                item.innerHTML = `<div class="texto-escondido">${txt}</div><canvas id="c${i}"></canvas>`;
+                grid.appendChild(item);
+                const cv = document.getElementById(`c${i}`);
+                const ctx = cv.getContext('2d');
+                cv.width = 150; cv.height = 150;
+                if(dados.raspados[i]) { ctx.clearRect(0,0,150,150); }
+                else {
+                    ctx.fillStyle = '#9d4edd'; ctx.fillRect(0,0,150,150);
+                    const rasp = (e) => {
+                        if(jaFez) return;
+                        e.preventDefault();
+                        const r = cv.getBoundingClientRect();
+                        const x = (e.touches ? e.touches[0].clientX : e.clientX) - r.left;
+                        const y = (e.touches ? e.touches[0].clientY : e.clientY) - r.top;
+                        ctx.globalCompositeOperation = 'destination-out';
+                        ctx.beginPath(); ctx.arc(x,y,25,0,Math.PI*2); ctx.fill();
+                        const pix = ctx.getImageData(0,0,150,150).data;
+                        let count = 0; for(let p=3; p<pix.length; p+=4) if(pix[p]===0) count++;
+                        if(count > 8000) {
+                            dados.raspados[i] = true;
+                            update(ref(db, 'raspa_btn'), { raspados: dados.raspados, completas: dados.completas+1, ultimaData: hoje });
+                        }
+                    };
+                    cv.addEventListener('touchmove', rasp); cv.addEventListener('mousemove', rasp);
+                }
+            });
+        }
+
+        window.addSonho = () => {
+            const val = document.getElementById('inputSonho').value;
+            if(val) push(ref(db, 'sonhos_v2'), { texto: val, status: false });
+            document.getElementById('inputSonho').value = "";
+        };
+
+        window.enviarC = () => {
+            const val = document.getElementById('textoC').value;
+            if(val) push(ref(db, 'correio_v2'), { texto: val });
+            document.getElementById('textoC').value = "";
+        };
+
+        function sync() {
+            onValue(ref(db, 'sonhos_v2'), s => {
+                const l = document.getElementById('listaSonhos'); l.innerHTML = "";
+                s.forEach(item => {
+                    const d = item.val();
+                    l.innerHTML += `<div class="glass-card" style="padding:15px; margin-bottom:10px; display:flex; align-items:center; gap:12px; text-align:left;">
+                        <input type="checkbox" ${d.status?'checked':''} onchange="update(ref(window.db, 'sonhos_v2/${item.key}'), {status:!${d.status}})">
+                        <span style="font-size:0.8rem;">${d.texto}</span>
+                    </div>`;
+                });
+            });
+            onValue(ref(db, 'correio_v2'), s => {
+                const m = document.getElementById('muralC'); m.innerHTML = "";
+                s.forEach(c => { m.innerHTML = `<div class="glass-card" style="padding:15px; font-size:0.8rem; text-align:left; margin-bottom:10px;">${c.val().texto}</div>` + m.innerHTML; });
+            });
+            onValue(ref(db, 'cupons_v2'), s => {
+                const d = s.val() || { u: 0 };
+                const cGrid = document.getElementById('cuponsGrid'); cGrid.innerHTML = "";
+                ["Vale Beijo", "Massagem", "Cinema", "Jantar"].forEach((c, i) => {
+                    const isU = i < d.u;
+                    cGrid.innerHTML += `<div class="glass-card" style="font-size:0.7rem; padding:15px; opacity:${isU?0.3:1}; cursor:pointer;" onclick="if(!${isU}) update(ref(window.db, 'cupons_v2'), {u:${d.u+1}})">🎟️ ${c}</div>`;
+                });
+                if(d.u >= 4) set(ref(db, 'cupons_v2'), { u: 0 });
+            });
+        }
+    </script>
+</body>
+</html>
