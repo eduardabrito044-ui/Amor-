@@ -150,6 +150,10 @@
             
             <div id="timer" style="font-family: 'Great Vibes', cursive; font-size: 2rem; color: var(--gold); margin-bottom: 15px; text-align: center; line-height: 1.3;"></div>
 
+            <div id="pwa-install-container" style="display: none; width: 100%; max-width: 400px; margin-bottom: 15px;">
+                <button id="btn-pwa-install" class="btn-lux" style="background: linear-gradient(45deg, #d4af37, #b59023); color: #0a001a; box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);">Instalar Aplicativo 📲</button>
+            </div>
+
             <div class="glass-card">
                 <p id="label-raspa" style="font-size:0.7rem; font-weight:bold; letter-spacing:2px; color: var(--gold);">SURPRESA DE HOJE</p>
                 <div class="grid-raspa" id="raspaGrid"></div>
@@ -198,11 +202,36 @@
     </main>
 
     <script>
+        let depherrPrompt;
+        const installContainer = document.getElementById('pwa-install-container');
+        const installBtn = document.getElementById('btn-pwa-install');
+
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('sw.js').catch(err => console.log("Erro SW:", err));
             });
         }
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            depherrPrompt = e;
+            installContainer.style.display = 'block';
+        });
+
+        installBtn.addEventListener('click', async () => {
+            if (depherrPrompt) {
+                depherrPrompt.prompt();
+                const { outcome } = await depherrPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    installContainer.style.display = 'none';
+                }
+                depherrPrompt = null;
+            }
+        });
+
+        window.addEventListener('appinstalled', () => {
+            installContainer.style.display = 'none';
+        });
     </script>
 
     <script type="module">
