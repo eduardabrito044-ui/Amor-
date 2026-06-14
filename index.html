@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Nosso Jardim Eterno 💜</title>
-    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@400;600&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@400;600&family=Playfair+Display:ital,wght=0,700;1,700&display=swap" rel="stylesheet">
+
     <style>
         :root { --gold: #d4af37; --purple: #7b2cbf; --dark: #0a001a; --pink: #ff4d6d; }
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
-        
+
         body { 
             margin: 0; font-family: 'Montserrat', sans-serif; overflow-x: hidden; height: 100vh; width: 100vw;
             background: var(--dark); color: white; transition: 1s;
@@ -35,12 +35,12 @@
         .secao.ativa { display: flex; flex-direction: column; align-items: center; }
 
         .nav-bar {
-            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 92%; max-width: 400px;
+            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 95%; max-width: 450px;
             background: rgba(0,0,0,0.85); backdrop-filter: blur(15px); border-radius: 30px; display: flex; padding: 10px; border: 1px solid var(--purple); z-index: 1000;
         }
-        .nav-item { color: #fff; opacity: 0.4; font-size: 0.7rem; cursor: pointer; text-align: center; flex: 1; }
+        .nav-item { color: #fff; opacity: 0.4; font-size: 0.65rem; cursor: pointer; text-align: center; flex: 1; }
         .nav-item.ativo { opacity: 1; color: var(--gold); font-weight: bold; }
-        .nav-item span { display: block; font-size: 1.3rem; }
+        .nav-item span { display: block; font-size: 1.2rem; margin-bottom: 2px; }
 
         .glass-card {
             background: rgba(255,255,255,0.08); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.15);
@@ -66,15 +66,22 @@
             font-family: 'Montserrat', sans-serif; letter-spacing: 1px;
             box-shadow: 0 4px 15px rgba(123, 44, 191, 0.4);
         }
+        .btn-lux:disabled { background: #555; cursor: not-allowed; box-shadow: none; }
 
         input, textarea { 
             width: 100%; background: rgba(255,255,255,0.1); border: 1.5px solid var(--purple); 
             border-radius: 15px; padding: 14px; color: white; margin-bottom: 12px;
             font-family: 'Montserrat', sans-serif;
         }
-        
+
         .overlay { position: fixed; inset: 0; background: radial-gradient(circle, #1a0033, #050010); z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; }
         .hidden { display: none !important; }
+
+        /* Estilos do Mural de Fotos */
+        .mural-fotos { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width: 100%; max-width: 400px; }
+        .foto-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 8px; border-radius: 15px; text-align: center; }
+        .foto-card img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 10px; border: 1px solid var(--purple); }
+        .foto-card span { font-size: 0.65rem; display: block; margin-top: 5px; color: #ccc; }
     </style>
 </head>
 <body>
@@ -94,6 +101,7 @@
     <nav class="nav-bar hidden" id="menu">
         <div class="nav-item ativo" onclick="irPara('home', this)"><span>🏠</span>Início</div>
         <div class="nav-item" onclick="irPara('mimos', this)"><span>🎟️</span>Mimos</div>
+        <div class="nav-item" onclick="irPara('fotos', this)"><span>📸</span>Fotos</div>
         <div class="nav-item" onclick="irPara('sonhos', this)"><span>✨</span>Sonhos</div>
         <div class="nav-item" onclick="irPara('correio', this)"><span>💌</span>Correio</div>
     </nav>
@@ -103,7 +111,7 @@
             <h1 class="titulo-lux" id="msgBoasVindas">Para Meu Amor</h1>
             <img src="Amor.png" style="width:100%; max-width:350px; border-radius:25px; border: 3px solid var(--gold); margin-bottom: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
             <div id="timer" style="font-family: 'Great Vibes', cursive; font-size: 2rem; color: var(--gold); margin-bottom: 15px;"></div>
-            
+
             <div class="glass-card">
                 <p id="label-raspa" style="font-size:0.7rem; font-weight:bold; letter-spacing:2px; color: var(--gold);">SURPRESA DE HOJE</p>
                 <div class="grid-raspa" id="raspaGrid"></div>
@@ -118,6 +126,18 @@
         <section id="mimos" class="secao">
             <h2 class="titulo-lux">Cupons de Carinho</h2>
             <div id="cuponsGrid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width:100%; max-width:400px;"></div>
+        </section>
+
+        <section id="fotos" class="secao">
+            <h2 class="titulo-lux">Nossos Momentos</h2>
+            <div class="glass-card">
+                <p style="font-size:0.8rem; margin-bottom:10px; color:var(--gold);">Guarde uma foto da sua galeria aqui 💜</p>
+                <input type="file" id="inputFoto" accept="image/*" style="display:none;">
+                <button class="btn-lux" onclick="document.getElementById('inputFoto').click()">Selecionar Foto</button>
+                <button class="btn-lux" id="btnUpload" onclick="fazerUploadFoto()" style="background:linear-gradient(45deg, #2a9d8f, #e9c46a); display:none; margin-top:8px;">Enviar Foto ✨</button>
+                <div id="statusUpload" style="font-size:0.8rem; margin-top:8px; color:var(--gold);"></div>
+            </div>
+            <div class="mural-fotos" id="muralFotos"></div>
         </section>
 
         <section id="sonhos" class="secao">
@@ -141,17 +161,21 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-        import { getDatabase, ref, push, onValue, update, set } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
+        import { getDatabase, ref, push, onValue, update } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
+        // Importando as ferramentas necessárias para upload de arquivos
+        import { getStorage, ref as sRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-storage.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyCz3H8bjiuS2gNvxUr_G3Csd21wL5J1gLw",
             authDomain: "project-3726343372287499417.firebaseapp.com",
             databaseURL: "https://project-3726343372287499417-default-rtdb.firebaseio.com",
-            projectId: "project-3726343372287499417"
+            projectId: "project-3726343372287499417",
+            storageBucket: "project-3726343372287499417.firebasestorage.app" // Balde de arquivos ativado
         };
 
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
+        const storage = getStorage(app); // Inicializando o storage das fotos
         let usuarioAtivo = "";
 
         window.irPara = (id, el) => {
@@ -179,7 +203,7 @@
             const isDia = h >= 6 && h < 18;
             document.body.style.background = isDia ? "radial-gradient(circle, #7b2cbf, #1a0033)" : "linear-gradient(to bottom, #050010, #1a0033)";
             document.getElementById('astro-icon').innerText = isDia ? "☀️" : "🌙";
-            
+
             const bg = document.getElementById('bg-coracoes');
             bg.innerHTML = "";
             const emojis = ['❤️', '💖', '💘', '💜'];
@@ -205,17 +229,59 @@
             }
         }
 
+        // Listener para quando uma imagem for escolhida do aparelho
+        document.getElementById('inputFoto').addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                document.getElementById('btnUpload').style.display = 'block';
+                document.getElementById('statusUpload').innerText = `Selecionado: ${file.name}`;
+            }
+        });
+
+        // Função responsável por mandar a foto para o Firebase Storage
+        window.fazerUploadFoto = async () => {
+            const fileInput = document.getElementById('inputFoto');
+            const file = fileInput.files[0];
+            const btn = document.getElementById('btnUpload');
+            const status = document.getElementById('statusUpload');
+
+            if (!file) return;
+
+            try {
+                btn.disabled = true;
+                status.innerText = "Enviando para o jardim... ⏳";
+
+                // Cria um nome único usando o timestamp atual
+                const nomeArquivo = Date.now() + "_" + file.name;
+                const arquivoRef = sRef(storage, 'fotos_jardim/' + nomeArquivo);
+
+                // Envia os bytes do arquivo para a nuvem
+                await uploadBytes(arquivoRef, file);
+                // Pega a URL pública gerada para a imagem
+                const urlImagem = await getDownloadURL(arquivoRef);
+
+                // Salva a URL e quem postou no banco de dados em tempo real
+                await push(ref(db, 'fotos_v1'), {
+                    url: urlImagem,
+                    autor: usuarioAtivo,
+                    data: new Date().toLocaleDateString()
+                });
+
+                status.innerText = "Foto guardada com sucesso! 🥰";
+                fileInput.value = "";
+                btn.style.display = 'none';
+            } catch (erro) {
+                console.error(erro);
+                status.innerText = "Erro ao enviar. Tente novamente!";
+                btn.disabled = false;
+            }
+        };
+
         function sync() {
             const hojeStr = new Date().toLocaleDateString();
-            
-            // Itens personalizados para Eduarda e seu Namorado
             const itensEduarda = ["Beijo Apaixonado", "Açaí Geladinho", "Massagem Relax", "Jantar Especial"];
             const itensNamorado = ["Vale Cinema", "Dormir Juntinho", "Cafuné Infinito", "Doce Favorito"];
-            
-            // Escolhe a lista baseada no nome (ajuste o nome "Eduarda" se necessário)
             const meusItens = (usuarioAtivo.toLowerCase().includes("eduarda") || usuarioAtivo.toLowerCase().includes("duda")) ? itensEduarda : itensNamorado;
-
-            // Nó individual no banco para salvar o progresso de cada um
             const raspaRef = ref(db, 'raspa_individual/' + usuarioAtivo.replace(/\s/g, '_'));
 
             onValue(raspaRef, s => {
@@ -230,10 +296,9 @@
                     const item = document.createElement('div'); item.className = "raspa-item";
                     item.innerHTML = `<div class="texto-escondido">${txt}</div><canvas id="cv${i}"></canvas>`;
                     grid.appendChild(item);
-                    
+
                     const cv = document.getElementById(`cv${i}`); const ctx = cv.getContext('2d'); cv.width=150; cv.height=150;
-                    
-                    // Se já foi raspada anteriormente, deixa limpo para ver o prêmio
+
                     if(d.raspadas[i]) { 
                         ctx.clearRect(0,0,150,150); 
                     } else {
@@ -241,17 +306,15 @@
                         ctx.globalCompositeOperation = 'destination-out';
 
                         const draw = (e) => {
-                            // Só deixa raspar se ainda não usou a chance de hoje
                             if(jaRaspoHoje) return;
-
                             e.preventDefault(); const r = cv.getBoundingClientRect();
                             const x = (e.touches ? e.touches[0].clientX : e.clientX) - r.left;
                             const y = (e.touches ? e.touches[0].clientY : e.clientY) - r.top;
                             ctx.beginPath(); ctx.arc(x,y,25,0,Math.PI*2); ctx.fill();
-                            
+
                             const pix = ctx.getImageData(0,0,150,150).data;
                             let vago = 0; for(let p=3; p<pix.length; p+=4) if(pix[p]===0) vago++;
-                            
+
                             if(vago > 5000) { 
                                 let novasRaspadas = d.raspadas;
                                 novasRaspadas[i] = true;
@@ -263,7 +326,20 @@
                 });
             });
 
-            // Sincronização de Cupons, Sonhos e Correio (permanecem iguais)
+            // Sincronização em tempo real do mural de fotos
+            onValue(ref(db, 'fotos_v1'), s => {
+                const mural = document.getElementById('muralFotos');
+                mural.innerHTML = "";
+                s.forEach(fotoSnapshot => {
+                    const dadosFoto = fotoSnapshot.val();
+                    // Coloca as fotos mais recentes no topo do mural
+                    mural.innerHTML = `<div class="foto-card">
+                        <img src="${dadosFoto.url}" alt="Nossos momentos">
+                        <span>Por: ${dadosFoto.autor} (${dadosFoto.data})</span>
+                    </div>` + mural.innerHTML;
+                });
+            });
+
             onValue(ref(db, 'cupons_vFinal'), s => {
                 const d = s.val() || { d: ["Massagem", "Vale Jantar", "Beijo de 1 min", "Açaí Médio"], u: [false,false,false,false], autores: ["","","",""] };
                 const grid = document.getElementById('cuponsGrid'); grid.innerHTML = "";
