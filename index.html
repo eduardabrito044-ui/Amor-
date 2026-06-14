@@ -133,8 +133,8 @@
             <div class="glass-card">
                 <p style="font-size:0.8rem; margin-bottom:10px; color:var(--gold);">Guarde uma foto da sua galeria aqui 💜</p>
                 <input type="file" id="inputFoto" accept="image/*" style="display:none;">
-                <button class="btn-lux" onclick="document.getElementById('inputFoto').click()">Selecionar Foto</button>
-                <button class="btn-lux" id="btnUpload" onclick="fazerUploadFoto()" style="background:linear-gradient(45deg, #2a9d8f, #e9c46a); display:none; margin-top:8px;">Enviar Foto ✨</button>
+                <button class="btn-lux" onclick="document.getElementById('inputFoto').click()">Selecionar da Galeria</button>
+                <button class="btn-lux" id="btnUpload" onclick="enviarFotoDirect()" style="background:linear-gradient(45deg, #2a9d8f, #e9c46a); display:none; margin-top:8px;">Enviar Foto ✨</button>
                 <div id="statusUpload" style="font-size:0.8rem; margin-top:8px; color:var(--gold);"></div>
             </div>
             <div class="mural-fotos" id="muralFotos"></div>
@@ -162,20 +162,16 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
         import { getDatabase, ref, push, onValue, update } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
-        // Importando as ferramentas necessárias para upload de arquivos
-        import { getStorage, ref as sRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-storage.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyCz3H8bjiuS2gNvxUr_G3Csd21wL5J1gLw",
             authDomain: "project-3726343372287499417.firebaseapp.com",
             databaseURL: "https://project-3726343372287499417-default-rtdb.firebaseio.com",
-            projectId: "project-3726343372287499417",
-            storageBucket: "project-3726343372287499417.firebasestorage.app" // Balde de arquivos ativado
+            projectId: "project-3726343372287499417"
         };
 
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
-        const storage = getStorage(app); // Inicializando o storage das fotos
         let usuarioAtivo = "";
 
         window.irPara = (id, el) => {
@@ -229,17 +225,17 @@
             }
         }
 
-        // Listener para quando uma imagem for escolhida do aparelho
+        // Listener para verificar quando escolheu a foto do celular
         document.getElementById('inputFoto').addEventListener('change', (e) => {
             const file = e.target.files[0];
             if (file) {
                 document.getElementById('btnUpload').style.display = 'block';
-                document.getElementById('statusUpload').innerText = `Selecionado: ${file.name}`;
+                document.getElementById('statusUpload').innerText = "Foto pronta para enviar! ✨";
             }
         });
 
-        // Função responsável por mandar a foto para o Firebase Storage
-        window.fazerUploadFoto = async () => {
+        // Função que comprime a imagem localmente e envia direto pro Database
+        window.enviarFotoDirect = () => {
             const fileInput = document.getElementById('inputFoto');
             const file = fileInput.files[0];
             const btn = document.getElementById('btnUpload');
@@ -247,34 +243,45 @@
 
             if (!file) return;
 
-            try {
-                btn.disabled = true;
-                status.innerText = "Enviando para o jardim... ⏳";
+            btn.disabled = true;
+            status.innerText = "Guardando no jardim... ⏳";
 
-                // Cria um nome único usando o timestamp atual
-                const nomeArquivo = Date.now() + "_" + file.name;
-                const arquivoRef = sRef(storage, 'fotos_jardim/' + nomeArquivo);
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = function (event) {
+                const img = new Image();
+                img.src = event.target.result;
+                img.onload = function () {
+                    // Configura um tamanho máximo otimizado para celulares (ex: 400px de largura)
+                    const canvas = document.createElement('canvas');
+                    const MAX_WIDTH = 400;
+                    const scaleSize = MAX_WIDTH / img.width;
+                    canvas.width = MAX_WIDTH;
+                    canvas.height = img.height * scaleSize;
 
-                // Envia os bytes do arquivo para a nuvem
-                await uploadBytes(arquivoRef, file);
-                // Pega a URL pública gerada para a imagem
-                const urlImagem = await getDownloadURL(arquivoRef);
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
-                // Salva a URL e quem postou no banco de dados em tempo real
-                await push(ref(db, 'fotos_v1'), {
-                    url: urlImagem,
-                    autor: usuarioAtivo,
-                    data: new Date().toLocaleDateString()
-                });
+                    // Converte para jpeg comprimido bem levinho
+                    const dataUrlComprimida = canvas.toDataURL('image/jpeg', 0.6);
 
-                status.innerText = "Foto guardada com sucesso! 🥰";
-                fileInput.value = "";
-                btn.style.display = 'none';
-            } catch (erro) {
-                console.error(erro);
-                status.innerText = "Erro ao enviar. Tente novamente!";
-                btn.disabled = false;
-            }
+                    // Envia direto pro Realtime Database
+                    push(ref(db, 'mural_fotos_direto'), {
+                        imagem: dataUrlComprimida,
+                        autor: usuarioAtivo,
+                        data: new Date().toLocaleDateString()
+                    }).then(() => {
+                        status.innerText = "Foto guardada com sucesso! 🥰";
+                        fileInput.value = "";
+                        btn.style.display = 'none';
+                        btn.disabled = false;
+                    }).catch((err) => {
+                        console.error(err);
+                        status.innerText = "Erro ao enviar. Tente novamente!";
+                        btn.disabled = false;
+                    });
+                };
+            };
         };
 
         function sync() {
@@ -326,16 +333,15 @@
                 });
             });
 
-            // Sincronização em tempo real do mural de fotos
-            onValue(ref(db, 'fotos_v1'), s => {
+            // Sincronização em tempo real do mural de fotos direto do Database
+            onValue(ref(db, 'mural_fotos_direto'), s => {
                 const mural = document.getElementById('muralFotos');
                 mural.innerHTML = "";
-                s.forEach(fotoSnapshot => {
-                    const dadosFoto = fotoSnapshot.val();
-                    // Coloca as fotos mais recentes no topo do mural
+                s.forEach(snapshot => {
+                    const f = snapshot.val();
                     mural.innerHTML = `<div class="foto-card">
-                        <img src="${dadosFoto.url}" alt="Nossos momentos">
-                        <span>Por: ${dadosFoto.autor} (${dadosFoto.data})</span>
+                        <img src="${f.imagem}" alt="Momento">
+                        <span>Por: ${f.autor} (${f.data})</span>
                     </div>` + mural.innerHTML;
                 });
             });
