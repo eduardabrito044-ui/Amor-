@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Nosso Jardim Eterno 💜</title>
+    
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#7b2cbf">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@400;600&family=Playfair+Display:ital,wght=0,700;1,700&display=swap" rel="stylesheet">
 
     <style>
@@ -48,7 +54,7 @@
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
         }
 
-        .titulo-lux { font-family: 'Great Vibes', cursive; font-size: 2.8rem; color: var(--gold); margin: 15px 0; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
+        .titulo-lux font-family: 'Great Vibes', cursive; font-size: 2.8rem; color: var(--gold); margin: 15px 0; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
 
         .grid-raspa { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; width: 100%; }
         .raspa-item { position: relative; aspect-ratio: 1; border-radius: 20px; overflow: hidden; background: #fff; border: 2.5px solid var(--purple); box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
@@ -77,7 +83,6 @@
         .overlay { position: fixed; inset: 0; background: radial-gradient(circle, #1a0033, #050010); z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; }
         .hidden { display: none !important; }
 
-        /* Estilos do Mural de Fotos */
         .mural-fotos { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width: 100%; max-width: 400px; }
         .foto-card { position: relative; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 8px; border-radius: 15px; text-align: center; display: flex; flex-direction: column; justify-content: space-between; }
         .foto-card img { width: 100%; height: auto; display: block; border-radius: 10px; border: 1px solid var(--purple); cursor: pointer; }
@@ -101,7 +106,6 @@
         }
         .foto-menu-item:active { background: rgba(255, 77, 109, 0.15); }
 
-        /* Estilo da Foto Expandida (Zoom / Lightbox) */
         .foto-lightbox {
             position: fixed; inset: 0; background: rgba(0, 0, 0, 0.95);
             display: none; align-items: center; justify-content: center;
@@ -119,6 +123,8 @@
         <input type="text" id="user-name" placeholder="Seu Nome">
         <input type="password" id="pw" placeholder="Senha Especial">
         <button class="btn-lux" onclick="entrar()">Entrar no Coração</button>
+        
+        <button id="btnInstalarApp" class="btn-lux" style="display: none; background: linear-gradient(45deg, #2a9d8f, #e9c46a); margin-top: 20px;">📲 Instalar no Celular</button>
     </div>
 
     <div id="lightbox" class="foto-lightbox" onclick="fecharFotoGrande()">
@@ -191,6 +197,40 @@
         </section>
     </main>
 
+    <script>
+        let capturaInstalacao;
+        const btnInstalar = document.getElementById('btnInstalarApp');
+
+        // Monitora se o app está pronto para ser baixado
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            capturaInstalacao = e;
+            btnInstalar.style.display = 'block'; // Mostra o botão na tela de login
+        });
+
+        btnInstalar.addEventListener('click', async () => {
+            if (capturaInstalacao) {
+                capturaInstalacao.prompt();
+                const { outcome } = await capturaInstalacao.userChoice;
+                if (outcome === 'accepted') {
+                    btnInstalar.style.display = 'none';
+                }
+                capturaInstalacao = null;
+            }
+        });
+
+        // Oculta botão se já estiver rodando instalado
+        window.addEventListener('appinstalled', () => {
+            btnInstalar.style.display = 'none';
+            alert("Aplicativo instalado com sucesso! Confira na sua tela inicial. 🥰");
+        });
+
+        // Registra o Service Worker
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js').catch(err => console.log("Erro SW:", err));
+        }
+    </script>
+
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
         import { getDatabase, ref, push, onValue, update, remove } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
@@ -246,7 +286,6 @@
                 bg.appendChild(c);
             }
 
-            // ATUALIZAÇÃO DO CONTADOR: Anos, meses e total de dias acumulados
             const dataInicio = new Date("2025-10-28T00:00:00");
             const dataHoje = new Date();
 
@@ -258,7 +297,6 @@
                 meses += 12;
             }
 
-            // Garante o cálculo do dia do mês correto
             if (dataHoje.getDate() < dataInicio.getDate()) {
                 meses--;
                 if (meses < 0) {
@@ -267,7 +305,6 @@
                 }
             }
 
-            // Monta o texto de tempo relativo (Anos e Meses)
             let parteRelativa = "";
             if (anos > 0) {
                 parteRelativa += anos === 1 ? "1 Ano" : anos + " Anos";
@@ -280,11 +317,9 @@
                 parteRelativa = "Menos de 1 mês";
             }
 
-            // Calcula o total bruto de dias passados
             const umDia = 1000 * 60 * 60 * 24;
             const totalDiasEstreito = Math.floor((dataHoje - dataInicio) / umDia);
 
-            // Junta tudo com quebra de linha estilosa
             document.getElementById('timer').innerHTML = `${parteRelativa} Juntos<br><span style="font-size: 1.1rem; opacity: 0.85; font-family:'Montserrat'; letter-spacing:1px;">(Já são ${totalDiasEstreito} dias de muito amor!)</span>`;
 
             const cal = document.getElementById('calGrid');
@@ -357,7 +392,6 @@
             };
         };
 
-        // Funções para expandir e fechar fotos (Zoom)
         window.verFotoGrande = (src) => {
             const lightbox = document.getElementById('lightbox');
             document.getElementById('imgExpandida').src = src;
@@ -445,7 +479,6 @@
                     const idFoto = snapshot.key;
                     const f = snapshot.val();
                     
-                    // Adicionado o 'onclick="verFotoGrande(...)"' na imagem do card
                     const cardHtml = `
                         <div class="foto-card">
                             <div class="foto-menu-btn" onclick="toggleMenuFoto('${idFoto}')">⋮</div>
