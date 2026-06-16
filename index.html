@@ -84,7 +84,6 @@
         .overlay { position: fixed; inset: 0; background: radial-gradient(circle, #1a0033, #050010); z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; }
         .hidden { display: none !important; }
 
-        /* Estilos do Mural de Fotos */
         .mural-fotos { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width: 100%; max-width: 400px; }
         .foto-card { position: relative; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 8px; border-radius: 15px; text-align: center; display: flex; flex-direction: column; justify-content: space-between; }
         .foto-card img { width: 100%; height: auto; display: block; border-radius: 10px; border: 1px solid var(--purple); cursor: pointer; }
@@ -123,18 +122,23 @@
         .game-menu-btn:active { background: rgba(123, 44, 191, 0.2); }
         .game-menu-btn span { font-size: 1.8rem; margin-right: 15px; }
 
-        /* Quiz */
+        /* Quiz & Prefere */
         .opcoes-quiz-grid { display: grid; grid-template-columns: 1fr; gap: 10px; width: 100%; margin-top: 15px; }
-        .quiz-opt { background: rgba(255,255,255,0.1); border: 1px solid var(--purple); border-radius: 12px; padding: 12px; font-weight: bold; cursor: pointer; color: white; text-align: center; }
-        .quiz-opt.selecionada { background: var(--purple); border-color: var(--gold); }
+        .quiz-opt { background: rgba(255,255,255,0.1); border: 1px solid var(--purple); border-radius: 12px; padding: 12px; font-weight: bold; cursor: pointer; color: white; text-align: center; transition: 0.2s; }
+        .quiz-opt.selecionada { background: var(--purple) !important; border-color: var(--gold) !important; box-shadow: 0 0 12px var(--purple); }
 
         /* Jogo da velha */
         .velha-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; width: 100%; max-width: 300px; margin: 15px 0; }
         .velha-celula { background: rgba(255,255,255,0.08); border: 2px solid var(--purple); aspect-ratio: 1; border-radius: 15px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; font-weight: bold; cursor: pointer; }
 
         /* Linha do tempo */
-        .timeline-slot { background: rgba(255,255,255,0.05); border: 1.5px dashed rgba(255,255,255,0.3); border-radius: 15px; padding: 12px; width: 100%; margin-bottom: 8px; font-size: 0.85rem; min-height: 45px; text-align: center; }
-        .timeline-slot.filled { border-style: solid; border-color: var(--gold); background: rgba(214, 175, 55, 0.1); }
+        .timeline-slot { background: rgba(255,255,255,0.05); border: 1.5px dashed rgba(255,255,255,0.3); border-radius: 15px; padding: 14px; width: 100%; margin-bottom: 10px; font-size: 0.85rem; min-height: 50px; text-align: center; cursor: pointer; transition: 0.2s; }
+        .timeline-slot.filled { border-style: solid; border-color: var(--gold); background: rgba(214, 175, 55, 0.15); font-weight: bold; }
+
+        /* Quebra Cabeça */
+        #puzzle-board { width: 100%; margin: 15px auto; }
+        .puzzle-piece { background: rgba(255,255,255,0.1); border: 2px dashed var(--purple); aspect-ratio: 1; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: bold; cursor: pointer; transition: 0.2s; }
+        .puzzle-piece.allocated { border-style: solid; border-color: var(--gold); background: rgba(214, 175, 55, 0.2); color: var(--gold); }
     </style>
 </head>
 <body>
@@ -199,6 +203,7 @@
                 <div class="game-menu-btn" onclick="abrirJogo('velha')"><span>❌</span>Jogo da Velha Romântico</div>
                 <div class="game-menu-btn" onclick="abrirJogo('timeline')"><span>⏳</span>Nossa Linha do Tempo</div>
                 <div class="game-menu-btn" onclick="abrirJogo('prefere')"><span>🔄</span>O Que Você Prefere?</div>
+                <div class="game-menu-btn" onclick="abrirJogo('puzzle')"><span>🧩</span>Quebra-Cabeça Cooperativo</div>
             </div>
 
             <div id="jogo-quiz" class="sub-jogo-container">
@@ -206,7 +211,7 @@
                     <button class="btn-lux" style="padding:8px; font-size:0.75rem; margin-bottom:10px;" onclick="voltarMenuJogos()">↩ Voltar à Arena</button>
                     <h3 id="quiz-pergunta" style="font-family:'Playfair Display'; margin:10px 0;">Carregando pergunta...</h3>
                     <div class="opcoes-quiz-grid" id="quiz-opcoes"></div>
-                    <div id="quiz-status" style="margin-top:15px; font-size:0.8rem; color:var(--gold); font-weight:bold;">Aguardando jogadores...</div>
+                    <div id="quiz-status" style="margin-top:15px; font-size:0.85rem; color:var(--gold); font-weight:bold; min-height:40px;">Aguardando jogadores...</div>
                     <button class="btn-lux" id="btn-proximo-quiz" style="display:none; background:var(--gold); color:#000;">Próxima Pergunta ➡️</button>
                 </div>
             </div>
@@ -227,12 +232,14 @@
             <div id="jogo-timeline" class="sub-jogo-container">
                 <div class="glass-card">
                     <button class="btn-lux" style="padding:8px; font-size:0.75rem; margin-bottom:10px;" onclick="voltarMenuJogos()">↩ Voltar à Arena</button>
-                    <p style="font-size:0.8rem; color:var(--gold); margin-bottom:12px;">Preencham os slots na ordem cronológica correta juntos!</p>
-                    <div id="slots-timeline"></div>
-                    <div style="margin-top:15px; font-size:0.75rem;">Selecione o slot e escolha o fato:</div>
-                    <select id="select-timeline-fato" onchange="window.alocarFato(this.value)">
+                    <p style="font-size:0.8rem; color:var(--gold); margin-bottom:12px;">Preencham os slots juntos! Clique em um acontecimento abaixo e depois escolha o Slot correto.</p>
+                    
+                    <select id="select-timeline-fato" style="margin-bottom:15px;">
                         <option value="">-- Escolha um acontecimento --</option>
                     </select>
+
+                    <div id="slots-timeline"></div>
+                    
                     <button class="btn-lux" onclick="window.limparTimeline()" style="background:#ff4d6d; font-size:0.8rem; padding:10px; margin-top:10px;">Limpar Tudo 🔄</button>
                 </div>
             </div>
@@ -241,11 +248,37 @@
                 <div class="glass-card">
                     <button class="btn-lux" style="padding:8px; font-size:0.75rem; margin-bottom:10px;" onclick="voltarMenuJogos()">↩ Voltar à Arena</button>
                     <h3 style="font-family:'Playfair Display'; margin-bottom:15px;">O que você prefere?</h3>
-                    <button class="btn-lux" id="prefere-optA" onclick="window.votarPrefere('A')" style="background:rgba(255,255,255,0.1); border:1px solid var(--purple); margin-bottom:10px;"></button>
-                    <p style="color:var(--gold); font-weight:bold; font-size:1.1rem; margin:5px 0;">OU</p>
-                    <button class="btn-lux" id="prefere-optB" onclick="window.votarPrefere('B')" style="background:rgba(255,255,255,0.1); border:1px solid var(--purple);"></button>
-                    <div id="prefere-resultado" style="margin-top:20px; font-size:0.9rem; font-weight:bold; min-height:30px;"></div>
+                    <div class="opcoes-quiz-grid">
+                        <div class="quiz-opt" id="prefere-optA" onclick="window.votarPrefere('A')"></div>
+                        <p style="color:var(--gold); font-weight:bold; font-size:1.1rem; margin:5px 0; text-align:center;">OU</p>
+                        <div class="quiz-opt" id="prefere-optB" onclick="window.votarPrefere('B')"></div>
+                    </div>
+                    <div id="prefere-resultado" style="margin-top:20px; font-size:0.9rem; font-weight:bold; min-height:40px; color:var(--gold);"></div>
                     <button class="btn-lux" id="btn-proximo-prefere" style="display:none; background:var(--gold); color:#000;">Próxima Rodada ➡️</button>
+                </div>
+            </div>
+
+            <div id="jogo-puzzle" class="sub-jogo-container">
+                <div class="glass-card">
+                    <button class="btn-lux" style="padding:8px; font-size:0.75rem; margin-bottom:10px;" onclick="voltarMenuJogos()">↩ Voltar à Arena</button>
+                    <p style="font-size:0.8rem; color:var(--gold); margin-bottom:12px;">Selecione o tamanho do desafio, escolha uma peça na lista e clique no espaço do quadro para encaixar!</p>
+                    
+                    <div style="display: flex; gap: 5px; margin-bottom: 12px;">
+                        <button class="btn-lux" style="padding: 8px; font-size: 0.7rem; margin: 0;" onclick="window.mudarDificuldadePuzzle(4)">Pequeno (4 pçs)</button>
+                        <button class="btn-lux" style="padding: 8px; font-size: 0.7rem; margin: 0; background: linear-gradient(45deg, #a2d2ff, #bde0fe); color: #000;" onclick="window.mudarDificuldadePuzzle(30)">Médio (30 pçs)</button>
+                        <button class="btn-lux" style="padding: 8px; font-size: 0.7rem; margin: 0; background: linear-gradient(45deg, #ffafcc, #ffc8dd); color: #000;" onclick="window.mudarDificuldadePuzzle(50)">Grande (50 pçs)</button>
+                    </div>
+
+                    <select id="select-puzzle-piece" style="margin-bottom:15px;">
+                        <option value="">-- Escolha uma Peça --</option>
+                    </select>
+
+                    <div id="puzzle-board-container" style="width: 100%; overflow-x: auto; padding-bottom: 10px;">
+                        <div id="puzzle-board"></div>
+                    </div>
+
+                    <div id="puzzle-status" style="margin-top:15px; font-size:0.85rem; font-weight:bold; color:var(--gold);"></div>
+                    <button class="btn-lux" onclick="window.limparPuzzle()" style="background:#ff4d6d; font-size:0.8rem; padding:10px; margin-top:10px;">Zerar Quadro 🔄</button>
                 </div>
             </div>
         </section>
@@ -387,30 +420,19 @@
             let anos = dataHoje.getFullYear() - dataInicio.getFullYear();
             let meses = dataHoje.getMonth() - dataInicio.getMonth();
 
-            if (meses < 0) {
-                anos--;
-                meses += 12;
-            }
-
+            if (meses < 0) { anos--; meses += 12; }
             if (dataHoje.getDate() < dataInicio.getDate()) {
                 meses--;
-                if (meses < 0) {
-                    anos--;
-                    meses += 12;
-                }
+                if (meses < 0) { anos--; meses += 12; }
             }
 
             let parteRelativa = "";
-            if (anos > 0) {
-                parteRelativa += anos === 1 ? "1 Ano" : anos + " Anos";
-            }
+            if (anos > 0) parteRelativa += anos === 1 ? "1 Ano" : anos + " Anos";
             if (meses > 0) {
                 if (anos > 0) parteRelativa += " e ";
                 parteRelativa += meses === 1 ? "1 Mês" : meses + " Meses";
             }
-            if (anos === 0 && meses === 0) {
-                parteRelativa = "Menos de 1 mês";
-            }
+            if (anos === 0 && meses === 0) parteRelativa = "Menos de 1 mês";
 
             const umDia = 1000 * 60 * 60 * 24;
             const totalDiasEstreito = Math.floor((dataHoje - dataInicio) / umDia);
@@ -452,7 +474,6 @@
                 img.onload = function () {
                     const canvas = document.createElement('canvas');
                     const MAX_WIDTH = 450;
-
                     let width = img.width;
                     let height = img.height;
 
@@ -463,7 +484,6 @@
 
                     canvas.width = width;
                     canvas.height = height;
-
                     const ctx = canvas.getContext('2d');
                     ctx.drawImage(img, 0, 0, width, height);
 
@@ -567,27 +587,6 @@
                 });
             });
 
-            onValue(ref(db, 'mural_fotos_direto'), s => {
-                const mural = document.getElementById('muralFotos');
-                mural.innerHTML = "";
-                s.forEach(snapshot => {
-                    const idFoto = snapshot.key;
-                    const f = snapshot.val();
-
-                    const cardHtml = `
-                        <div class="foto-card">
-                            <div class="foto-menu-btn" onclick="toggleMenuFoto('${idFoto}')">⋮</div>
-                            <div class="foto-menu-options" id="menu-${idFoto}">
-                                <button class="foto-menu-item" onclick="deletarFoto('${idFoto}')">Excluir</button>
-                            </div>
-                            <img src="${f.imagem}" alt="Momento" onclick="verFotoGrande('${f.imagem}')">
-                            <span>Por: ${f.autor} (${f.data})</span>
-                        </div>
-                    `;
-                    mural.innerHTML = cardHtml + mural.innerHTML;
-                });
-            });
-
             onValue(ref(db, 'cupons_vFinal'), s => {
                 const d = s.val() || { d: ["Massagem", "Vale Jantar", "Beijo de 1 min", "Açaí Médio"], u: [false,false,false,false], autores: ["","","",""] };
                 const grid = document.getElementById('cuponsGrid'); grid.innerHTML = "";
@@ -631,10 +630,10 @@
         };
 
 
-        /* ENGINE DA ARENA DE JOGOS REALTIME */
+        /* ENGINE DA ARENA DE JOGOS REALTIME COOPERATIVA */
         function syncJogos() {
             
-            // --- JOGO 1: QUIZ SINCRONIZADO ---
+            // --- JOGO 1: QUIZ ---
             const perguntasQuiz = [
                 { p: "Qual o destino da nossa viagem dos sonhos?", o: ["Praia Paradisíaca", "Cabana nas Montanhas", "Cidade Europeia", "Parque de Diversões"] },
                 { p: "Qual é o nosso lanche oficial de finais de semana?", o: ["Pizza", "Hambúrguer", "Açaí completo", "Comida Japonesa"] },
@@ -651,7 +650,7 @@
                 const boxOpcoes = document.getElementById('quiz-opcoes');
                 boxOpcoes.innerHTML = "";
 
-                let meuVoto = data.respostas ? data.respostas[usuarioAtivo] : null;
+                let meuVoto = (data.respostas && data.respostas[usuarioAtivo] !== undefined) ? data.respostas[usuarioAtivo] : null;
 
                 questao.o.forEach((opcao, idx) => {
                     const btn = document.createElement('div');
@@ -669,8 +668,8 @@
                 const btnProx = document.getElementById('btn-proximo-quiz');
                 const chavesRespostas = data.respostas ? Object.keys(data.respostas) : [];
 
-                if (chavesRespostas.length === 1) {
-                    statusTxt.innerText = `Um de vocês já votou! Aguardando o outro... ⏳`;
+                if (meuVoto !== null && chavesRespostas.length === 1) {
+                    statusTxt.innerText = "Sua resposta foi registrada! Aguardando o voto do seu amor... ⏳💜";
                     btnProx.style.display = 'none';
                 } else if (chavesRespostas.length >= 2) {
                     const nomes = Object.keys(data.respostas);
@@ -679,11 +678,11 @@
                     if (v1 === v2) {
                         statusTxt.innerText = "Sintonia Perfeita! Vocês escolheram a mesma opção! 😍💜";
                     } else {
-                        statusTxt.innerText = `Respostas diferentes! ${nomes[0]} escolheu "${questao.o[v1]}" e ${nomes[1]} escolheu "${questao.o[v2]}".`;
+                        statusTxt.innerText = `Respostas reveladas!\n${nomes[0]}: "${questao.o[v1]}"\n${nomes[1]}: "${questao.o[v2]}"`;
                     }
                     btnProx.style.display = 'block';
                 } else {
-                    statusTxt.innerText = "Votem secretamente na sua resposta!";
+                    statusTxt.innerText = "Escolha uma opção secretamente acima!";
                     btnProx.style.display = 'none';
                 }
 
@@ -694,7 +693,7 @@
                 };
             });
 
-            // --- JOGO 2: JOGO DA VELHA DO AMOR COM TRAVA DE DESAFIO ---
+            // --- JOGO 2: JOGO DA VELHA ---
             const velhaRef = ref(db, 'arena_jogos/velha');
             const desafiosVelha = [
                 "Cante 10 segundos de uma música que lembra seu amor 🎵",
@@ -708,6 +707,7 @@
                 update(velhaRef, {
                     tabuleiro: ["", "", "", "", "", "", "", "", ""],
                     turno: usuarioAtivo,
+                    criadorTurno: usuarioAtivo, // O jogador que reinicia ganha o Coração Roxo
                     vencedor: "",
                     desafio: "",
                     desafioPendente: false,
@@ -719,8 +719,9 @@
                 onValue(velhaRef, snap => {
                     const currentData = snap.val();
                     if (currentData && currentData.desafioPendente && currentData.quemDeveCumprir === usuarioAtivo) {
+                        const proximo = (usuarioAtivo.toLowerCase().includes("eduarda") || usuarioAtivo.toLowerCase().includes("duda")) ? "Namorado" : "Eduarda";
                         update(velhaRef, {
-                            turno: usuarioAtivo === "Eduarda" || usuarioAtivo === "Duda" ? "Parceiro(a)" : "Eduarda",
+                            turno: proximo,
                             desafioPendente: false,
                             quemDeveCumprir: ""
                         });
@@ -730,32 +731,32 @@
 
             onValue(velhaRef, snapshot => {
                 let data = snapshot.val();
-                if (!data) {
-                    window.reiniciarVelha();
-                    return;
-                }
+                if (!data) { window.reiniciarVelha(); return; }
 
                 const txtVez = document.getElementById('velha-vez');
                 const btnDesafio = document.getElementById('btn-cumprir-desafio');
+
+                // Define dinamicamente o emoji baseado em quem reiniciou o jogo
+                const meuEmoji = (data.criadorTurno === usuarioAtivo) ? "💜" : "💛";
 
                 if (data.vencedor) {
                     txtVez.innerText = `Fim de Jogo! Vencedor: ${data.vencedor} 🎉`;
                     btnDesafio.style.display = 'none';
                 } else if (data.desafioPendente) {
-                    txtVez.innerText = `⚠️ Aguardando ${data.quemDeveCumprir} cumprir o desafio...`;
+                    txtVez.innerText = `⚠️ Desafio ativo para ${data.quemDeveCumprir}.`;
                     if (data.quemDeveCumprir === usuarioAtivo) {
                         btnDesafio.style.display = 'block';
                     } else {
                         btnDesafio.style.display = 'none';
                     }
                 } else {
-                    txtVez.innerText = data.turno === usuarioAtivo ? "Sua vez de jogar! 🫵" : `Vez de: ${data.turno}`;
+                    txtVez.innerText = data.turno === usuarioAtivo ? `Sua vez de jogar! (${meuEmoji}) 🫵` : `Vez de: ${data.turno}`;
                     btnDesafio.style.display = 'none';
                 }
 
                 const desBox = document.getElementById('velha-desafio');
                 if (data.desafio) {
-                    desBox.innerText = `🔥 Desafio Ativo:\n${data.desafio}`;
+                    desBox.innerText = `🔥 Desafio da Rodada:\n${data.desafio}`;
                     desBox.style.display = 'block';
                 } else {
                     desBox.style.display = 'none';
@@ -769,17 +770,14 @@
                     celula.className = "velha-celula";
                     celula.innerText = valor;
                     celula.onclick = () => {
-                        // Só pode clicar se for a vez real do jogador E não houver uma trava de desafio pendente
                         if (data.turno === usuarioAtivo && !data.desafioPendente && valor === "" && !data.vencedor) {
                             let novoTab = [...data.tabuleiro];
-                            novoTab[idx] = "❤️";
+                            novoTab[idx] = meuEmoji;
 
                             let v = "";
                             const linhas = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
                             linhas.forEach(l => {
-                                if(novoTab[l[0]] && novoTab[l[0]]===novoTab[l[1]] && novoTab[l[0]]===novoTab[l[2]]) {
-                                    v = usuarioAtivo;
-                                }
+                                if(novoTab[l[0]] && novoTab[l[0]]===novoTab[l[1]] && novoTab[l[0]]===novoTab[l[2]]) { v = usuarioAtivo; }
                             });
 
                             const randomDesafio = desafiosVelha[Math.floor(Math.random() * desafiosVelha.length)];
@@ -788,7 +786,7 @@
                                 tabuleiro: novoTab,
                                 vencedor: v,
                                 desafio: randomDesafio,
-                                desafioPendente: v ? false : true, // Só gera trava de desafio se o jogo não tiver acabado
+                                desafioPendente: v ? false : true,
                                 quemDeveCumprir: usuarioAtivo
                             });
                         }
@@ -797,7 +795,7 @@
                 });
             });
 
-            // --- JOGO 3: NOSSA LINHA DO TEMPO COOPERATIVA ---
+            // --- JOGO 3: LINHA DO TEMPO COOPERATIVA ---
             const timelineFatos = [
                 { id: "f1", txt: "Nosso primeiro Oi por mensagem 📱" },
                 { id: "f2", txt: "O dia do nosso primeiro beijo marcante 💋" },
@@ -805,22 +803,25 @@
                 { id: "f4", txt: "Nossa primeira foto oficial juntos 📸" }
             ];
 
-            let slotSelecionadoIdx = null;
             const timelineRef = ref(db, 'arena_jogos/timeline');
 
             window.limparTimeline = () => {
                 update(timelineRef, { slots: ["", "", "", ""] });
             };
 
-            window.alocarFato = (fatoId) => {
-                if (slotSelecionadoIdx !== null && fatoId !== "") {
-                    onValue(timelineRef, snapshot => {
-                        let atual = snapshot.val() || { slots: ["", "", "", ""] };
+            window.alocarFatoNoSlot = (slotIdx) => {
+                const selectElement = document.getElementById('select-timeline-fato');
+                const fatoSelecionadoTxt = selectElement.value;
+                if (fatoSelecionadoTxt) {
+                    onValue(timelineRef, snap => {
+                        let atual = snap.val() || { slots: ["", "", "", ""] };
                         let novosSlots = [...atual.slots];
-                        novosSlots[slotSelecionadoIdx] = timelineFatos.find(f => f.id === fatoId).txt;
+                        novosSlots[slotIdx] = fatoSelecionadoTxt;
                         update(timelineRef, { slots: novosSlots });
                     }, { onlyOnce: true });
-                    document.getElementById('select-timeline-fato').value = "";
+                    selectElement.value = "";
+                } else {
+                    alert("Por favor, selecione primeiro um acontecimento na lista!");
                 }
             };
 
@@ -831,20 +832,17 @@
 
                 data.slots.forEach((conteudo, idx) => {
                     const slot = document.createElement('div');
-                    slot.className = `timeline-slot ${conteudo ? 'filled' : ''} ${slotSelecionadoIdx === idx ? 'marcado' : ''}`;
-                    slot.innerText = conteudo ? `Fato ${idx + 1}: ${conteudo}` : `[ Slot ${idx + 1} Vazio - Clique para preencher ]`;
-                    slot.onclick = () => {
-                        slotSelecionadoIdx = idx;
-                        syncJogos();
-                    };
+                    slot.className = `timeline-slot ${conteudo ? 'filled' : ''}`;
+                    slot.innerText = conteudo ? `Ordem ${idx + 1}: ${conteudo}` : `[ Toque para definir como momento ${idx + 1} ]`;
+                    slot.onclick = () => window.alocarFatoNoSlot(idx);
                     boxSlots.appendChild(slot);
                 });
 
                 const selectFatos = document.getElementById('select-timeline-fato');
-                selectFatos.innerHTML = '<option value="">-- Escolha um acontecimento --</option>';
+                selectFatos.innerHTML = '<option value="">-- Escolha um acontecimento primeiro --</option>';
                 timelineFatos.forEach(f => {
                     if (!data.slots.includes(f.txt)) {
-                        selectFatos.innerHTML += `<option value="${f.id}">${f.txt}</option>`;
+                        selectFatos.innerHTML += `<option value="${f.txt}">${f.txt}</option>`;
                     }
                 });
             });
@@ -873,25 +871,26 @@
                 btnB.innerText = p.b;
 
                 let meusVotos = data.votos || {};
-                btnA.className = `btn-lux ${meusVotos[usuarioAtivo] === 'A' ? 'marcado' : ''}`;
-                btnB.className = `btn-lux ${meusVotos[usuarioAtivo] === 'B' ? 'marcado' : ''}`;
+                
+                btnA.className = `quiz-opt ${meusVotos[usuarioAtivo] === 'A' ? 'selecionada' : ''}`;
+                btnB.className = `quiz-opt ${meusVotos[usuarioAtivo] === 'B' ? 'selecionada' : ''}`;
 
                 const boxResultado = document.getElementById('prefere-resultado');
                 const btnProxPrefere = document.getElementById('btn-proximo-prefere');
                 const jogaram = Object.keys(meusVotos);
 
-                if (jogaram.length === 1) {
-                    boxResultado.innerText = "Você já escolheu! Esperando a resposta do seu par... 👀";
+                if (meusVotos[usuarioAtivo] !== undefined && jogaram.length === 1) {
+                    boxResultado.innerText = "Escolha salva! Aguardando a resposta do seu amor... 👀💜";
                     btnProxPrefere.style.display = 'none';
                 } else if (jogaram.length >= 2) {
                     if (meusVotos[jogaram[0]] === meusVotos[jogaram[1]]) {
-                        boxResultado.innerText = "Vocês pensam igual! Sintonia perfeita! 💞🤩";
+                        boxResultado.innerText = "Vocês pensam idêntico! Sintonia garantida! 💞🤩";
                     } else {
-                        boxResultado.innerText = "Pensamentos diferentes! Opções opostas completadas. 😂";
+                        boxResultado.innerText = `Opções diferentes!\n${jogaram[0]} preferiu Opção ${meusVotos[jogaram[0]]}\n${jogaram[1]} preferiu Opção ${meusVotos[jogaram[1]]}`;
                     }
                     btnProxPrefere.style.display = 'block';
                 } else {
-                    boxResultado.innerText = "Escolha uma das opções acima!";
+                    boxResultado.innerText = "Toque na sua preferência acima!";
                     btnProxPrefere.style.display = 'none';
                 }
 
@@ -900,6 +899,113 @@
                         update(prefereRef, { rodada: data.rodada + 1 });
                     });
                 };
+            });
+
+            // --- JOGO 5: QUEBRA-CABEÇA COOPERATIVO REALTIME MULTI-MODOS ---
+            const puzzleRef = ref(db, 'arena_jogos/puzzle');
+            
+            window.mudarDificuldadePuzzle = (tamanho) => {
+                const vazios = Array(tamanho).fill("");
+                update(puzzleRef, { 
+                    tamanho: tamanho,
+                    posicoes: vazios
+                });
+            };
+
+            window.limparPuzzle = () => {
+                onValue(puzzleRef, snap => {
+                    const data = snap.val() || { tamanho: 4 };
+                    const vazios = Array(data.tamanho).fill("");
+                    update(puzzleRef, { posicoes: vazios });
+                }, { onlyOnce: true });
+            };
+
+            window.alocarPecaNoQuadro = (indexQuadro) => {
+                const selectPiece = document.getElementById('select-puzzle-piece');
+                const pecaEscolhida = selectPiece.value;
+                if (pecaEscolhida) {
+                    onValue(puzzleRef, snap => {
+                        let data = snap.val() || { tamanho: 4, posicoes: [] };
+                        let novasPos = data.posicoes ? [...data.posicoes] : Array(data.tamanho).fill("");
+                        if(novasPos.length !== data.tamanho) novasPos = Array(data.tamanho).fill("");
+                        
+                        novasPos[indexQuadro] = pecaEscolhida;
+                        update(puzzleRef, { posicoes: novasPos });
+                    }, { onlyOnce: true });
+                    selectPiece.value = "";
+                } else {
+                    alert("Selecione primeiro uma peça na lista de opções!");
+                }
+            };
+
+            onValue(puzzleRef, snapshot => {
+                const data = snapshot.val() || { tamanho: 4, posicoes: ["", "", "", ""] };
+                const tam = data.tamanho || 4;
+                
+                let posicoes = data.posicoes || [];
+                if (posicoes.length !== tam) {
+                    posicoes = Array(tam).fill("");
+                }
+
+                const board = document.getElementById('puzzle-board');
+                const statusPuzzle = document.getElementById('puzzle-status');
+                
+                if (tam === 4) {
+                    board.style.display = "grid";
+                    board.style.gridTemplateColumns = "repeat(2, 1fr)";
+                    board.style.gap = "8px";
+                    board.style.maxWidth = "200px";
+                } else if (tam === 30) {
+                    board.style.display = "grid";
+                    board.style.gridTemplateColumns = "repeat(5, 1fr)";
+                    board.style.gap = "5px";
+                    board.style.maxWidth = "320px";
+                } else if (tam === 50) {
+                    board.style.display = "grid";
+                    board.style.gridTemplateColumns = "repeat(5, 1fr)";
+                    board.style.gap = "4px";
+                    board.style.maxWidth = "320px";
+                }
+                
+                board.innerHTML = "";
+
+                posicoes.forEach((conteudo, idx) => {
+                    const celula = document.createElement('div');
+                    celula.className = `puzzle-piece ${conteudo ? 'allocated' : ''}`;
+                    celula.style.fontSize = tam > 4 ? "0.65rem" : "1.2rem";
+                    celula.style.padding = tam > 4 ? "5px 0" : "0";
+                    celula.innerText = conteudo ? conteudo.replace("Peça ", "") : "?";
+                    celula.onclick = () => window.alocarPecaNoQuadro(idx);
+                    board.appendChild(celula);
+                });
+
+                const selectPieces = document.getElementById('select-puzzle-piece');
+                selectPieces.innerHTML = '<option value="">-- Escolha uma Peça --</option>';
+                
+                let pecasGeradas = [];
+                for(let i = 1; i <= tam; i++) {
+                    pecasGeradas.push(`Peça ${i}`);
+                }
+
+                pecasGeradas.forEach(p => {
+                    if (!posicoes.includes(p)) {
+                        selectPieces.innerHTML += `<option value="${p}">${p}</option>`;
+                    }
+                });
+
+                let correto = true;
+                for (let i = 0; i < tam; i++) {
+                    if (posicoes[i] !== `Peça ${i + 1}`) {
+                        correto = false;
+                        break;
+                    }
+                }
+
+                if (correto) {
+                    statusPuzzle.innerText = `Parabéns! Vocês completaram o modo de ${tam} peças perfeitamente juntos! 🎉💜`;
+                } else {
+                    statusPuzzle.innerText = `Modo Ativo: ${tam} peças. Organizem de 1 a ${tam} na ordem certa!`;
+                }
             });
         }
     </script>
