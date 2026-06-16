@@ -95,12 +95,6 @@
             font-size: 1rem; line-height: 24px; text-align: center; cursor: pointer;
             border: 1px solid rgba(255, 255, 255, 0.2); z-index: 10;
         }
-        .foto-menu-options {
-            display: none; position: absolute; top: 42px; right: 12px;
-            background: #1a0033; border: 1px solid var(--purple); border-radius: 10px;
-            overflow: hidden; z-index: 20; box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-        }
-        .foto-menu-options.show { display: block; }
 
         .foto-lightbox {
             position: fixed; inset: 0; background: rgba(0, 0, 0, 0.95);
@@ -367,7 +361,7 @@
             const nomeInput = document.getElementById('user-name').value.trim();
             if(document.getElementById('pw').value === "2810" && nomeInput !== "") {
                 usuarioAtivo = nomeInput;
-                document.getElementById('msgBoasVIndas').innerText = "Oi, " + usuarioAtivo + "!";
+                document.getElementById('msgBoasVindas').innerText = "Oi, " + usuarioAtivo + "!";
                 document.getElementById('login').classList.add('hidden');
                 document.getElementById('app').classList.remove('hidden');
                 document.getElementById('menu').classList.remove('hidden');
@@ -496,22 +490,21 @@
                 questao.o.forEach((opcao, idx) => {
                     const btn = document.createElement('div');
                     btn.className = 'quiz-opt';
-                    btn.innerText = opacity = opcao;
+                    btn.innerText = opcao;
 
-                    // Gerenciamento visual dinâmico com base na confirmação unificada
                     if (chavesConf.length >= 2) {
                         const players = Object.keys(data.confirmadas);
                         const v1 = data.confirmadas[players[0]];
                         const v2 = data.confirmadas[players[1]];
 
                         if (v1 === v2) {
-                            if (idx === v1) btn.classList.add('correta'); // Acertaram juntos!
+                            if (idx === v1) btn.classList.add('correta'); 
                         } else {
-                            if (idx === v1 || idx === v2) btn.classList.add('errada'); // Alguém errou, exibe vermelho
+                            if (idx === v1 || idx === v2) btn.classList.add('errada'); 
                         }
                     } else {
                         if (jaConfirmei && data.confirmadas[usuarioAtivo] === idx) {
-                            btn.classList.add('confirmada'); // Aguardando o parceiro
+                            btn.classList.add('confirmada'); 
                         } else if (!jaConfirmei && selecaoTemporaria === idx) {
                             btn.classList.add('selecionada');
                         }
@@ -521,7 +514,6 @@
                         if (!jaConfirmei && chavesConf.length < 2) {
                             selecaoTemporaria = idx;
                             document.getElementById('btn-confirmar-quiz').style.display = 'block';
-                            // Atualização visual local instantânea antes do lock
                             document.querySelectorAll('.quiz-opt').forEach(b => b.classList.remove('selecionada'));
                             btn.classList.add('selecionada');
                         }
@@ -548,7 +540,7 @@
                     btnConfirmar.style.display = 'none';
                     const players = Object.keys(data.confirmadas);
                     if (data.confirmadas[players[0]] === data.confirmadas[players[1]]) {
-                        statusTxt.innerText = "Sintonia Pefeita! Os dois escolheram a mesma opção! 😍🎉 (Ficou Verde!)";
+                        statusTxt.innerText = "Sintonia Perfeita! Os dois escolheram a mesma opção! 😍🎉 (Ficou Verde!)";
                     } else {
                         statusTxt.innerText = "Respostas Divergentes! Vocês não escolheram o mesmo. 💔 (Ficou Vermelho!)";
                     }
@@ -679,7 +671,6 @@
                     boxResultado.innerHTML = `<span style='color:var(--orange);'>Você escolheu! Aguardando o voto do seu par... ⏳</span>`;
                     btnProxPrefere.style.display = 'none';
                 } else if (jogaram.length >= 2) {
-                    // Mapeia quem respondeu o que de forma limpa e explícita na tela
                     let elaPrefere = ""; let elePrefere = "";
                     jogaram.forEach(pName => {
                         const escolhaTxt = meusVotos[pName] === 'A' ? p.a : p.b;
@@ -706,11 +697,10 @@
             });
 
 
-            // --- JOGO 5: QUEBRA-CABEÇA DE VERDADE COM TURNOS E IMAGENS ---
-            // Banco de imagens públicas estáveis e fofas com links diretos resilientes
+            // --- JOGO 5: QUEBRA-CABEÇA DE VERDADE ---
             const puzzleImagens = [
-                "https://images.unsplash.com/photo-1578632767115-351597cf2477?w=300&q=80", // Ilustração Anime fofa
-                "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=300&q=80"  // Animação Pop fofa
+                "https://images.unsplash.com/photo-1578632767115-351597cf2477?w=300&q=80", 
+                "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=300&q=80"
             ];
 
             const puzzleRef = ref(db, 'arena_jogos/puzzle_real');
@@ -720,7 +710,7 @@
                 const imgAleatoria = puzzleImagens[Math.floor(Math.random() * puzzleImagens.length)];
                 update(puzzleRef, {
                     imagemUrl: imgAleatoria,
-                    gridPosicoes: ["", "", "", "", "", "", "", "", ""], // 9 partes do quebra cabeça
+                    gridPosicoes: ["", "", "", "", "", "", "", "", ""], 
                     turno: usuarioAtivo,
                     criadorTurno: usuarioAtivo
                 });
@@ -733,26 +723,11 @@
                 const txtTurno = document.getElementById('puzzle-turno-txt');
                 const emojiJogador = (data.criadorTurno === usuarioAtivo) ? "💜" : "💛";
                 
-                // Controle estrito de turnos idêntico ao Jogo da Velha
                 const eMeuTurno = data.turno === usuarioAtivo;
                 txtTurno.innerText = eMeuTurno ? `Sua vez de encaixar uma peça! (${emojiJogador}) 🧩` : `Aguarde o movimento de: ${data.turno}`;
 
-                // Renderiza o Pool de peças disponíveis para clique
                 const poolBox = document.getElementById('pool-pecas');
                 poolBox.innerHTML = "";
-
-                // Cria as 9 partes fracionadas da imagem usando clip-path de CSS para simular recortes de quebra-cabeça
-                const coordClipped = [
-                    "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)", // Estilizado básico para simetria de grade mobile
-                    "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
-                    "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
-                    "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
-                    "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
-                    "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
-                    "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
-                    "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
-                    "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)"
-                ];
 
                 for(let i=0; i<9; i++) {
                     const pecaNome = `Parte_${i}`;
@@ -760,7 +735,6 @@
                         const pElem = document.createElement('div');
                         pElem.className = `puzzle-peca-item ${pecaSelecionadaLocal === pecaNome ? 'selecionada' : ''}`;
                         
-                        // Calcula o offset correspondente do background para exibir a fatia da imagem real
                         const row = Math.floor(i / 3); const col = i % 3;
                         pElem.innerHTML = `<div style="width:100%; height:100%; background:url('${data.imagemUrl}') -${col*70}px -${row*70}px / 210px 210px no-repeat;"></div>`;
                         
@@ -777,7 +751,6 @@
                     }
                 }
 
-                // Renderiza o Tabuleiro de Encaixe Central
                 const boardReal = document.getElementById('grid-puzzle-real');
                 boardReal.innerHTML = "";
 
@@ -798,7 +771,6 @@
                             let novasPosicoes = [...data.gridPosicoes];
                             novasPosicoes[idxSlot] = pecaSelecionadaLocal;
 
-                            // Alterna o turno de forma cooperativa automática
                             const proximoJogador = (usuarioAtivo.toLowerCase().includes("eduarda") || usuarioAtivo.toLowerCase().includes("duda")) ? "Namorado" : "Eduarda";
 
                             update(puzzleRef, {
@@ -811,7 +783,6 @@
                     boardReal.appendChild(slot);
                 });
 
-                // Validação de finalização perfeita do cenário
                 const statusPuzzle = document.getElementById('puzzle-status');
                 let completo = true;
                 for(let i=0; i<9; i++) { if(data.gridPosicoes[i] !== `Parte_${i}`) completo = false; }
