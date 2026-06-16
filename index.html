@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Nosso Jardim Eterno 💜</title>
-    
+
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#7b2cbf">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -41,12 +41,12 @@
         .secao.ativa { display: flex; flex-direction: column; align-items: center; }
 
         .nav-bar {
-            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 95%; max-width: 450px;
+            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 95%; max-width: 500px;
             background: rgba(0,0,0,0.85); backdrop-filter: blur(15px); border-radius: 30px; display: flex; padding: 10px; border: 1px solid var(--purple); z-index: 1000;
         }
-        .nav-item { color: #fff; opacity: 0.4; font-size: 0.65rem; cursor: pointer; text-align: center; flex: 1; }
+        .nav-item { color: #fff; opacity: 0.4; font-size: 0.6rem; cursor: pointer; text-align: center; flex: 1; }
         .nav-item.ativo { opacity: 1; color: var(--gold); font-weight: bold; }
-        .nav-item span { display: block; font-size: 1.2rem; margin-bottom: 2px; }
+        .nav-item span { display: block; font-size: 1.1rem; margin-bottom: 2px; }
 
         .glass-card {
             background: rgba(255,255,255,0.08); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.15);
@@ -74,11 +74,12 @@
         }
         .btn-lux:disabled { background: #555; cursor: not-allowed; box-shadow: none; }
 
-        input, textarea { 
+        input, textarea, select { 
             width: 100%; background: rgba(255,255,255,0.1); border: 1.5px solid var(--purple); 
             border-radius: 15px; padding: 14px; color: white; margin-bottom: 12px;
             font-family: 'Montserrat', sans-serif;
         }
+        option { background: var(--dark); color: white; }
 
         .overlay { position: fixed; inset: 0; background: radial-gradient(circle, #1a0033, #050010); z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; }
         .hidden { display: none !important; }
@@ -107,7 +108,6 @@
         }
         .foto-menu-item:active { background: rgba(255, 77, 109, 0.15); }
 
-        /* Estilo da Foto Expandida (Zoom / Lightbox) */
         .foto-lightbox {
             position: fixed; inset: 0; background: rgba(0, 0, 0, 0.95);
             display: none; align-items: center; justify-content: center;
@@ -115,6 +115,26 @@
         }
         .foto-lightbox.show { display: flex; opacity: 1; }
         .foto-lightbox img { max-width: 100%; max-height: 85vh; border-radius: 15px; border: 2px solid var(--gold); box-shadow: 0 0 30px rgba(212, 175, 55, 0.3); }
+
+        /* Estilos da Arena de Jogos */
+        .sub-jogo-container { display: none; width: 100%; max-width: 400px; flex-direction: column; align-items: center; }
+        .sub-jogo-container.ativo { display: flex; }
+        .game-menu-btn { background: rgba(255,255,255,0.05); border: 1px solid var(--purple); padding: 15px; border-radius: 15px; width: 100%; margin-bottom: 10px; text-align: left; display: flex; align-items: center; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: 0.2s; }
+        .game-menu-btn:active { background: rgba(123, 44, 191, 0.2); }
+        .game-menu-btn span { font-size: 1.8rem; margin-right: 15px; }
+
+        /* Quiz */
+        .opcoes-quiz-grid { display: grid; grid-template-columns: 1fr; gap: 10px; width: 100%; margin-top: 15px; }
+        .quiz-opt { background: rgba(255,255,255,0.1); border: 1px solid var(--purple); border-radius: 12px; padding: 12px; font-weight: bold; cursor: pointer; color: white; text-align: center; }
+        .quiz-opt.selecionada { background: var(--purple); border-color: var(--gold); }
+
+        /* Jogo da velha */
+        .velha-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; width: 100%; max-width: 300px; margin: 15px 0; }
+        .velha-celula { background: rgba(255,255,255,0.08); border: 2px solid var(--purple); aspect-ratio: 1; border-radius: 15px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; font-weight: bold; cursor: pointer; }
+
+        /* Linha do tempo */
+        .timeline-slot { background: rgba(255,255,255,0.05); border: 1.5px dashed rgba(255,255,255,0.3); border-radius: 15px; padding: 12px; width: 100%; margin-bottom: 8px; font-size: 0.85rem; min-height: 45px; text-align: center; }
+        .timeline-slot.filled { border-style: solid; border-color: var(--gold); background: rgba(214, 175, 55, 0.1); }
     </style>
 </head>
 <body>
@@ -138,6 +158,7 @@
     <nav class="nav-bar hidden" id="menu">
         <div class="nav-item ativo" onclick="irPara('home', this)"><span>🏠</span>Início</div>
         <div class="nav-item" onclick="irPara('mimos', this)"><span>🎟️</span>Mimos</div>
+        <div class="nav-item" onclick="irPara('jogos', this)"><span>🎮</span>Jogos</div>
         <div class="nav-item" onclick="irPara('fotos', this)"><span>📸</span>Fotos</div>
         <div class="nav-item" onclick="irPara('sonhos', this)"><span>✨</span>Sonhos</div>
         <div class="nav-item" onclick="irPara('correio', this)"><span>💌</span>Correio</div>
@@ -147,7 +168,7 @@
         <section id="home" class="secao ativa">
             <h1 class="titulo-lux" id="msgBoasVindas">Para Meu Amor</h1>
             <img src="Amor.png" style="width:100%; max-width:350px; border-radius:25px; border: 3px solid var(--gold); margin-bottom: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
-            
+
             <div id="timer" style="font-family: 'Great Vibes', cursive; font-size: 2rem; color: var(--gold); margin-bottom: 15px; text-align: center; line-height: 1.3;"></div>
 
             <div id="pwa-install-container" style="display: none; width: 100%; max-width: 400px; margin-bottom: 15px;">
@@ -168,6 +189,65 @@
         <section id="mimos" class="secao">
             <h2 class="titulo-lux">Cupons de Carinho</h2>
             <div id="cuponsGrid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width:100%; max-width:400px;"></div>
+        </section>
+
+        <section id="jogos" class="secao">
+            <h2 class="titulo-lux">Arena de Jogos 🎮</h2>
+            
+            <div id="menu-jogos" style="width:100%; max-width:400px;">
+                <div class="game-menu-btn" onclick="abrirJogo('quiz')"><span>❓</span>Quiz: Quem Sabe Mais?</div>
+                <div class="game-menu-btn" onclick="abrirJogo('velha')"><span>❌</span>Jogo da Velha Romântico</div>
+                <div class="game-menu-btn" onclick="abrirJogo('timeline')"><span>⏳</span>Nossa Linha do Tempo</div>
+                <div class="game-menu-btn" onclick="abrirJogo('prefere')"><span>🔄</span>O Que Você Prefere?</div>
+            </div>
+
+            <div id="jogo-quiz" class="sub-jogo-container">
+                <div class="glass-card">
+                    <button class="btn-lux" style="padding:8px; font-size:0.75rem; margin-bottom:10px;" onclick="voltarMenuJogos()">↩ Voltar à Arena</button>
+                    <h3 id="quiz-pergunta" style="font-family:'Playfair Display'; margin:10px 0;">Carregando pergunta...</h3>
+                    <div class="opcoes-quiz-grid" id="quiz-opcoes"></div>
+                    <div id="quiz-status" style="margin-top:15px; font-size:0.8rem; color:var(--gold); font-weight:bold;">Aguardando jogadores...</div>
+                    <button class="btn-lux" id="btn-proximo-quiz" style="display:none; background:var(--gold); color:#000;">Próxima Pergunta ➡️</button>
+                </div>
+            </div>
+
+            <div id="jogo-velha" class="sub-jogo-container">
+                <div class="glass-card">
+                    <button class="btn-lux" style="padding:8px; font-size:0.75rem; margin-bottom:10px;" onclick="voltarMenuJogos()">↩ Voltar à Arena</button>
+                    <div id="velha-vez" style="font-weight:bold; color:var(--gold); margin-bottom:10px;">Carregando tabuleiro...</div>
+                    <div class="velha-grid" id="tabuleiro-velha"></div>
+                    <div id="velha-desafio" style="font-size:0.85rem; padding:15px; background:rgba(255,255,255,0.05); border-radius:15px; border:1px solid var(--purple); display:none; font-style:italic; margin-bottom:10px;"></div>
+                    
+                    <button class="btn-lux" id="btn-cumprir-desafio" onclick="window.confirmarDesafioCumprido()" style="display:none; background:linear-gradient(45deg, #2a9d8f, #e9c46a); color:#0a001a; margin-bottom:15px; box-shadow: 0 4px 15px rgba(42, 157, 143, 0.4);">Confirmo que cumpri o desafio! 💜</button>
+                    
+                    <button class="btn-lux" onclick="window.reiniciarVelha()" style="font-size:0.8rem; padding:10px;">Reiniciar Jogo 🔄</button>
+                </div>
+            </div>
+
+            <div id="jogo-timeline" class="sub-jogo-container">
+                <div class="glass-card">
+                    <button class="btn-lux" style="padding:8px; font-size:0.75rem; margin-bottom:10px;" onclick="voltarMenuJogos()">↩ Voltar à Arena</button>
+                    <p style="font-size:0.8rem; color:var(--gold); margin-bottom:12px;">Preencham os slots na ordem cronológica correta juntos!</p>
+                    <div id="slots-timeline"></div>
+                    <div style="margin-top:15px; font-size:0.75rem;">Selecione o slot e escolha o fato:</div>
+                    <select id="select-timeline-fato" onchange="window.alocarFato(this.value)">
+                        <option value="">-- Escolha um acontecimento --</option>
+                    </select>
+                    <button class="btn-lux" onclick="window.limparTimeline()" style="background:#ff4d6d; font-size:0.8rem; padding:10px; margin-top:10px;">Limpar Tudo 🔄</button>
+                </div>
+            </div>
+
+            <div id="jogo-prefere" class="sub-jogo-container">
+                <div class="glass-card">
+                    <button class="btn-lux" style="padding:8px; font-size:0.75rem; margin-bottom:10px;" onclick="voltarMenuJogos()">↩ Voltar à Arena</button>
+                    <h3 style="font-family:'Playfair Display'; margin-bottom:15px;">O que você prefere?</h3>
+                    <button class="btn-lux" id="prefere-optA" onclick="window.votarPrefere('A')" style="background:rgba(255,255,255,0.1); border:1px solid var(--purple); margin-bottom:10px;"></button>
+                    <p style="color:var(--gold); font-weight:bold; font-size:1.1rem; margin:5px 0;">OU</p>
+                    <button class="btn-lux" id="prefere-optB" onclick="window.votarPrefere('B')" style="background:rgba(255,255,255,0.1); border:1px solid var(--purple);"></button>
+                    <div id="prefere-resultado" style="margin-top:20px; font-size:0.9rem; font-weight:bold; min-height:30px;"></div>
+                    <button class="btn-lux" id="btn-proximo-prefere" style="display:none; background:var(--gold); color:#000;">Próxima Rodada ➡️</button>
+                </div>
+            </div>
         </section>
 
         <section id="fotos" class="secao">
@@ -232,6 +312,17 @@
         window.addEventListener('appinstalled', () => {
             installContainer.style.display = 'none';
         });
+
+        window.abrirJogo = (idJogo) => {
+            document.getElementById('menu-jogos').style.display = 'none';
+            document.querySelectorAll('.sub-jogo-container').forEach(c => c.classList.remove('ativo'));
+            document.getElementById('jogo-' + idJogo).classList.add('ativo');
+        };
+
+        window.voltarMenuJogos = () => {
+            document.querySelectorAll('.sub-jogo-container').forEach(c => c.classList.remove('ativo'));
+            document.getElementById('menu-jogos').style.display = 'block';
+        };
     </script>
 
     <script type="module">
@@ -266,6 +357,7 @@
                 document.getElementById('menu').classList.remove('hidden');
                 initVisual();
                 sync();
+                syncJogos();
             }
         };
 
@@ -360,7 +452,7 @@
                 img.onload = function () {
                     const canvas = document.createElement('canvas');
                     const MAX_WIDTH = 450;
-                    
+
                     let width = img.width;
                     let height = img.height;
 
@@ -481,7 +573,7 @@
                 s.forEach(snapshot => {
                     const idFoto = snapshot.key;
                     const f = snapshot.val();
-                    
+
                     const cardHtml = `
                         <div class="foto-card">
                             <div class="foto-menu-btn" onclick="toggleMenuFoto('${idFoto}')">⋮</div>
@@ -537,6 +629,279 @@
             if(v) push(ref(db, 'correio_v2'), { texto: `${v}\n\n— Com carinho: ${usuarioAtivo} 🌹` });
             document.getElementById('textoC').value = "";
         };
+
+
+        /* ENGINE DA ARENA DE JOGOS REALTIME */
+        function syncJogos() {
+            
+            // --- JOGO 1: QUIZ SINCRONIZADO ---
+            const perguntasQuiz = [
+                { p: "Qual o destino da nossa viagem dos sonhos?", o: ["Praia Paradisíaca", "Cabana nas Montanhas", "Cidade Europeia", "Parque de Diversões"] },
+                { p: "Qual é o nosso lanche oficial de finais de semana?", o: ["Pizza", "Hambúrguer", "Açaí completo", "Comida Japonesa"] },
+                { p: "Quem é mais provável de dormir no meio do filme?", o: ["Ela", "Ele", "Os dois juntos", "Nenhum, somos cinéfilos"] }
+            ];
+
+            const quizRef = ref(db, 'arena_jogos/quiz');
+            onValue(quizRef, snapshot => {
+                const data = snapshot.val() || { rodada: 0, respostas: {} };
+                const r = data.rodada % perguntasQuiz.length;
+                const questao = perguntasQuiz[r];
+
+                document.getElementById('quiz-pergunta').innerText = questao.p;
+                const boxOpcoes = document.getElementById('quiz-opcoes');
+                boxOpcoes.innerHTML = "";
+
+                let meuVoto = data.respostas ? data.respostas[usuarioAtivo] : null;
+
+                questao.o.forEach((opcao, idx) => {
+                    const btn = document.createElement('div');
+                    btn.className = `quiz-opt ${meuVoto === idx ? 'selecionada' : ''}`;
+                    btn.innerText = opcao;
+                    btn.onclick = () => {
+                        if (meuVoto === null) {
+                            update(ref(db, `arena_jogos/quiz/respostas`), { [usuarioAtivo]: idx });
+                        }
+                    };
+                    boxOpcoes.appendChild(btn);
+                });
+
+                const statusTxt = document.getElementById('quiz-status');
+                const btnProx = document.getElementById('btn-proximo-quiz');
+                const chavesRespostas = data.respostas ? Object.keys(data.respostas) : [];
+
+                if (chavesRespostas.length === 1) {
+                    statusTxt.innerText = `Um de vocês já votou! Aguardando o outro... ⏳`;
+                    btnProx.style.display = 'none';
+                } else if (chavesRespostas.length >= 2) {
+                    const nomes = Object.keys(data.respostas);
+                    const v1 = data.respostas[nomes[0]];
+                    const v2 = data.respostas[nomes[1]];
+                    if (v1 === v2) {
+                        statusTxt.innerText = "Sintonia Perfeita! Vocês escolheram a mesma opção! 😍💜";
+                    } else {
+                        statusTxt.innerText = `Respostas diferentes! ${nomes[0]} escolheu "${questao.o[v1]}" e ${nomes[1]} escolheu "${questao.o[v2]}".`;
+                    }
+                    btnProx.style.display = 'block';
+                } else {
+                    statusTxt.innerText = "Votem secretamente na sua resposta!";
+                    btnProx.style.display = 'none';
+                }
+
+                btnProx.onclick = () => {
+                    remove(ref(db, 'arena_jogos/quiz/respostas')).then(() => {
+                        update(quizRef, { rodada: data.rodada + 1 });
+                    });
+                };
+            });
+
+            // --- JOGO 2: JOGO DA VELHA DO AMOR COM TRAVA DE DESAFIO ---
+            const velhaRef = ref(db, 'arena_jogos/velha');
+            const desafiosVelha = [
+                "Cante 10 segundos de uma música que lembra seu amor 🎵",
+                "Diga 3 motivos pelos quais você se apaixonou ❤️",
+                "Dê um beijo estalado ou mande um áudio fofo agora 💋",
+                "Faça uma massagem de 1 minuto na próxima vez que se virem 🎟️",
+                "Diga qual o seu momento favorito ao lado do seu amor 🥰"
+            ];
+
+            window.reiniciarVelha = () => {
+                update(velhaRef, {
+                    tabuleiro: ["", "", "", "", "", "", "", "", ""],
+                    turno: usuarioAtivo,
+                    vencedor: "",
+                    desafio: "",
+                    desafioPendente: false,
+                    quemDeveCumprir: ""
+                });
+            };
+
+            window.confirmarDesafioCumprido = () => {
+                onValue(velhaRef, snap => {
+                    const currentData = snap.val();
+                    if (currentData && currentData.desafioPendente && currentData.quemDeveCumprir === usuarioAtivo) {
+                        update(velhaRef, {
+                            turno: usuarioAtivo === "Eduarda" || usuarioAtivo === "Duda" ? "Parceiro(a)" : "Eduarda",
+                            desafioPendente: false,
+                            quemDeveCumprir: ""
+                        });
+                    }
+                }, { onlyOnce: true });
+            };
+
+            onValue(velhaRef, snapshot => {
+                let data = snapshot.val();
+                if (!data) {
+                    window.reiniciarVelha();
+                    return;
+                }
+
+                const txtVez = document.getElementById('velha-vez');
+                const btnDesafio = document.getElementById('btn-cumprir-desafio');
+
+                if (data.vencedor) {
+                    txtVez.innerText = `Fim de Jogo! Vencedor: ${data.vencedor} 🎉`;
+                    btnDesafio.style.display = 'none';
+                } else if (data.desafioPendente) {
+                    txtVez.innerText = `⚠️ Aguardando ${data.quemDeveCumprir} cumprir o desafio...`;
+                    if (data.quemDeveCumprir === usuarioAtivo) {
+                        btnDesafio.style.display = 'block';
+                    } else {
+                        btnDesafio.style.display = 'none';
+                    }
+                } else {
+                    txtVez.innerText = data.turno === usuarioAtivo ? "Sua vez de jogar! 🫵" : `Vez de: ${data.turno}`;
+                    btnDesafio.style.display = 'none';
+                }
+
+                const desBox = document.getElementById('velha-desafio');
+                if (data.desafio) {
+                    desBox.innerText = `🔥 Desafio Ativo:\n${data.desafio}`;
+                    desBox.style.display = 'block';
+                } else {
+                    desBox.style.display = 'none';
+                }
+
+                const gridVelha = document.getElementById('tabuleiro-velha');
+                gridVelha.innerHTML = "";
+
+                data.tabuleiro.forEach((valor, idx) => {
+                    const celula = document.createElement('div');
+                    celula.className = "velha-celula";
+                    celula.innerText = valor;
+                    celula.onclick = () => {
+                        // Só pode clicar se for a vez real do jogador E não houver uma trava de desafio pendente
+                        if (data.turno === usuarioAtivo && !data.desafioPendente && valor === "" && !data.vencedor) {
+                            let novoTab = [...data.tabuleiro];
+                            novoTab[idx] = "❤️";
+
+                            let v = "";
+                            const linhas = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+                            linhas.forEach(l => {
+                                if(novoTab[l[0]] && novoTab[l[0]]===novoTab[l[1]] && novoTab[l[0]]===novoTab[l[2]]) {
+                                    v = usuarioAtivo;
+                                }
+                            });
+
+                            const randomDesafio = desafiosVelha[Math.floor(Math.random() * desafiosVelha.length)];
+
+                            update(velhaRef, {
+                                tabuleiro: novoTab,
+                                vencedor: v,
+                                desafio: randomDesafio,
+                                desafioPendente: v ? false : true, // Só gera trava de desafio se o jogo não tiver acabado
+                                quemDeveCumprir: usuarioAtivo
+                            });
+                        }
+                    };
+                    gridVelha.appendChild(celula);
+                });
+            });
+
+            // --- JOGO 3: NOSSA LINHA DO TEMPO COOPERATIVA ---
+            const timelineFatos = [
+                { id: "f1", txt: "Nosso primeiro Oi por mensagem 📱" },
+                { id: "f2", txt: "O dia do nosso primeiro beijo marcante 💋" },
+                { id: "f3", txt: "Quando decidimos que era pra valer 💜" },
+                { id: "f4", txt: "Nossa primeira foto oficial juntos 📸" }
+            ];
+
+            let slotSelecionadoIdx = null;
+            const timelineRef = ref(db, 'arena_jogos/timeline');
+
+            window.limparTimeline = () => {
+                update(timelineRef, { slots: ["", "", "", ""] });
+            };
+
+            window.alocarFato = (fatoId) => {
+                if (slotSelecionadoIdx !== null && fatoId !== "") {
+                    onValue(timelineRef, snapshot => {
+                        let atual = snapshot.val() || { slots: ["", "", "", ""] };
+                        let novosSlots = [...atual.slots];
+                        novosSlots[slotSelecionadoIdx] = timelineFatos.find(f => f.id === fatoId).txt;
+                        update(timelineRef, { slots: novosSlots });
+                    }, { onlyOnce: true });
+                    document.getElementById('select-timeline-fato').value = "";
+                }
+            };
+
+            onValue(timelineRef, snapshot => {
+                const data = snapshot.val() || { slots: ["", "", "", ""] };
+                const boxSlots = document.getElementById('slots-timeline');
+                boxSlots.innerHTML = "";
+
+                data.slots.forEach((conteudo, idx) => {
+                    const slot = document.createElement('div');
+                    slot.className = `timeline-slot ${conteudo ? 'filled' : ''} ${slotSelecionadoIdx === idx ? 'marcado' : ''}`;
+                    slot.innerText = conteudo ? `Fato ${idx + 1}: ${conteudo}` : `[ Slot ${idx + 1} Vazio - Clique para preencher ]`;
+                    slot.onclick = () => {
+                        slotSelecionadoIdx = idx;
+                        syncJogos();
+                    };
+                    boxSlots.appendChild(slot);
+                });
+
+                const selectFatos = document.getElementById('select-timeline-fato');
+                selectFatos.innerHTML = '<option value="">-- Escolha um acontecimento --</option>';
+                timelineFatos.forEach(f => {
+                    if (!data.slots.includes(f.txt)) {
+                        selectFatos.innerHTML += `<option value="${f.id}">${f.txt}</option>`;
+                    }
+                });
+            });
+
+            // --- JOGO 4: O QUE VOCÊ PREFERE? ---
+            const perguntasPrefere = [
+                { a: "Passar o fim de semana numa cabana isolada", b: "Ir para um hotel luxuoso na praia" },
+                { a: "Maratona completa de filmes antigos com pipoca", b: "Sair para jantar num lugar chique e inédito" },
+                { a: "Ganhar um vale de massagem caprichada", b: "Ganhar seu doce favorito gigante" }
+            ];
+
+            const prefereRef = ref(db, 'arena_jogos/prefere');
+
+            window.votarPrefere = (opcao) => {
+                update(ref(db, 'arena_jogos/prefere/votos'), { [usuarioAtivo]: opcao });
+            };
+
+            onValue(prefereRef, snapshot => {
+                const data = snapshot.val() || { rodada: 0, votos: {} };
+                const rodadaAtual = data.rodada % perguntasPrefere.length;
+                const p = perguntasPrefere[rodadaAtual];
+
+                const btnA = document.getElementById('prefere-optA');
+                const btnB = document.getElementById('prefere-optB');
+                btnA.innerText = p.a;
+                btnB.innerText = p.b;
+
+                let meusVotos = data.votos || {};
+                btnA.className = `btn-lux ${meusVotos[usuarioAtivo] === 'A' ? 'marcado' : ''}`;
+                btnB.className = `btn-lux ${meusVotos[usuarioAtivo] === 'B' ? 'marcado' : ''}`;
+
+                const boxResultado = document.getElementById('prefere-resultado');
+                const btnProxPrefere = document.getElementById('btn-proximo-prefere');
+                const jogaram = Object.keys(meusVotos);
+
+                if (jogaram.length === 1) {
+                    boxResultado.innerText = "Você já escolheu! Esperando a resposta do seu par... 👀";
+                    btnProxPrefere.style.display = 'none';
+                } else if (jogaram.length >= 2) {
+                    if (meusVotos[jogaram[0]] === meusVotos[jogaram[1]]) {
+                        boxResultado.innerText = "Vocês pensam igual! Sintonia perfeita! 💞🤩";
+                    } else {
+                        boxResultado.innerText = "Pensamentos diferentes! Opções opostas completadas. 😂";
+                    }
+                    btnProxPrefere.style.display = 'block';
+                } else {
+                    boxResultado.innerText = "Escolha uma das opções acima!";
+                    btnProxPrefere.style.display = 'none';
+                }
+
+                btnProxPrefere.onclick = () => {
+                    remove(ref(db, 'arena_jogos/prefere/votos')).then(() => {
+                        update(prefereRef, { rodada: data.rodada + 1 });
+                    });
+                };
+            });
+        }
     </script>
 </body>
 </html>
