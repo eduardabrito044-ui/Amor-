@@ -56,10 +56,16 @@
 
         .titulo-lux { font-family: 'Great Vibes', cursive; font-size: 2.8rem; color: var(--gold); margin: 15px 0; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
 
+        /* Raspadinhas */
         .grid-raspa { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; width: 100%; }
         .raspa-item { position: relative; aspect-ratio: 1; border-radius: 20px; overflow: hidden; background: #fff; border: 2.5px solid var(--purple); box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
         .texto-escondido { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; color: #1a0033; font-weight: bold; text-align: center; z-index: 1; font-family: 'Montserrat', sans-serif; padding: 5px; }
         canvas { position: absolute; inset: 0; z-index: 2; touch-action: none; }
+
+        /* Cupons */
+        .mimo-card { background: linear-gradient(135deg, rgba(123, 44, 191, 0.3), rgba(255, 77, 109, 0.2)); border: 1.5px dashed var(--gold); border-radius: 15px; padding: 15px; text-align: center; color: white; display: flex; flex-direction: column; justify-content: space-between; }
+        .mimo-titulo { font-weight: bold; font-size: 0.9rem; color: var(--gold); margin-bottom: 5px; }
+        .mimo-desc { font-size: 0.75rem; opacity: 0.9; margin-bottom: 10px; }
 
         .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; margin-top: 10px; }
         .dia-cal { font-size: 0.7rem; padding: 10px 0; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; background: rgba(255,255,255,0.05); }
@@ -89,13 +95,6 @@
         .foto-card img { width: 100%; height: auto; display: block; border-radius: 10px; border: 1px solid var(--purple); cursor: pointer; }
         .foto-card span { font-size: 0.65rem; display: block; margin-top: 7px; color: #ccc; }
 
-        .foto-menu-btn {
-            position: absolute; top: 12px; right: 12px; width: 26px; height: 26px;
-            background: rgba(0, 0, 0, 0.65); border-radius: 50px; color: white;
-            font-size: 1rem; line-height: 24px; text-align: center; cursor: pointer;
-            border: 1px solid rgba(255, 255, 255, 0.2); z-index: 10;
-        }
-
         .foto-lightbox {
             position: fixed; inset: 0; background: rgba(0, 0, 0, 0.95);
             display: none; align-items: center; justify-content: center;
@@ -111,7 +110,7 @@
         .game-menu-btn:active { background: rgba(123, 44, 191, 0.2); }
         .game-menu-btn span { font-size: 1.8rem; margin-right: 15px; }
 
-        /* Quiz Status Colors */
+        /* Quiz & Prefere Status Colors */
         .opcoes-quiz-grid { display: grid; grid-template-columns: 1fr; gap: 10px; width: 100%; margin-top: 15px; }
         .quiz-opt { background: rgba(255,255,255,0.1); border: 1px solid var(--purple); border-radius: 12px; padding: 14px; font-weight: bold; cursor: pointer; color: white; text-align: center; transition: 0.2s; }
         .quiz-opt.selecionada { background: rgba(255,255,255,0.25); border-color: var(--gold); }
@@ -127,13 +126,11 @@
         .timeline-slot { background: rgba(255,255,255,0.05); border: 1.5px dashed rgba(255,255,255,0.3); border-radius: 15px; padding: 14px; width: 100%; margin-bottom: 10px; font-size: 0.85rem; min-height: 50px; text-align: center; cursor: pointer; transition: 0.2s; }
         .timeline-slot.filled { border-style: solid; border-color: var(--gold); background: rgba(214, 175, 55, 0.15); font-weight: bold; }
 
-        /* Quebra-Cabeça Visual Real */
-        .puzzle-grid-real { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; width: 100%; max-width: 300px; background: rgba(0,0,0,0.5); padding: 6px; border-radius: 15px; border: 2px solid var(--purple); margin: 15px 0; }
-        .puzzle-slot-real { aspect-ratio: 1; background: rgba(255,255,255,0.05); border: 1px dashed rgba(255,255,255,0.2); border-radius: 8px; display: flex; align-items: center; justify-content: center; overflow: hidden; cursor: pointer; position: relative; }
-        .puzzle-slot-real img { width: 100%; height: 100%; object-fit: cover; }
+        /* Quebra-Cabeça Visual Dinâmico */
+        .puzzle-grid-real { display: grid; gap: 4px; width: 100%; max-width: 320px; background: rgba(0,0,0,0.5); padding: 6px; border-radius: 15px; border: 2px solid var(--purple); margin: 15px 0; }
+        .puzzle-slot-real { aspect-ratio: 1; background: rgba(255,255,255,0.05); border: 1px dashed rgba(255,255,255,0.2); border-radius: 6px; display: flex; align-items: center; justify-content: center; overflow: hidden; cursor: pointer; position: relative; font-size: 0.7rem; color: rgba(255,255,255,0.3); }
         .puzzle-pecas-pool { display: flex; gap: 10px; overflow-x: auto; width: 100%; padding: 10px 5px; margin-bottom: 10px; background: rgba(255,255,255,0.03); border-radius: 12px; }
-        .puzzle-peca-item { width: 70px; height: 70px; flex-shrink: 0; border-radius: 8px; border: 2px solid var(--gold); overflow: hidden; cursor: pointer; position: relative; }
-        .puzzle-peca-item img { width: 100%; height: 100%; object-fit: cover; }
+        .puzzle-peca-item { width: 65px; height: 65px; flex-shrink: 0; border-radius: 6px; border: 2px solid var(--gold); overflow: hidden; cursor: pointer; position: relative; }
         .puzzle-peca-item.selecionada { outline: 3px solid var(--pink); transform: scale(1.05); }
     </style>
 </head>
@@ -176,18 +173,18 @@
             </div>
 
             <div class="glass-card">
-                <p id="label-raspa" style="font-size:0.7rem; font-weight:bold; letter-spacing:2px; color: var(--gold);">SURPRESA DE HOJE</p>
+                <p id="label-raspa" style="font-size:0.7rem; font-weight:bold; letter-spacing:2px; color: var(--gold);">SURPRESA DE HOJE 🎁</p>
                 <div class="grid-raspa" id="raspaGrid"></div>
             </div>
 
             <div class="glass-card">
-                <p style="font-size:0.7rem; font-weight:bold; letter-spacing:1px;">NOSSO CALENDÁRIO</p>
+                <p style="font-size:0.7rem; font-weight:bold; letter-spacing:1px;">NOSSO CALENDÁRIO 📅</p>
                 <div class="cal-grid" id="calGrid"></div>
             </div>
         </section>
 
         <section id="mimos" class="secao">
-            <h2 class="titulo-lux">Cupons de Carinho</h2>
+            <h2 class="titulo-lux">Cupons de Carinho 🎟️</h2>
             <div id="cuponsGrid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width:100%; max-width:400px;"></div>
         </section>
 
@@ -199,7 +196,7 @@
                 <div class="game-menu-btn" onclick="abrirJogo('velha')"><span>❌</span>Jogo da Velha Romântico</div>
                 <div class="game-menu-btn" onclick="abrirJogo('timeline')"><span>⏳</span>Nossa Linha do Tempo</div>
                 <div class="game-menu-btn" onclick="abrirJogo('prefere')"><span>🔄</span>O Que Você Prefere?</div>
-                <div class="game-menu-btn" onclick="abrirJogo('puzzle')"><span>🧩</span>Quebra-Cabeça de Verdade</div>
+                <div class="game-menu-btn" onclick="abrirJogo('puzzle')"><span>🧩</span>Quebra-Cabeça Fofo</div>
             </div>
 
             <div id="jogo-quiz" class="sub-jogo-container">
@@ -223,8 +220,8 @@
                     <div id="velha-vez" style="font-weight:bold; color:var(--gold); margin-bottom:10px;">Carregando...</div>
                     <div class="velha-grid" id="tabuleiro-velha"></div>
                     <div id="velha-desafio" style="font-size:0.85rem; padding:15px; background:rgba(255,255,255,0.05); border-radius:15px; border:1px solid var(--purple); display:none; font-style:italic; margin-bottom:10px;"></div>
-                    <button class="btn-lux" id="btn-cumprir-desafio" onclick="window.confirmarDesafioCumprido()" style="display:none; background:linear-gradient(45deg, #2a9d8f, #e9c46a); color:#0a001a; margin-bottom:15px;">Confirmo que cumpri! 💜</button>
-                    <button class="btn-lux" onclick="window.reiniciarVelha()" style="font-size:0.8rem; padding:10px;">Reiniciar Jogo 🔄</button>
+                    <button class="btn-lux" id="btn-cumprir-desafio" style="display:none; background:linear-gradient(45deg, #2a9d8f, #e9c46a); color:#0a001a; margin-bottom:15px;">Confirmo que cumpri! 💜</button>
+                    <button class="btn-lux" id="btn-reset-velha" style="font-size:0.8rem; padding:10px;">Reiniciar Jogo 🔄</button>
                 </div>
             </div>
 
@@ -235,42 +232,53 @@
                     <select id="select-timeline-fato" style="margin-bottom:15px;"></select>
                     <div id="slots-timeline"></div>
                     <div id="timeline-resultado" style="margin-top:15px; font-size:0.9rem; font-weight:bold; color:var(--gold);"></div>
-                    <button class="btn-lux" onclick="window.limparTimeline()" style="background:#ff4d6d; font-size:0.8rem; padding:10px; margin-top:10px;">Zerar Ordem 🔄</button>
+                    <button class="btn-lux" id="btn-clear-timeline" style="background:#ff4d6d; font-size:0.8rem; padding:10px; margin-top:10px;">Zerar Ordem 🔄</button>
                 </div>
             </div>
 
             <div id="jogo-prefere" class="sub-jogo-container">
                 <div class="glass-card">
                     <button class="btn-lux" style="padding:8px; font-size:0.75rem; margin-bottom:10px;" onclick="voltarMenuJogos()">↩ Voltar à Arena</button>
-                    <h3 style="font-family:'Playfair Display'; margin-bottom:15px;">O que você prefere?</h3>
-                    <div class="opcoes-quiz-grid">
-                        <div class="quiz-opt" id="prefere-optA" onclick="window.votarPrefere('A')"></div>
-                        <p style="color:var(--gold); font-weight:bold; font-size:1.1rem; margin:5px 0; text-align:center;">OU</p>
-                        <div class="quiz-opt" id="prefere-optB" onclick="window.votarPrefere('B')"></div>
-                    </div>
-                    <div id="prefere-resultado" style="margin-top:20px; font-size:0.9rem; line-height:1.4; font-weight:bold; min-height:40px;"></div>
-                    <button class="btn-lux" id="btn-proximo-prefere" style="display:none; background:var(--gold); color:#000;">Próxima Rodada ➡️</button>
+                    <div id="prefere-alvo" style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--gold); font-weight: bold; margin-bottom: 5px;"></div>
+                    <h3 id="prefere-pergunta" style="font-family:'Playfair Display'; margin-bottom:15px;">Carregando pergunta...</h3>
+                    
+                    <div class="opcoes-quiz-grid" id="prefere-opcoes-box"></div>
+                    
+                    <button class="btn-lux" id="btn-confirmar-prefere" style="display:none; background:var(--gold); color:#000; margin-top:15px;">Confirmar Escolha 🔒</button>
+                    
+                    <div id="prefere-resultado" style="margin-top:20px; font-size:0.9rem; line-height:1.4; font-weight:bold; min-height:40px;">Aguardando votos...</div>
+                    <button class="btn-lux" id="btn-proximo-prefere" style="display:none; background:linear-gradient(45deg, #9d4edd, #7b2cbf); color:#fff;">Próxima Rodada ➡️</button>
                 </div>
             </div>
 
             <div id="jogo-puzzle" class="sub-jogo-container">
                 <div class="glass-card">
                     <button class="btn-lux" style="padding:8px; font-size:0.75rem; margin-bottom:10px;" onclick="voltarMenuJogos()">↩ Voltar à Arena</button>
-                    <div id="puzzle-turno-txt" style="font-weight:bold; color:var(--gold); margin-bottom:10px;">Carregando...</div>
                     
-                    <p style="font-size:0.75rem; opacity:0.8; margin-bottom:10px;">Selecione uma peça do painel abaixo e clique no quadrado cinza correto correspondente para encaixar!</p>
+                    <div id="puzzle-turno-txt" style="font-weight:bold; color:var(--gold); margin-bottom:12px;">Carregando...</div>
+                    
+                    <div style="margin-bottom: 15px; text-align: left;">
+                        <label style="font-size:0.75rem; color:var(--gold); font-weight:bold; display:block; margin-bottom:5px;">Dificuldade do Painel:</label>
+                        <select id="select-puzzle-tamanho" onchange="window.mudarDificuldadePuzzle(this.value)">
+                            <option value="3">9 Peças (Fácil)</option>
+                            <option value="4">16 Peças (Médio)</option>
+                            <option value="5">25 Peças (Desafio Extremo)</option>
+                        </select>
+                    </div>
+
+                    <p style="font-size:0.7rem; opacity:0.8; margin-bottom:10px;">Escolha uma peça do carrossel e depois clique no quadrado correspondente no tabuleiro!</p>
                     
                     <div class="puzzle-pecas-pool" id="pool-pecas"></div>
                     <div class="puzzle-grid-real" id="grid-puzzle-real"></div>
                     
                     <div id="puzzle-status" style="margin-top:10px; font-size:0.85rem; font-weight:bold; color:var(--gold);"></div>
-                    <button class="btn-lux" onclick="window.reiniciarPuzzle()" style="background:#ff4d6d; font-size:0.8rem; padding:10px; margin-top:10px;">Reiniciar Quebra-Cabeça 🔄</button>
+                    <button class="btn-lux" id="btn-reset-puzzle" style="background:#ff4d6d; font-size:0.8rem; padding:10px; margin-top:10px;">Próximo Animal / Reiniciar 🔄</button>
                 </div>
             </div>
         </section>
 
         <section id="fotos" class="secao">
-            <h2 class="titulo-lux">Nossos Momentos</h2>
+            <h2 class="titulo-lux">Nossos Momentos ✨</h2>
             <div class="glass-card">
                 <input type="file" id="inputFoto" accept="image/*" style="display:none;">
                 <button class="btn-lux" onclick="document.getElementById('inputFoto').click()">Selecionar da Galeria</button>
@@ -281,7 +289,7 @@
         </section>
 
         <section id="sonhos" class="secao">
-            <h2 class="titulo-lux">Nossos Sonhos</h2>
+            <h2 class="titulo-lux">Nossos Sonhos ✨</h2>
             <div id="listaSonhos" style="width:100%; max-width:400px; margin-bottom: 15px;"></div>
             <div class="glass-card">
                 <input type="text" id="inputSonho" placeholder="O que vamos realizar?">
@@ -290,7 +298,7 @@
         </section>
 
         <section id="correio" class="secao">
-            <h2 class="titulo-lux">Cartinhas de Amor</h2>
+            <h2 class="titulo-lux">Cartinhas de Amor 💌</h2>
             <div class="glass-card">
                 <textarea id="textoC" rows="4" placeholder="Escreva algo lindo..."></textarea>
                 <button class="btn-lux" onclick="enviarC()">Enviar com Amor 💌</button>
@@ -366,6 +374,7 @@
                 document.getElementById('app').classList.remove('hidden');
                 document.getElementById('menu').classList.remove('hidden');
                 initVisual();
+                initMimosERaspas();
                 sync();
                 syncJogos();
             }
@@ -403,7 +412,60 @@
             }
         }
 
-        // --- SISTEMA DE FOTOS MURAL ---
+        function initMimosERaspas() {
+            const mimosDados = [
+                { t: "Vale Beijo 💋", d: "Pode ser trocado por um beijo apaixonado a qualquer hora do dia." },
+                { t: "Vale Massagem 💆‍♂️", d: "Garante uma massagem relaxante nas costas de 15 minutos." },
+                { t: "Vale Cinema em Casa 🎬", d: "Você escolhe o filme e a pipoca fica por conta do parceiro." },
+                { t: "Vale Jantar Especial 🍷", d: "Direito a uma refeição caprichada escolhida inteiramente por você." }
+            ];
+            const mGrid = document.getElementById('cuponsGrid');
+            if(mGrid) {
+                mGrid.innerHTML = "";
+                mimosDados.forEach(m => {
+                    mGrid.innerHTML += `<div class="mimo-card"><div class="mimo-titulo">${m.t}</div><div class="mimo-desc">${m.d}</div><button class="btn-lux" style="font-size:0.65rem; padding:8px; margin:0;" onclick="alert('Cupom Ativado! Tire um print e envie para seu amor!')">Resgatar Mimo 🎟️</button></div>`;
+                });
+            }
+
+            const raspaPremios = ["Vale Abraço Apertado 🫂", "Beijo de 1 Minuto 💋", "Mensagem Fofa Surpresa 📝", "Café na Cama ☕"];
+            const rGrid = document.getElementById('raspaGrid');
+            if(rGrid) {
+                rGrid.innerHTML = "";
+                for(let i=0; i<4; i++) {
+                    const item = document.createElement('div'); item.className = 'raspa-item';
+                    const txt = document.createElement('div'); txt.className = 'texto-escondido';
+                    txt.innerText = raspaPremios[i];
+                    const canvas = document.createElement('canvas');
+                    item.appendChild(txt); item.appendChild(canvas); rGrid.appendChild(item);
+
+                    setTimeout(() => {
+                        canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight;
+                        const ctx = canvas.getContext('2d');
+                        ctx.fillStyle = '#9d4edd'; ctx.fillRect(0,0,canvas.width,canvas.height);
+                        ctx.fillStyle = '#ffffff'; ctx.font = 'bold 12px Montserrat'; ctx.textAlign = 'center';
+                        ctx.fillText('Raspe Aqui 💜', canvas.width/2, canvas.height/2 + 4);
+
+                        let raspando = false;
+                        const mover = (e) => {
+                            if(!raspando) return;
+                            const rect = canvas.getBoundingClientRect();
+                            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+                            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+                            const x = clientX - rect.left; const y = clientY - rect.top;
+                            ctx.globalCompositeOperation = 'destination-out'; ctx.beginPath();
+                            ctx.arc(x, y, 20, 0, Math.PI*2); ctx.fill();
+                        };
+                        canvas.addEventListener('mousedown', () => raspando = true);
+                        canvas.addEventListener('mouseup', () => raspando = false);
+                        canvas.addEventListener('mousemove', mover);
+                        canvas.addEventListener('touchstart', () => raspando = true);
+                        canvas.addEventListener('touchend', () => raspando = false);
+                        canvas.addEventListener('touchmove', mover);
+                    }, 300);
+                }
+            }
+        }
+
         document.getElementById('inputFoto').addEventListener('change', (e) => {
             if (e.target.files[0]) document.getElementById('btnUpload').style.display = 'block';
         });
@@ -420,25 +482,25 @@
 
         function sync() {
             onValue(ref(db, 'mural_fotos_direto'), s => {
-                const mural = document.getElementById('muralFotos'); mural.innerHTML = "";
+                const mural = document.getElementById('muralFotos'); if(mural) { mural.innerHTML = "";
                 s.forEach(c => {
                     mural.innerHTML += `<div class="foto-card"><img src="${c.val().imagem}" onclick="window.verFotoGrande(this.src)"><span>Por: ${c.val().autor}</span></div>`;
-                });
+                }); }
             });
 
             onValue(ref(db, 'sonhos_v2'), s => {
-                const l = document.getElementById('listaSonhos'); l.innerHTML = "";
+                const l = document.getElementById('listaSonhos'); if(l) { l.innerHTML = "";
                 s.forEach(item => {
                     l.innerHTML += `<div style="display:flex; background:rgba(255,255,255,0.1); padding:10px; border-radius:15px; margin-bottom:8px; text-align:left;">
                         <input type="checkbox" ${item.val().status?'checked':''} onchange="update(ref(getDatabase(), 'sonhos_v2/${item.key}'), {status:!${item.val().status}})" style="width:20px; margin-right:10px;">
                         <span style="${item.val().status?'text-decoration:line-through;opacity:0.5;':''}">${item.val().texto}</span>
                     </div>`;
-                });
+                }); }
             });
 
             onValue(ref(db, 'correio_v2'), s => {
-                const m = document.getElementById('muralC'); m.innerHTML = "";
-                s.forEach(c => { m.innerHTML = `<div class="glass-card" style="text-align:left;">${c.val().texto}</div>` + m.innerHTML; });
+                const m = document.getElementById('muralC'); if(m) { m.innerHTML = "";
+                s.forEach(c => { m.innerHTML = `<div class="glass-card" style="text-align:left;">${c.val().texto}</div>` + m.innerHTML; }); }
             });
         }
 
@@ -459,22 +521,22 @@
 
 
         /* ==========================================================================
-           ENGINE DA ARENA DE JOGOS COOPERATIVA CORRIGIDA E ADAPTADA
+           ENGINE DA ARENA DE JOGOS COOPERATIVA CORRIGIDA
            ========================================================================== */
         function syncJogos() {
             
-            // --- JOGO 1: QUIZ CATEGORIZADO COM VALIDAÇÃO DE CORES ---
+            // --- JOGO 1: QUIZ CATEGORIZADO ---
             const perguntasQuiz = [
                 { c: "Sobre Ela", p: "Qual o maior sonho de consumo dela atualmente?", o: ["Trocar de celular", "Viagem internacional", "Mudar o guarda-roupa", "Comprar um carro"] },
                 { c: "Sobre Ele", p: "Qual o hobby favorito dele quando está sozinho?", o: ["Jogar videogame", "Ouvir música/Podcasts", "Ver vídeos/Séries", "Dormir"] },
                 { c: "Sobre o Casal", p: "O que nós dois mais gostamos de fazer juntos nos finais de semana?", o: ["Sair para comer", "Ficar de bobeira conversando", "Maratona de filmes/séries", "Planejar o futuro"] }
             ];
 
-            let selecaoTemporaria = null;
+            let selecaoTemporariaQuiz = null;
             const quizRef = ref(db, 'arena_jogos/quiz');
 
             onValue(quizRef, snapshot => {
-                const data = snapshot.val() || { rodada: 0, selecoes: {}, confirmadas: {} };
+                const data = snapshot.val() || { rodada: 0, confirmadas: {} };
                 const r = data.rodada % perguntasQuiz.length;
                 const questao = perguntasQuiz[r];
 
@@ -496,25 +558,24 @@
                         const players = Object.keys(data.confirmadas);
                         const v1 = data.confirmadas[players[0]];
                         const v2 = data.confirmadas[players[1]];
-
                         if (v1 === v2) {
-                            if (idx === v1) btn.classList.add('correta'); 
+                            if (idx === v1) btn.classList.add('correta');
                         } else {
-                            if (idx === v1 || idx === v2) btn.classList.add('errada'); 
+                            if (idx === v1 || idx === v2) btn.classList.add('errada');
                         }
                     } else {
                         if (jaConfirmei && data.confirmadas[usuarioAtivo] === idx) {
-                            btn.classList.add('confirmada'); 
-                        } else if (!jaConfirmei && selecaoTemporaria === idx) {
+                            btn.classList.add('confirmada');
+                        } else if (!jaConfirmei && selecaoTemporariaQuiz === idx) {
                             btn.classList.add('selecionada');
                         }
                     }
 
                     btn.onclick = () => {
                         if (!jaConfirmei && chavesConf.length < 2) {
-                            selecaoTemporaria = idx;
+                            selecaoTemporariaQuiz = idx;
                             document.getElementById('btn-confirmar-quiz').style.display = 'block';
-                            document.querySelectorAll('.quiz-opt').forEach(b => b.classList.remove('selecionada'));
+                            document.querySelectorAll('#quiz-opcoes .quiz-opt').forEach(b => b.classList.remove('selecionada'));
                             btn.classList.add('selecionada');
                         }
                     };
@@ -530,7 +591,7 @@
                     btnProx.style.display = 'none';
                 } else if (chavesConf.length === 1) {
                     if (jaConfirmei) {
-                        statusTxt.innerText = "Sua resposta foi enviada! Aguardando a confirmação do seu amor... ⏳🔐";
+                        statusTxt.innerText = "Sua resposta foi enviada! Aguardando o amor... ⏳";
                         btnConfirmar.style.display = 'none';
                     } else {
                         statusTxt.innerText = "Seu amor já respondeu! Falta você! 🫵💜";
@@ -540,17 +601,17 @@
                     btnConfirmar.style.display = 'none';
                     const players = Object.keys(data.confirmadas);
                     if (data.confirmadas[players[0]] === data.confirmadas[players[1]]) {
-                        statusTxt.innerText = "Sintonia Perfeita! Os dois escolheram a mesma opção! 😍🎉 (Ficou Verde!)";
+                        statusTxt.innerText = "Sintonia Perfeita! Vocês se conhecem muito! 😍🎉";
                     } else {
-                        statusTxt.innerText = "Respostas Divergentes! Vocês não escolheram o mesmo. 💔 (Ficou Vermelho!)";
+                        statusTxt.innerText = "Respostas Diferentes! Que tal conversarem sobre isso? 💔";
                     }
                     btnProx.style.display = 'block';
                 }
 
                 btnConfirmar.onclick = () => {
-                    if (selecaoTemporaria !== null) {
-                        update(ref(db, 'arena_jogos/quiz/confirmadas'), { [usuarioAtivo]: selecaoTemporaria });
-                        selecaoTemporaria = null;
+                    if (selecaoTemporariaQuiz !== null) {
+                        update(ref(db, 'arena_jogos/quiz/confirmadas'), { [usuarioAtivo]: selecaoTemporariaQuiz });
+                        selecaoTemporariaQuiz = null;
                         btnConfirmar.style.display = 'none';
                     }
                 };
@@ -563,12 +624,12 @@
             });
 
 
-            // --- JOGO 2: JOGO DA VELHA ROMÂNTICO ---
+            // --- JOGO 2: JOGO DA VELHA ---
             const velhaRef = ref(db, 'arena_jogos/velha');
-            window.reiniciarVelha = () => {
+            document.getElementById('btn-reset-velha').onclick = () => {
                 update(velhaRef, { tabuleiro: ["", "", "", "", "", "", "", "", ""], turno: usuarioAtivo, criadorTurno: usuarioAtivo, vencedor: "", desafio: "", desafioPendente: false, quemDeveCumprir: "" });
             };
-            window.confirmarDesafioCumprido = () => {
+            document.getElementById('btn-cumprir-desafio').onclick = () => {
                 onValue(velhaRef, snap => {
                     const currentData = snap.val();
                     if (currentData && currentData.desafioPendente && currentData.quemDeveCumprir === usuarioAtivo) {
@@ -578,7 +639,7 @@
                 }, { onlyOnce: true });
             };
             onValue(velhaRef, snapshot => {
-                let data = snapshot.val(); if (!data) { window.reiniciarVelha(); return; }
+                let data = snapshot.val(); if (!data) return;
                 const txtVez = document.getElementById('velha-vez'); const btnDesafio = document.getElementById('btn-cumprir-desafio');
                 const meuEmoji = (data.criadorTurno === usuarioAtivo) ? "💜" : "💛";
                 if (data.vencedor) { txtVez.innerText = `Fim! Ganhador: ${data.vencedor} 🎉`; btnDesafio.style.display = 'none'; }
@@ -600,11 +661,10 @@
             });
 
 
-            // --- JOGO 3: LINHA DO TEMPO COM COMPARATIVO FINAL ---
+            // --- JOGO 3: LINHA DO TEMPO ---
             const timelineFatos = ["Primeiro Oi virtual 📱", "Nosso primeiro beijo 💋", "O pedido oficial 💜", "Nossa primeira foto juntos 📸"];
             const timelineRef = ref(db, 'arena_jogos/timeline');
-
-            window.limparTimeline = () => { update(timelineRef, { slots: ["", "", "", ""] }); };
+            document.getElementById('btn-clear-timeline').onclick = () => { update(timelineRef, { slots: ["", "", "", ""] }); };
             window.alocarFatoNoSlot = (slotIdx) => {
                 const val = document.getElementById('select-timeline-fato').value;
                 if (val) {
@@ -616,127 +676,202 @@
                     document.getElementById('select-timeline-fato').value = "";
                 }
             };
-
             onValue(timelineRef, snapshot => {
                 const data = snapshot.val() || { slots: ["", "", "", ""] };
                 const boxSlots = document.getElementById('slots-timeline'); boxSlots.innerHTML = "";
                 data.slots.forEach((conteudo, idx) => {
                     const slot = document.createElement('div'); slot.className = `timeline-slot ${conteudo ? 'filled' : ''}`;
-                    slot.innerText = conteudo ? `Etapa ${idx + 1}: ${conteudo}` : `[ Toque para definir a Posição ${idx + 1} ]`;
+                    slot.innerText = conteudo ? `Etapa ${idx + 1}: ${conteudo}` : `[ Posição ${idx + 1} ]`;
                     slot.onclick = () => window.alocarFatoNoSlot(idx); boxSlots.appendChild(slot);
                 });
-
                 const selectFatos = document.getElementById('select-timeline-fato');
                 selectFatos.innerHTML = '<option value="">-- Vincular Acontecimento --</option>';
-                timelineFatos.forEach(f => { if (!data.slots.includes(f)) selectFatos.innerHTML += `<option value="${f}">${f}</option>`; });
-
+                timelineFatos.forEach(f => { if (!data.slots.includes(f)) selectFatos.innerHTML += `<option value="${f}">${f}</option>'; });
                 const resBox = document.getElementById('timeline-resultado');
                 if (!data.slots.includes("")) {
-                    let perfeito = true;
-                    for(let i=0; i<timelineFatos.length; i++) { if(data.slots[i] !== timelineFatos[i]) perfeito = false; }
-                    resBox.innerText = perfeito ? "Lista Completa e Perfeita! Vocês acertaram a ordem histórica! 🏆💖" : "Lista finalizada, mas a ordem cronológica está divergente. Tentem rearranjar! 🔄";
-                } else { resBox.innerText = "Aguardando o preenchimento de todas as datas para comparar..."; }
+                    let perfeito = true; for(let i=0; i<timelineFatos.length; i++) { if(data.slots[i] !== timelineFatos[i]) perfeito = false; }
+                    resBox.innerText = perfeito ? "Ordem Histórica Perfeita! 🏆💖" : "A ordem cronológica está errada. Rearranjem! 🔄";
+                } else { resBox.innerText = "Preencham os slots..."; }
             });
 
 
-            // --- JOGO 4: O QUE VOCÊ PREFERE DIVISIONAL (ELA PREFERE X ELE PREFERE) ---
+            // --- JOGO 4: O QUE VOCÊ PREFERE (MODO REALTIME INTEGRADO IGUAL AO QUIZ) ---
             const perguntasPrefere = [
-                { a: "Fim de semana numa cabana isolada ⛰️", b: "Hotel com piscina na praia 🌊" },
-                { a: "Maratona de filmes com pipoca em casa 🎬", b: "Jantar chique num restaurante inédito 🍷" }
+                { c: "Preferência Dela 💁‍♀️", p: "O que ELA prefere ganhar num dia aleatório?", o: ["Um buquê de flores lindo 💐", "Uma caixa de chocolates e doces 🍫"] },
+                { c: "Preferência Dele 🙋‍♂️", p: "O que ELE prefere fazer em um dia chuvoso?", o: ["Ficar jogando/assistindo coladinho 🎮", "Pedir um delivery pesado e dormir 🍕"] },
+                { c: "Preferência do Casal 💜", p: "O que vocês preferem para as próximas férias?", o: ["Uma cabana isolada nas montanhas ⛰️", "Um resort com piscina na praia 🌊"] },
+                { c: "Preferência Dela 💁‍♀️", p: "Estilo de date preferido DELA:", o: ["Jantar mega romântico à luz de velas 🕯️", "Fast food no shopping rindo bastante 🍔"] },
+                { c: "Preferência Dele 🙋‍♂️", p: "Superpoder que ELE gostaria de ter:", o: ["Poder voar para qualquer canto 🦅", "Poder ler mentes e pensamentos 🧠"] }
             ];
-            const prefereRef = ref(db, 'arena_jogos/prefere');
 
-            window.votarPrefere = (opcao) => { update(ref(db, 'arena_jogos/prefere/votos'), { [usuarioAtivo]: opcao }); };
+            let selecaoTemporariaPrefere = null;
+            const prefereRef = ref(db, 'arena_jogos/prefere_realtime');
 
             onValue(prefereRef, snapshot => {
-                const data = snapshot.val() || { rodada: 0, votos: {} };
-                const rodadaAtual = data.rodada % perguntasPrefere.length;
-                const p = perguntasPrefere[rodadaAtual];
+                const data = snapshot.val() || { rodada: 0, confirmadas: {} };
+                const r = data.rodada % perguntasPrefere.length;
+                const questao = perguntasPrefere[r];
 
-                const btnA = document.getElementById('prefere-optA'); const btnB = document.getElementById('prefere-optB');
-                btnA.innerText = p.a; btnB.innerText = p.b;
+                document.getElementById('prefere-alvo').innerText = questao.c;
+                document.getElementById('prefere-pergunta').innerText = questao.p;
 
-                let meusVotos = data.votos || {};
-                btnA.className = `quiz-opt ${meusVotos[usuarioAtivo] === 'A' ? 'selecionada' : ''}`;
-                btnB.className = `quiz-opt ${meusVotos[usuarioAtivo] === 'B' ? 'selecionada' : ''}`;
+                const boxOpcoes = document.getElementById('prefere-opcoes-box');
+                boxOpcoes.innerHTML = "";
+
+                const chavesConf = data.confirmadas ? Object.keys(data.confirmadas) : [];
+                const jaConfirmei = data.confirmadas && data.confirmadas[usuarioAtivo] !== undefined;
+
+                questao.o.forEach((opcao, idx) => {
+                    const btn = document.createElement('div');
+                    btn.className = 'quiz-opt';
+                    btn.innerText = opcao;
+
+                    if (chavesConf.length >= 2) {
+                        const players = Object.keys(data.confirmadas);
+                        const v1 = data.confirmadas[players[0]];
+                        const v2 = data.confirmadas[players[1]];
+                        if (v1 === v2) {
+                            if (idx === v1) btn.classList.add('correta');
+                        } else {
+                            if (idx === v1 || idx === v2) btn.classList.add('errada');
+                        }
+                    } else {
+                        if (jaConfirmei && data.confirmadas[usuarioAtivo] === idx) {
+                            btn.classList.add('confirmada');
+                        } else if (!jaConfirmei && selecaoTemporariaPrefere === idx) {
+                            btn.classList.add('selecionada');
+                        }
+                    }
+
+                    btn.onclick = () => {
+                        if (!jaConfirmei && chavesConf.length < 2) {
+                            selecaoTemporariaPrefere = idx;
+                            document.getElementById('btn-confirmar-prefere').style.display = 'block';
+                            document.querySelectorAll('#prefere-opcoes-box .quiz-opt').forEach(b => b.classList.remove('selecionada'));
+                            btn.classList.add('selecionada');
+                        }
+                    };
+                    boxOpcoes.appendChild(btn);
+                });
 
                 const boxResultado = document.getElementById('prefere-resultado');
+                const btnConfirmar = document.getElementById('btn-confirmar-prefere');
                 const btnProxPrefere = document.getElementById('btn-proximo-prefere');
-                const jogaram = Object.keys(meusVotos);
 
-                if (jogaram.length === 0) {
-                    boxResultado.innerHTML = "<span style='color:var(--gold);'>Escolha sua opção preferida acima!</span>";
+                if (chavesConf.length === 0) {
+                    boxResultado.innerText = "Faça a sua escolha e trave o seu voto!";
                     btnProxPrefere.style.display = 'none';
-                } else if (jogaram.length === 1) {
-                    boxResultado.innerHTML = `<span style='color:var(--orange);'>Você escolheu! Aguardando o voto do seu par... ⏳</span>`;
+                } else if (chavesConf.length === 1) {
+                    if (jaConfirmei) {
+                        boxResultado.innerText = "Seu voto foi registrado! Esperando o par escolher... ⏳";
+                        btnConfirmar.style.display = 'none';
+                    } else {
+                        boxResultado.innerText = "Seu par já escolheu! Qual o seu palpite? 🫵🔥";
+                    }
                     btnProxPrefere.style.display = 'none';
-                } else if (jogaram.length >= 2) {
+                } else if (chavesConf.length >= 2) {
+                    btnConfirmar.style.display = 'none';
+                    const players = Object.keys(data.confirmadas);
                     let elaPrefere = ""; let elePrefere = "";
-                    jogaram.forEach(pName => {
-                        const escolhaTxt = meusVotos[pName] === 'A' ? p.a : p.b;
-                        if (pName.toLowerCase().includes("eduarda") || pName.toLowerCase().includes("duda")) { elaPrefere = escolhaTxt; }
-                        else { elePrefere = escolhaTxt; }
+                    
+                    players.forEach(pN => {
+                        const idxVoto = data.confirmadas[pN];
+                        const txtV = questao.o[idxVoto];
+                        if(pN.toLowerCase().includes("eduarda") || pN.toLowerCase().includes("duda")) {
+                            elaPrefere = txtV;
+                        } else {
+                            elePrefere = txtV;
+                        }
                     });
 
-                    let matchTxt = (meusVotos[jogaram[0]] === meusVotos[jogaram[1]]) ? 
-                        "<p style='color:var(--green); margin-top:10px;'>Sintonia Confirmada! Vocês preferem a mesma coisa! 💕</p>" : 
-                        "<p style='color:var(--pink); margin-top:10px;'>Opções diferentes! Cada um tem um gostinho especial. 🥰</p>";
+                    let matchTxt = "";
+                    if (data.confirmadas[players[0]] === data.confirmadas[players[1]]) {
+                        matchTxt = "<p style='color:var(--green); margin-top:10px;'>Sintonia Perfeita! Vocês escolheram igual! 💕🎉</p>";
+                    } else {
+                        matchTxt = "<p style='color:var(--pink); margin-top:10px;'>Gostos diferentes ou falta de conhecimento? 👀💬</p>";
+                    }
 
-                    boxResultado.innerHTML = `
-                        <div style='text-align:left; font-size:0.85rem; background:rgba(255,255,255,0.05); padding:10px; border-radius:12px;'>
-                            <strong>💁‍♀️ Ela prefere:</strong> ${elaPrefere || "Não votou"}<br>
-                            <strong>🙋‍♂️ Ele prefere:</strong> ${elePrefere || "Não votou"}
-                        </div>
-                    ` + matchTxt;
+                    boxResultado.innerHTML = `<div style='text-align:left; font-size:0.8rem; background:rgba(0,0,0,0.3); padding:10px; border-radius:10px;'><strong>💁‍♀️ Ela escolheu:</strong> ${elaPrefere || "Ainda não votou"}<br><strong>🙋‍♂️ Ele escolheu:</strong> ${elePrefere || "Ainda não votou"}</div>` + matchTxt;
                     btnProxPrefere.style.display = 'block';
                 }
 
+                btnConfirmar.onclick = () => {
+                    if (selecaoTemporariaPrefere !== null) {
+                        update(ref(db, 'arena_jogos/prefere_realtime/confirmadas'), { [usuarioAtivo]: selecaoTemporariaPrefere });
+                        selecaoTemporariaPrefere = null;
+                        btnConfirmar.style.display = 'none';
+                    }
+                };
+
                 btnProxPrefere.onclick = () => {
-                    remove(ref(db, 'arena_jogos/prefere/votos')).then(() => { update(prefereRef, { rodada: data.rodada + 1 }); });
+                    remove(ref(db, 'arena_jogos/prefere_realtime/confirmadas')).then(() => {
+                        update(prefereRef, { rodada: data.rodada + 1 });
+                    });
                 };
             });
 
 
-            // --- JOGO 5: QUEBRA-CABEÇA DE VERDADE ---
-            const puzzleImagens = [
-                "https://images.unsplash.com/photo-1578632767115-351597cf2477?w=300&q=80", 
-                "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=300&q=80"
+            // --- JOGO 5: QUEBRA-CABEÇA ---
+            const puzzleImagensFofas = [
+                "https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=350&q=80",
+                "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=350&q=80",
+                "https://images.unsplash.com/photo-1507666405821-822e0343b63e?w=350&q=80",
+                "https://images.unsplash.com/photo-1591561954557-26941169b49e?w=350&q=80"
             ];
 
             const puzzleRef = ref(db, 'arena_jogos/puzzle_real');
             let pecaSelecionadaLocal = null;
 
-            window.reiniciarPuzzle = () => {
-                const imgAleatoria = puzzleImagens[Math.floor(Math.random() * puzzleImagens.length)];
+            window.mudarDificuldadePuzzle = (tamanho) => {
+                const N = parseInt(tamanho);
+                const gridVazia = Array(N * N).fill("");
+                const imgAleatoria = puzzleImagensFofas[Math.floor(Math.random() * puzzleImagensFofas.length)];
+                
                 update(puzzleRef, {
                     imagemUrl: imgAleatoria,
-                    gridPosicoes: ["", "", "", "", "", "", "", "", ""], 
+                    tamanhoGrade: N,
+                    gridPosicoes: gridVazia,
                     turno: usuarioAtivo,
                     criadorTurno: usuarioAtivo
                 });
             };
 
+            document.getElementById('btn-reset-puzzle').onclick = () => {
+                const selectTamanho = document.getElementById('select-puzzle-tamanho').value;
+                window.mudarDificuldadePuzzle(selectTamanho);
+            };
+
             onValue(puzzleRef, snapshot => {
                 let data = snapshot.val();
-                if (!data) { window.reiniciarPuzzle(); return; }
+                if (!data) { window.mudarDificuldadePuzzle(3); return; }
+
+                const N = data.tamanhoGrade || 3;
+                document.getElementById('select-puzzle-tamanho').value = N;
 
                 const txtTurno = document.getElementById('puzzle-turno-txt');
                 const emojiJogador = (data.criadorTurno === usuarioAtivo) ? "💜" : "💛";
-                
                 const eMeuTurno = data.turno === usuarioAtivo;
-                txtTurno.innerText = eMeuTurno ? `Sua vez de encaixar uma peça! (${emojiJogador}) 🧩` : `Aguarde o movimento de: ${data.turno}`;
+                
+                txtTurno.innerText = eMeuTurno ? `Sua vez! Encaixe uma peça (${emojiJogador}) 🧩` : `Aguarde o movimento de: ${data.turno}`;
+
+                const boardReal = document.getElementById('grid-puzzle-real');
+                boardReal.style.gridTemplateColumns = `repeat(${N}, 1fr)`;
 
                 const poolBox = document.getElementById('pool-pecas');
                 poolBox.innerHTML = "";
 
-                for(let i=0; i<9; i++) {
+                const totalPecas = N * N;
+                const tamanhoPecaPx = Math.floor(210 / N);
+                const tamanhoTabuleiroPx = Math.floor(270 / N);
+
+                for(let i = 0; i < totalPecas; i++) {
                     const pecaNome = `Parte_${i}`;
                     if (!data.gridPosicoes.includes(pecaNome)) {
                         const pElem = document.createElement('div');
                         pElem.className = `puzzle-peca-item ${pecaSelecionadaLocal === pecaNome ? 'selecionada' : ''}`;
                         
-                        const row = Math.floor(i / 3); const col = i % 3;
-                        pElem.innerHTML = `<div style="width:100%; height:100%; background:url('${data.imagemUrl}') -${col*70}px -${row*70}px / 210px 210px no-repeat;"></div>`;
+                        const row = Math.floor(i / N); const col = i % N;
+                        pElem.innerHTML = `<div style="width:100%; height:100%; background:url('${data.imagemUrl}') -${col * tamanhoPecaPx}px -${row * tamanhoPecaPx}px / 210px 210px no-repeat;"></div>`;
                         
                         pElem.onclick = () => {
                             if (eMeuTurno) {
@@ -744,26 +879,24 @@
                                 document.querySelectorAll('.puzzle-peca-item').forEach(x => x.classList.remove('selecionada'));
                                 pElem.classList.add('selecionada');
                             } else {
-                                alert("Aguarde o seu turno para selecionar e jogar!");
+                                alert("Aguarde o seu turno para jogar!");
                             }
                         };
                         poolBox.appendChild(pElem);
                     }
                 }
 
-                const boardReal = document.getElementById('grid-puzzle-real');
                 boardReal.innerHTML = "";
-
                 data.gridPosicoes.forEach((conteudoSlot, idxSlot) => {
                     const slot = document.createElement('div');
                     slot.className = "puzzle-slot-real";
 
                     if (conteudoSlot) {
                         const pIdx = parseInt(conteudoSlot.replace("Parte_", ""));
-                        const r = Math.floor(pIdx / 3); const c = pIdx % 3;
-                        slot.innerHTML = `<div style="width:100%; height:100%; background:url('${data.imagemUrl}') -${c*90}px -${r*90}px / 270px 270px no-repeat;"></div>`;
+                        const r = Math.floor(pIdx / N); const c = pIdx % N;
+                        slot.innerHTML = `<div style="width:100%; height:100%; background:url('${data.imagemUrl}') -${c * tamanhoTabuleiroPx}px -${r * tamanhoTabuleiroPx}px / 270px 270px no-repeat;"></div>`;
                     } else {
-                        slot.innerText = "?";
+                        slot.innerText = `${idxSlot + 1}`;
                     }
 
                     slot.onclick = () => {
@@ -785,14 +918,14 @@
 
                 const statusPuzzle = document.getElementById('puzzle-status');
                 let completo = true;
-                for(let i=0; i<9; i++) { if(data.gridPosicoes[i] !== `Parte_${i}`) completo = false; }
+                for(let i = 0; i < totalPecas; i++) { if(data.gridPosicoes[i] !== `Parte_${i}`) completo = false; }
                 
                 if(completo && data.gridPosicoes.every(x => x !== "")) {
-                    statusPuzzle.innerHTML = "✨ Incrível! Vocês montaram o cenário perfeitamente juntos! Parabéns casal! 💜🏆";
+                    statusPuzzle.innerHTML = "✨ Incrível! Vocês montaram o bichinho perfeitamente! 💜🏆";
                 } else if(!data.gridPosicoes.includes("") && !completo) {
-                    statusPuzzle.innerHTML = "O quebra-cabeça foi completado, mas algumas peças estão trocadas de lugar! Reinicie o desafio. 🔄";
+                    statusPuzzle.innerHTML = "Completado, mas algumas peças estão trocadas! 🔄";
                 } else {
-                    statusPuzzle.innerHTML = "Unam as peças na ordem e posições corretas para revelar o desenho.";
+                    statusPuzzle.innerHTML = "Unam as peças nas posições numéricas corretas.";
                 }
             });
         }
