@@ -54,7 +54,7 @@
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
         }
 
-        .titulo-lux font-family: 'Great Vibes', cursive; font-size: 2.8rem; color: var(--gold); margin: 15px 0; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
+        .titulo-lux { font-family: 'Great Vibes', cursive; font-size: 2.8rem; color: var(--gold); margin: 15px 0; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
 
         /* Raspadinhas */
         .grid-raspa { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; width: 100%; }
@@ -144,7 +144,7 @@
         <button class="btn-lux" id="btn-entrar-acao">Entrar no Coração</button>
     </div>
 
-    <div id="lightbox" class="foto-lightbox" onclick="fecharFotoGrande()">
+    <div id="lightbox" class="foto-lightbox" onclick="window.fecharFotoGrande()">
         <img id="imgExpandida" src="" alt="Foto Expandida">
     </div>
 
@@ -153,12 +153,12 @@
     <div class="pensamento-amor" id="msgAmor">Seu amor está pensando em você...</div>
 
     <nav class="nav-bar hidden" id="menu">
-        <div class="nav-item ativo" onclick="irPara('home', this)"><span>🏠</span>Início</div>
-        <div class="nav-item" onclick="irPara('mimos', this)"><span>🎟️</span>Mimos</div>
-        <div class="nav-item" onclick="irPara('jogos', this)"><span>🎮</span>Jogos</div>
-        <div class="nav-item" onclick="irPara('fotos', this)"><span>📸</span>Fotos</div>
-        <div class="nav-item" onclick="irPara('sonhos', this)"><span>✨</span>Sonhos</div>
-        <div class="nav-item" onclick="irPara('correio', this)"><span>💌</span>Correio</div>
+        <div class="nav-item ativo" onclick="window.irPara('home', this)"><span>🏠</span>Início</div>
+        <div class="nav-item" onclick="window.irPara('mimos', this)"><span>🎟️</span>Mimos</div>
+        <div class="nav-item" onclick="window.irPara('jogos', this)"><span>🎮</span>Jogos</div>
+        <div class="nav-item" onclick="window.irPara('fotos', this)"><span>📸</span>Fotos</div>
+        <div class="nav-item" onclick="window.irPara('sonhos', this)"><span>✨</span>Sonhos</div>
+        <div class="nav-item" onclick="window.irPara('correio', this)"><span>💌</span>Correio</div>
     </nav>
 
     <main id="app" class="hidden">
@@ -192,16 +192,16 @@
             <h2 class="titulo-lux" style="font-family: 'Great Vibes', cursive; font-size: 2.8rem; color: var(--gold); margin: 15px 0;">Arena de Jogos 🎮</h2>
             
             <div id="menu-jogos" style="width:100%; max-width:400px;">
-                <div class="game-menu-btn" onclick="abrirJogo('quiz')"><span>❓</span>Quiz das Categorias</div>
-                <div class="game-menu-btn" onclick="abrirJogo('velha')"><span>❌</span>Jogo da Velha Romântico</div>
-                <div class="game-menu-btn" onclick="abrirJogo('timeline')"><span>⏳</span>Nossa Linha do Tempo</div>
-                <div class="game-menu-btn" onclick="abrirJogo('prefere')"><span>🔄</span>O Que Você Prefere?</div>
-                <div class="game-menu-btn" onclick="abrirJogo('puzzle')"><span>🧩</span>Quebra-Cabeça Fofo</div>
+                <div class="game-menu-btn" onclick="window.abrirJogo('quiz')"><span>❓</span>Quiz das Categorias</div>
+                <div class="game-menu-btn" onclick="window.abrirJogo('velha')"><span>❌</span>Jogo da Velha Romântico</div>
+                <div class="game-menu-btn" onclick="window.abrirJogo('timeline')"><span>⏳</span>Nossa Linha do Tempo</div>
+                <div class="game-menu-btn" onclick="window.abrirJogo('prefere')"><span>🔄</span>O Que Você Prefere?</div>
+                <div class="game-menu-btn" onclick="window.abrirJogo('puzzle')"><span>🧩</span>Quebra-Cabeça Fofo</div>
             </div>
 
             <div id="jogo-quiz" class="sub-jogo-container">
                 <div class="glass-card">
-                    <button class="btn-lux" style="padding:8px; font-size:0.75rem; margin-bottom:10px;" onclick="voltarMenuJogos()">↩ Voltar à Arena</button>
+                    <button class="btn-lux" style="padding:8px; font-size:0.75rem; margin-bottom:10px;" onclick="window.voltarMenuJogos()">↩ Voltar à Arena</button>
                     <div id="quiz-categoria" style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--gold); font-weight: bold; margin-bottom: 5px;"></div>
                     <h3 id="quiz-pergunta" style="font-family:'Playfair Display'; margin:10px 0;">Carregando...</h3>
                     
@@ -216,7 +216,7 @@
 
             <div id="jogo-velha" class="sub-jogo-container">
                 <div class="glass-card">
-                    <button class="btn-lux" style="padding:8px; font-size:0.75rem; margin-bottom:10px;" onclick="voltarMenuJogos()">↩ Voltar à Arena</button>
+                    <button class="btn-lux" style="padding:8px; font-size:0.75rem; margin-bottom:10px;" onclick="window.voltarMenuJogos()">↩ Voltar à Arena</button>
                     <div id="velha-vez" style="font-weight:bold; color:var(--gold); margin-bottom:10px;">Carregando...</div>
                     <div class="velha-grid" id="tabuleiro-velha"></div>
                     <div id="velha-desafio" style="font-size:0.85rem; padding:15px; background:rgba(255,255,255,0.05); border-radius:15px; border:1px solid var(--purple); display:none; font-style:italic; margin-bottom:10px;"></div>
@@ -227,7 +227,7 @@
 
             <div id="jogo-timeline" class="sub-jogo-container">
                 <div class="glass-card">
-                    <button class="btn-lux" style="padding:8px; font-size:0.75rem; margin-bottom:10px;" onclick="voltarMenuJogos()">↩ Voltar à Arena</button>
+                    <button class="btn-lux" style="padding:8px; font-size:0.75rem; margin-bottom:10px;" onclick="window.voltarMenuJogos()">↩ Voltar à Arena</button>
                     <p style="font-size:0.8rem; color:var(--gold); margin-bottom:12px;">Preencham os slots na ordem histórica real!</p>
                     <select id="select-timeline-fato" style="margin-bottom:15px;"></select>
                     <div id="slots-timeline"></div>
@@ -238,7 +238,7 @@
 
             <div id="jogo-prefere" class="sub-jogo-container">
                 <div class="glass-card">
-                    <button class="btn-lux" style="padding:8px; font-size:0.75rem; margin-bottom:10px;" onclick="voltarMenuJogos()">↩ Voltar à Arena</button>
+                    <button class="btn-lux" style="padding:8px; font-size:0.75rem; margin-bottom:10px;" onclick="window.voltarMenuJogos()">↩ Voltar à Arena</button>
                     <div id="prefere-alvo" style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--gold); font-weight: bold; margin-bottom: 5px;"></div>
                     <h3 id="prefere-pergunta" style="font-family:'Playfair Display'; margin-bottom:15px;">Carregando pergunta...</h3>
                     
@@ -253,7 +253,7 @@
 
             <div id="jogo-puzzle" class="sub-jogo-container">
                 <div class="glass-card">
-                    <button class="btn-lux" style="padding:8px; font-size:0.75rem; margin-bottom:10px;" onclick="voltarMenuJogos()">↩ Voltar à Arena</button>
+                    <button class="btn-lux" style="padding:8px; font-size:0.75rem; margin-bottom:10px;" onclick="window.voltarMenuJogos()">↩ Voltar à Arena</button>
                     
                     <div id="puzzle-turno-txt" style="font-weight:bold; color:var(--gold); margin-bottom:12px;">Carregando...</div>
                     
@@ -282,7 +282,7 @@
             <div class="glass-card">
                 <input type="file" id="inputFoto" accept="image/*" style="display:none;">
                 <button class="btn-lux" onclick="document.getElementById('inputFoto').click()">Selecionar da Galeria</button>
-                <button class="btn-lux" id="btnUpload" onclick="enviarFotoDirect()" style="background:linear-gradient(45deg, #2a9d8f, #e9c46a); display:none; margin-top:8px;">Enviar Foto ✨</button>
+                <button class="btn-lux" id="btnUpload" onclick="window.enviarFotoDirect()" style="background:linear-gradient(45deg, #2a9d8f, #e9c46a); display:none; margin-top:8px;">Enviar Foto ✨</button>
                 <div id="statusUpload" style="font-size:0.8rem; margin-top:8px; color:var(--gold);"></div>
             </div>
             <div class="mural-fotos" id="muralFotos"></div>
@@ -293,7 +293,7 @@
             <div id="listaSonhos" style="width:100%; max-width:400px; margin-bottom: 15px;"></div>
             <div class="glass-card">
                 <input type="text" id="inputSonho" placeholder="O que vamos realizar?">
-                <button class="btn-lux" onclick="addSonho()">Adicionar Sonho</button>
+                <button class="btn-lux" onclick="window.addSonho()">Adicionar Sonho</button>
             </div>
         </section>
 
@@ -301,7 +301,7 @@
             <h2 class="titulo-lux" style="font-family: 'Great Vibes', cursive; font-size: 2.8rem; color: var(--gold); margin: 15px 0;">Cartinhas de Amor 💌</h2>
             <div class="glass-card">
                 <textarea id="textoC" rows="4" placeholder="Escreva algo lindo..."></textarea>
-                <button class="btn-lux" onclick="enviarC()">Enviar com Amor 💌</button>
+                <button class="btn-lux" onclick="window.enviarC()">Enviar com Amor 💌</button>
             </div>
             <div id="muralC" style="width:100%; max-width:400px;"></div>
         </section>
@@ -322,14 +322,16 @@
             e.preventDefault(); depherrPrompt = e; installContainer.style.display = 'block';
         });
 
-        installBtn.addEventListener('click', async () => {
-            if (depherrPrompt) {
-                depherrPrompt.prompt();
-                const { outcome } = await depherrPrompt.userChoice;
-                if (outcome === 'accepted') installContainer.style.display = 'none';
-                depherrPrompt = null;
-            }
-        });
+        if (installBtn) {
+            installBtn.addEventListener('click', async () => {
+                if (depherrPrompt) {
+                    depherrPrompt.prompt();
+                    const { outcome } = await depherrPrompt.userChoice;
+                    if (outcome === 'accepted') installContainer.style.display = 'none';
+                    depherrPrompt = null;
+                }
+            });
+        }
 
         window.abrirJogo = (idJogo) => {
             document.getElementById('menu-jogos').style.display = 'none';
@@ -358,6 +360,7 @@
         const db = getDatabase(app);
         let usuarioAtivo = "";
 
+        // Vinculando funções cruciais ao objeto global window para o HTML encontrá-las
         window.irPara = (id, el) => {
             document.querySelectorAll('.secao').forEach(s => s.classList.remove('ativa'));
             document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('ativo'));
@@ -365,7 +368,38 @@
             el.classList.add('ativo');
         };
 
-        // Escuta o clique do botão diretamente pelo JavaScript para evitar conflito de carregamento assíncrono do Firebase
+        window.verFotoGrande = (src) => { 
+            document.getElementById('imgExpandida').src = src; 
+            document.getElementById('lightbox').classList.add('show'); 
+        };
+        
+        window.fecharFotoGrande = () => {
+            document.getElementById('lightbox').classList.remove('show');
+        };
+
+        window.addSonho = () => {
+            const v = document.getElementById('inputSonho').value;
+            if(v) push(ref(db, 'sonhos_v2'), { texto: v, status: false });
+            document.getElementById('inputSonho').value = "";
+        };
+
+        window.enviarC = () => {
+            const v = document.getElementById('textoC').value;
+            if(v) push(ref(db, 'correio_v2'), { texto: `${v}\n\n— Assinado: ${usuarioAtivo}` });
+            document.getElementById('textoC').value = "";
+        };
+
+        window.enviarFotoDirect = () => {
+            const file = document.getElementById('inputFoto').files[0];
+            if (!file) return;
+            const r = new FileReader(); r.readAsDataURL(file);
+            r.onload = (ev) => {
+                push(ref(db, 'mural_fotos_direto'), { imagem: ev.target.result, autor: usuarioAtivo, data: new Date().toLocaleDateString() });
+                document.getElementById('btnUpload').style.display = 'none';
+            };
+        };
+
+        // Escuta direta de clique do botão para evitar falhas assíncronas
         document.getElementById('btn-entrar-acao').addEventListener('click', () => {
             const nomeInput = document.getElementById('user-name').value.trim();
             const senhaInput = document.getElementById('pw').value.trim();
@@ -477,16 +511,6 @@
             if (e.target.files[0]) document.getElementById('btnUpload').style.display = 'block';
         });
 
-        window.enviarFotoDirect = () => {
-            const file = document.getElementById('inputFoto').files[0];
-            if (!file) return;
-            const r = new FileReader(); r.readAsDataURL(file);
-            r.onload = (ev) => {
-                push(ref(db, 'mural_fotos_direto'), { imagem: ev.target.result, autor: usuarioAtivo, data: new Date().toLocaleDateString() });
-                document.getElementById('btnUpload').style.display = 'none';
-            };
-        };
-
         function sync() {
             onValue(ref(db, 'mural_fotos_direto'), s => {
                 const mural = document.getElementById('muralFotos'); if(mural) { mural.innerHTML = "";
@@ -510,21 +534,6 @@
                 s.forEach(c => { m.innerHTML = `<div class="glass-card" style="text-align:left;">${c.val().texto}</div>` + m.innerHTML; }); }
             });
         }
-
-        window.addSonho = () => {
-            const v = document.getElementById('inputSonho').value;
-            if(v) push(ref(db, 'sonhos_v2'), { texto: v, status: false });
-            document.getElementById('inputSonho').value = "";
-        };
-
-        window.enviarC = () => {
-            const v = document.getElementById('textoC').value;
-            if(v) push(ref(db, 'correio_v2'), { texto: `${v}\n\n— Assinado: ${usuarioAtivo}` });
-            document.getElementById('textoC').value = "";
-        };
-
-        window.verFotoGrande = (src) => { document.getElementById('imgExpandida').src = src; document.getElementById('lightbox').classList.add('show'); };
-        window.fecharFotoGrande = () => document.getElementById('lightbox').classList.remove('show');
 
 
         /* ==========================================================================
