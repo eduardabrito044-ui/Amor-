@@ -367,16 +367,21 @@
 
         window.entrar = () => {
             const nomeInput = document.getElementById('user-name').value.trim();
-            if(document.getElementById('pw').value === "2810" && nomeInput !== "") {
+            const senhaInput = document.getElementById('pw').value.trim();
+            
+            if(senhaInput === "2810" && nomeInput !== "") {
                 usuarioAtivo = nomeInput;
                 document.getElementById('msgBoasVindas').innerText = "Oi, " + usuarioAtivo + "!";
                 document.getElementById('login').classList.add('hidden');
                 document.getElementById('app').classList.remove('hidden');
                 document.getElementById('menu').classList.remove('hidden');
+                
                 initVisual();
                 initMimosERaspas();
                 sync();
                 syncJogos();
+            } else {
+                alert("Nome inválido ou Senha Incorreta! 🌟");
             }
         };
 
@@ -439,6 +444,7 @@
                     item.appendChild(txt); item.appendChild(canvas); rGrid.appendChild(item);
 
                     setTimeout(() => {
+                        if (!canvas.offsetWidth) return;
                         canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight;
                         const ctx = canvas.getContext('2d');
                         ctx.fillStyle = '#9d4edd'; ctx.fillRect(0,0,canvas.width,canvas.height);
@@ -461,7 +467,7 @@
                         canvas.addEventListener('touchstart', () => raspando = true);
                         canvas.addEventListener('touchend', () => raspando = false);
                         canvas.addEventListener('touchmove', mover);
-                    }, 300);
+                    }, 400);
                 }
             }
         }
@@ -695,7 +701,7 @@
             });
 
 
-            // --- JOGO 4: O QUE VOCÊ PREFERE (MODO REALTIME INTEGRADO IGUAL AO QUIZ) ---
+            // --- JOGO 4: O QUE VOCÊ PREFERE ---
             const perguntasPrefere = [
                 { c: "Preferência Dela 💁‍♀️", p: "O que ELA prefere ganhar num dia aleatório?", o: ["Um buquê de flores lindo 💐", "Uma caixa de chocolates e doces 🍫"] },
                 { c: "Preferência Dele 🙋‍♂️", p: "O que ELE prefere fazer em um dia chuvoso?", o: ["Ficar jogando/assistindo coladinho 🎮", "Pedir um delivery pesado e dormir 🍕"] },
