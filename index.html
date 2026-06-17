@@ -174,6 +174,7 @@
 
             <div class="glass-card">
                 <p id="label-raspa" style="font-size:0.7rem; font-weight:bold; letter-spacing:2px; color: var(--gold);">SURPRESA DE HOJE 🎁</p>
+                <div id="raspadinha-bloqueio" style="display:none; color: var(--pink); font-size:0.85rem; font-weight: bold; margin: 10px 0;"></div>
                 <div class="grid-raspa" id="raspaGrid"></div>
             </div>
 
@@ -245,7 +246,7 @@
                         <p style="color:var(--gold); font-weight:bold; font-size:1.1rem; margin:5px 0; text-align:center;">OU</p>
                         <div class="quiz-opt" id="prefere-optB"></div>
                     </div>
-                    <div id="prefere-resultado" style="margin-top:20px; font-size:0.9rem; line-height:1.4; font-weight:bold; min-height:40px;"></div>
+                    <div id="prefere-resultado" style="margin-top:20px; font-size:0.9rem; line-height:1.4; font-weight:bold; min-height:40px;">Carregando pergunta...</div>
                     <button class="btn-lux" id="btn-proximo-prefere" style="display:none; background:var(--gold); color:#000;">Próxima Rodada ➡️</button>
                 </div>
             </div>
@@ -271,7 +272,8 @@
                     <div class="puzzle-grid-real" id="grid-puzzle-real"></div>
                     
                     <div id="puzzle-status" style="margin-top:10px; font-size:0.85rem; font-weight:bold; color:var(--gold);"></div>
-                    <button class="btn-lux" id="btn-reset-puzzle" style="background:#ff4d6d; font-size:0.8rem; padding:10px; margin-top:10px;">Próximo Animal / Reiniciar 🔄</button>
+                    <button class="btn-lux" id="btn-concluir-puzzle" style="background:var(--green); font-size:0.9rem; padding:12px; margin-top:10px; display:none;">Concluir Quebra-Cabeça ✓</button>
+                    <button class="btn-lux" id="btn-reset-puzzle" style="background:#ff4d6d; font-size:0.8rem; padding:10px; margin-top:10px;">Forçar Reinício / Trocar 🔄</button>
                 </div>
             </div>
         </section>
@@ -373,7 +375,7 @@
                 document.getElementById('app').classList.remove('hidden');
                 document.getElementById('menu').classList.remove('hidden');
                 initVisual();
-                initMimosERaspas();
+                initMimos();
                 sync();
                 syncJogos();
             }
@@ -411,7 +413,7 @@
             }
         }
 
-        function initMimosERaspas() {
+        function initMimos() {
             const mimosDados = [
                 { t: "Vale Beijo 💋", d: "Pode ser trocado por um beijo apaixonado a qualquer hora do dia." },
                 { t: "Vale Massagem 💆‍♂️", d: "Garante uma massagem relaxante nas costas de 15 minutos." },
@@ -424,44 +426,6 @@
                 mimosDados.forEach(m => {
                     mGrid.innerHTML += `<div class="mimo-card"><div class="mimo-titulo">${m.t}</div><div class="mimo-desc">${m.d}</div><button class="btn-lux" style="font-size:0.65rem; padding:8px; margin:0;" onclick="alert('Cupom Ativado! Tire um print e envie para seu amor!')">Resgatar Mimo 🎟️</button></div>`;
                 });
-            }
-
-            const raspaPremios = ["Vale Abraço Apertado 🫂", "Beijo de 1 Minuto 💋", "Mensagem Fofa Surpresa 📝", "Café na Cama ☕"];
-            const rGrid = document.getElementById('raspaGrid');
-            if(rGrid) {
-                rGrid.innerHTML = "";
-                for(let i=0; i<4; i++) {
-                    const item = document.createElement('div'); item.className = 'raspa-item';
-                    const txt = document.createElement('div'); txt.className = 'texto-escondido';
-                    txt.innerText = raspaPremios[i];
-                    const canvas = document.createElement('canvas');
-                    item.appendChild(txt); item.appendChild(canvas); rGrid.appendChild(item);
-
-                    setTimeout(() => {
-                        canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight;
-                        const ctx = canvas.getContext('2d');
-                        ctx.fillStyle = '#9d4edd'; ctx.fillRect(0,0,canvas.width,canvas.height);
-                        ctx.fillStyle = '#ffffff'; ctx.font = 'bold 12px Montserrat'; ctx.textAlign = 'center';
-                        ctx.fillText('Raspe Aqui 💜', canvas.width/2, canvas.height/2 + 4);
-
-                        let raspando = false;
-                        const mover = (e) => {
-                            if(!raspando) return;
-                            const rect = canvas.getBoundingClientRect();
-                            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-                            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-                            const x = clientX - rect.left; const y = clientY - rect.top;
-                            ctx.globalCompositeOperation = 'destination-out'; ctx.beginPath();
-                            ctx.arc(x, y, 20, 0, Math.PI*2); ctx.fill();
-                        };
-                        canvas.addEventListener('mousedown', () => raspando = true);
-                        canvas.addEventListener('mouseup', () => raspando = false);
-                        canvas.addEventListener('mousemove', mover);
-                        canvas.addEventListener('touchstart', () => raspando = true);
-                        canvas.addEventListener('touchend', () => raspando = false);
-                        canvas.addEventListener('touchmove', mover);
-                    }, 300);
-                }
             }
         }
 
@@ -520,11 +484,128 @@
 
 
         /* ==========================================================================
-           ENGINE DA ARENA DE JOGOS COOPERATIVA CORRIGIDA (SEM LOOPS / TRAVAMENTOS)
+           ENGINE DA ARENA DE JOGOS COOPERATIVA ATUALIZADA (SEM TRAVAMENTOS)
            ========================================================================== */
         function syncJogos() {
             
-            // --- JOGO 1: QUIZ ALTERNADO (SOBRE MIM / SOBRE ELE / SOBRE ELA) ---
+            // --- SISTEMA GLOBAL DE RASPADINHAS (SINCRO, 1 POR DIA, TROCA DE LOTE DE 4) ---
+            const todosOsPremiosConfig = [
+                "Vale Abraço Apertado 🫂", "Beijo de 1 Minuto 💋", "Mensagem Fofa Surpresa 📝", "Café na Cama ☕",
+                "Massagem nos Pés 🦶", "Vale cafuné até dormir 😴", "Rodada de perguntas sinceras 💬", "Cinema com direito a doce 🍫"
+            ];
+
+            const raspadinhaRef = ref(db, 'arena_jogos/raspadinha_global');
+
+            onValue(raspadinhaRef, snapshot => {
+                const dadosR = snapshot.val() || { loteAtual: [], historicoUsados: [], logsCliques: {} };
+                const rGrid = document.getElementById('raspaGrid');
+                const msgBloqueio = document.getElementById('raspadinha-bloqueio');
+                const hojeStr = new Date().toISOString().split('T')[0];
+
+                // Gerar primeiro lote se estiver vazio
+                if (!dadosR.loteAtual || dadosR.loteAtual.length < 4) {
+                    let disponiveis = todosOsPremiosConfig.filter(p => !dadosR.historicoUsados || !dadosR.historicoUsados.includes(p));
+                    if (disponiveis.length < 4) {
+                        dadosR.historicoUsados = [];
+                        disponiveis = [...todosOsPremiosConfig];
+                    }
+                    // Embaralhar e tirar 4
+                    disponiveis.sort(() => Math.random() - 0.5);
+                    const novoLote = disponiveis.slice(0, 4);
+                    update(raspadinhaRef, { loteAtual: novoLote, historicoUsados: [...(dadosR.historicoUsados || []), ...novoLote] });
+                    return;
+                }
+
+                // Checa se o usuário logado já raspou algo hoje
+                let jaRaspouHoje = false;
+                if (dadosR.logsCliques) {
+                    Object.values(dadosR.logsCliques).forEach(log => {
+                        if (log.usuario === usuarioAtivo && log.data === hojeStr) {
+                            jaRaspouHoje = true;
+                        }
+                    });
+                }
+
+                if (jaRaspouHoje) {
+                    msgBloqueio.innerText = "Você já abriu sua raspadinha de hoje! Volte amanhã! ✨";
+                    msgBloqueio.style.display = "block";
+                    rGrid.style.opacity = "0.4";
+                    rGrid.style.pointerEvents = "none";
+                } else {
+                    msgBloqueio.style.display = "none";
+                    rGrid.style.opacity = "1";
+                    rGrid.style.pointerEvents = "auto";
+                }
+
+                rGrid.innerHTML = "";
+                dadosR.loteAtual.forEach((premio, idx) => {
+                    const item = document.createElement('div'); item.className = 'raspa-item';
+                    const txt = document.createElement('div'); txt.className = 'texto-escondido';
+                    txt.innerText = premio;
+                    const canvas = document.createElement('canvas');
+                    item.appendChild(txt); item.appendChild(canvas); rGrid.appendChild(item);
+
+                    // Verificar se essa raspadinha específica do slot já foi revelada no Firebase globalmente
+                    const idSlotUnico = `slot_${idx}`;
+                    const foiReveladaGlobally = dadosR.logsCliques && dadosR.logsCliques[idSlotUnico];
+
+                    setTimeout(() => {
+                        canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight;
+                        const ctx = canvas.getContext('2d');
+                        
+                        if (foiReveladaGlobally) {
+                            // Se já foi aberta por alguém, elimina o canvas protetor
+                            ctx.clearRect(0, 0, canvas.width, canvas.height);
+                            txt.innerText = `${premio}\n(por ${dadosR.logsCliques[idSlotUnico].usuario})`;
+                            item.style.background = "#e2d4f0";
+                        } else {
+                            ctx.fillStyle = '#9d4edd'; ctx.fillRect(0,0,canvas.width,canvas.height);
+                            ctx.fillStyle = '#ffffff'; ctx.font = 'bold 12px Montserrat'; ctx.textAlign = 'center';
+                            ctx.fillText('Raspe Aqui 💜', canvas.width/2, canvas.height/2 + 4);
+                        }
+
+                        let raspando = false;
+                        const registrarGanhador = () => {
+                            if (!foiReveladaGlobally && !jaRaspouHoje) {
+                                // Grava no Firebase o clique do slot e valida o dia do usuário
+                                update(ref(db, `arena_jogos/raspadinha_global/logsCliques/${idSlotUnico}`), {
+                                    usuario: usuarioAtivo,
+                                    data: hojeStr
+                                });
+
+                                // Verifica se todas as 4 foram raspadas para programar a renovação do lote na próxima carga
+                                get(raspadinhaRef).then(snapRefresh => {
+                                    const atualizado = snapRefresh.val();
+                                    if (atualizado.logsCliques && Object.keys(atualizado.logsCliques).length >= 4) {
+                                        remove(ref(db, 'arena_jogos/raspadinha_global/logsCliques'));
+                                        remove(ref(db, 'arena_jogos/raspadinha_global/loteAtual'));
+                                    }
+                                });
+                            }
+                        };
+
+                        const mover = (e) => {
+                            if(!raspando || jaRaspouHoje || foiReveladaGlobally) return;
+                            const rect = canvas.getBoundingClientRect();
+                            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+                            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+                            const x = clientX - rect.left; const y = clientY - rect.top;
+                            ctx.globalCompositeOperation = 'destination-out'; ctx.beginPath();
+                            ctx.arc(x, y, 20, 0, Math.PI*2); ctx.fill();
+                        };
+
+                        canvas.addEventListener('mousedown', () => { if(!jaRaspouHoje && !foiReveladaGlobally) { raspando = true; registrarGanhador(); } });
+                        canvas.addEventListener('mouseup', () => raspando = false);
+                        canvas.addEventListener('mousemove', mover);
+                        canvas.addEventListener('touchstart', () => { if(!jaRaspouHoje && !foiReveladaGlobally) { raspando = true; registrarGanhador(); } });
+                        canvas.addEventListener('touchend', () => raspando = false);
+                        canvas.addEventListener('touchmove', mover);
+                    }, 300);
+                });
+            });
+
+
+            // --- JOGO 1: QUIZ ALTERNADO (FIXO E DIRETO SEM TRAVAR CARREGANDO) ---
             const perguntasQuiz = [
                 { c: "Sobre Ela", p: "Qual o maior sonho de consumo dela atualmente?", o: ["Trocar de celular", "Viagem internacional", "Mudar o guarda-roupa", "Comprar um carro"] },
                 { c: "Sobre Ele", p: "Qual o hobby favorito dele quando está sozinho?", o: ["Jogar videogame", "Ouvir música/Podcasts", "Ver vídeos/Séries", "Dormir"] },
@@ -541,7 +622,6 @@
                 const r = data.rodada % perguntasQuiz.length;
                 const questao = perguntasQuiz[r];
 
-                // Ajuste inteligente para mostrar "Sobre Mim" caso a categoria seja a do próprio usuário logado
                 let categoriaTexto = questao.c;
                 const ehEduarda = usuarioAtivo.toLowerCase().includes("eduarda") || usuarioAtivo.toLowerCase().includes("duda");
                 
@@ -709,7 +789,7 @@
             });
 
 
-            // --- JOGO 4: O QUE VOCÊ PREFERE? ---
+            // --- JOGO 4: O QUE VOCÊ PREFERE? (CORRIGIDO E PRONTO) ---
             const perguntasPrefere = [
                 { a: "Fim de semana numa cabana isolada ⛰️", b: "Hotel com piscina na praia 🌊" },
                 { a: "Maratona de filmes com pipoca em casa 🎬", b: "Jantar chique num restaurante inédito 🍷" },
@@ -754,7 +834,7 @@
             };
 
 
-            // --- JOGO 5: QUEBRA-CABEÇA COOPERATIVO ---
+            // --- JOGO 5: QUEBRA-CABEÇA COOPERATIVO (SEM REPETIÇÃO E BOTÃO CONCLUIR) ---
             const puzzleImagensFofas = [
                 "https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=350&q=80",
                 "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=350&q=80",
@@ -763,19 +843,62 @@
             ];
 
             const puzzleRef = ref(db, 'arena_jogos/puzzle_real');
-            let pecaSelecionadaLocal = null;
 
             window.mudarDificuldadePuzzle = (tamanho) => {
                 const N = parseInt(tamanho);
                 const gridVazia = Array(N * N).fill("");
-                const imgAleatoria = puzzleImagensFofas[Math.floor(Math.random() * puzzleImagensFofas.length)];
-                
-                update(puzzleRef, {
-                    imagemUrl: imgAleatoria,
-                    tamanhoGrade: N,
-                    gridPosicoes: gridVazia,
-                    turno: usuarioAtivo,
-                    criadorTurno: usuarioAtivo
+
+                get(puzzleRef).then(snap => {
+                    const pData = snap.val() || { historicoImagens: [] };
+                    let vistas = pData.historicoImagens || [];
+
+                    // Filtrar imagens que ainda não foram vistas
+                    let filtradas = puzzleImagensFofas.filter(img => !vistas.includes(img));
+                    if (filtradas.length === 0) {
+                        vistas = []; // Zera se todas já passaram
+                        filtradas = [...puzzleImagensFofas];
+                    }
+
+                    const imgAleatoria = filtradas[Math.floor(Math.random() * filtradas.length)];
+                    
+                    update(puzzleRef, {
+                        imagemUrl: imgAleatoria,
+                        tamanhoGrade: N,
+                        gridPosicoes: gridVazia,
+                        turno: usuarioAtivo,
+                        criadorTurno: usuarioAtivo,
+                        historicoImagens: vistas
+                    });
+                });
+            };
+
+            // Evento do Botão Concluir que salva a imagem no histórico e puxa outra
+            document.getElementById('btn-concluir-puzzle').onclick = () => {
+                get(puzzleRef).then(snap => {
+                    const dataP = snap.val();
+                    if(dataP && dataP.imagemUrl) {
+                        let historico = dataP.historicoImagens || [];
+                        if(!historico.includes(dataP.imagemUrl)) {
+                            historico.push(dataP.imagemUrl);
+                        }
+                        // Limpa tabuleiro e sorteia a próxima imagem sem repetir
+                        const N = dataP.tamanhoGrade || 3;
+                        let filtradas = puzzleImagensFofas.filter(img => !historico.includes(img));
+                        if(filtradas.length === 0) {
+                            historico = [];
+                            filtradas = [...puzzleImagensFofas];
+                        }
+                        const novaImg = filtradas[Math.floor(Math.random() * filtradas.length)];
+                        
+                        update(puzzleRef, {
+                            imagemUrl: novaImg,
+                            gridPosicoes: Array(N * N).fill(""),
+                            turno: usuarioAtivo,
+                            historicoImagens: historico
+                        }).then(() => {
+                            document.getElementById('btn-concluir-puzzle').style.display = 'none';
+                        });
+                    }
                 });
             };
 
@@ -809,12 +932,11 @@
 
                 for(let i = 0; i < totalPecas; i++) {
                     const pecaNome = `Parte_${i}`;
-                    if (!data.gridPosicoes.includes(pecaNome)) {
+                    if (!data.gridPosicoes || !data.gridPosicoes.includes(pecaNome)) {
                         const pElem = document.createElement('div');
                         pElem.className = `puzzle-peca-item ${pecaSelecionadaLocal === pecaNome ? 'selecionada' : ''}`;
                         
-                        const row = Math.floor(i / N); const col = i % N;
-                        pElem.innerHTML = `<div style="width:100%; height:100%; background:url('${data.imagemUrl}') -${col * tamanhoPecaPx}px -${row * tamanhoPecaPx}px / 210px 210px no-repeat;"></div>`;
+                        pElem.innerHTML = `<div style="width:100%; height:100%; background:url('${data.imagemUrl}') -${(i % N) * tamanhoPecaPx}px -${Math.floor(i / N) * tamanhoPecaPx}px / 210px 210px no-repeat;"></div>`;
                         
                         pElem.onclick = () => {
                             if (eMeuTurno) {
@@ -830,21 +952,22 @@
                 }
 
                 boardReal.innerHTML = "";
-                data.gridPosicoes.forEach((conteudoSlot, idxSlot) => {
+                const posicoesValidas = data.gridPosicoes || Array(totalPecas).fill("");
+                
+                posicoesValidas.forEach((conteudoSlot, idxSlot) => {
                     const slot = document.createElement('div');
                     slot.className = "puzzle-slot-real";
 
                     if (conteudoSlot) {
                         const pIdx = parseInt(conteudoSlot.replace("Parte_", ""));
-                        const r = Math.floor(pIdx / N); const c = pIdx % N;
-                        slot.innerHTML = `<div style="width:100%; height:100%; background:url('${data.imagemUrl}') -${c * tamanhoTabuleiroPx}px -${r * tamanhoTabuleiroPx}px / 270px 270px no-repeat;"></div>`;
+                        slot.innerHTML = `<div style="width:100%; height:100%; background:url('${data.imagemUrl}') -${(pIdx % N) * tamanhoTabuleiroPx}px -${Math.floor(pIdx / N) * tamanhoTabuleiroPx}px / 270px 270px no-repeat;"></div>`;
                     } else {
                         slot.innerText = `${idxSlot + 1}`;
                     }
 
                     slot.onclick = () => {
                         if (eMeuTurno && pecaSelecionadaLocal && !conteudoSlot) {
-                            let novasPosicoes = [...data.gridPosicoes];
+                            let novasPosicoes = [...posicoesValidas];
                             novasPosicoes[idxSlot] = pecaSelecionadaLocal;
 
                             const proximoJogador = (usuarioAtivo.toLowerCase().includes("eduarda") || usuarioAtivo.toLowerCase().includes("duda")) ? "Namorado" : "Eduarda";
@@ -860,15 +983,22 @@
                 });
 
                 const statusPuzzle = document.getElementById('puzzle-status');
+                const btnConcluir = document.getElementById('btn-concluir-puzzle');
                 let completo = true;
-                for(let i = 0; i < totalPecas; i++) { if(data.gridPosicoes[i] !== `Parte_${i}`) completo = false; }
                 
-                if(completo && data.gridPosicoes.every(x => x !== "")) {
-                    statusPuzzle.innerHTML = "✨ Incrível! Vocês montaram o bichinho perfeitamente! 💜🏆";
-                } else if(!data.gridPosicoes.includes("") && !completo) {
-                    statusPuzzle.innerHTML = "Completado, mas algumas peças estão trocadas! 🔄";
+                for(let i = 0; i < totalPecas; i++) { 
+                    if(posicoesValidas[i] !== `Parte_${i}`) completo = false; 
+                }
+                
+                if(completo && posicoesValidas.every(x => x !== "")) {
+                    statusPuzzle.innerHTML = "✨ Tabuleiro perfeito! Clique no botão abaixo para concluir e ir para a próxima foto! 💜";
+                    btnConcluir.style.display = 'block';
+                } else if(!posicoesValidas.includes("") && !completo) {
+                    statusPuzzle.innerHTML = "Completado, mas algumas peças ficaram invertidas! 🔄";
+                    btnConcluir.style.display = 'none';
                 } else {
                     statusPuzzle.innerHTML = "Unam as peças nas posições numéricas corretas.";
+                    btnConcluir.style.display = 'none';
                 }
             });
         }
