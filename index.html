@@ -110,7 +110,7 @@
         .game-menu-btn:active { background: rgba(123, 44, 191, 0.2); }
         .game-menu-btn span { font-size: 1.8rem; margin-right: 15px; }
 
-        /* Quiz & Prefere Status Colors */
+        /* Quiz Status Colors */
         .opcoes-quiz-grid { display: grid; grid-template-columns: 1fr; gap: 10px; width: 100%; margin-top: 15px; }
         .quiz-opt { background: rgba(255,255,255,0.1); border: 1px solid var(--purple); border-radius: 12px; padding: 14px; font-weight: bold; cursor: pointer; color: white; text-align: center; transition: 0.2s; }
         .quiz-opt.selecionada { background: rgba(255,255,255,0.25); border-color: var(--gold); }
@@ -137,14 +137,14 @@
 <body>
 
     <div id="login" class="overlay">
-        <h1 class="titulo-lux" style="font-size: 3.5rem; font-family: 'Great Vibes', cursive; color: var(--gold); text-align: center; margin: 15px 0;">Nosso Jardim</h1>
+        <h1 class="titulo-lux" style="font-size: 3.5rem;">Nosso Jardim</h1>
         <p style="font-family: 'Great Vibes', cursive; color: var(--gold); font-size: 1.5rem; margin-bottom: 20px;">Onde o amor floresce...</p>
         <input type="text" id="user-name" placeholder="Seu Nome">
         <input type="password" id="pw" placeholder="Senha Especial">
-        <button class="btn-lux" id="btn-entrar-acao">Entrar no Coração</button>
+        <button class="btn-lux" onclick="entrar()">Entrar no Coração</button>
     </div>
 
-    <div id="lightbox" class="foto-lightbox" onclick="window.fecharFotoGrande()">
+    <div id="lightbox" class="foto-lightbox" onclick="fecharFotoGrande()">
         <img id="imgExpandida" src="" alt="Foto Expandida">
     </div>
 
@@ -153,17 +153,17 @@
     <div class="pensamento-amor" id="msgAmor">Seu amor está pensando em você...</div>
 
     <nav class="nav-bar hidden" id="menu">
-        <div class="nav-item ativo" onclick="window.irPara('home', this)"><span>🏠</span>Início</div>
-        <div class="nav-item" onclick="window.irPara('mimos', this)"><span>🎟️</span>Mimos</div>
-        <div class="nav-item" onclick="window.irPara('jogos', this)"><span>🎮</span>Jogos</div>
-        <div class="nav-item" onclick="window.irPara('fotos', this)"><span>📸</span>Fotos</div>
-        <div class="nav-item" onclick="window.irPara('sonhos', this)"><span>✨</span>Sonhos</div>
-        <div class="nav-item" onclick="window.irPara('correio', this)"><span>💌</span>Correio</div>
+        <div class="nav-item ativo" onclick="irPara('home', this)"><span>🏠</span>Início</div>
+        <div class="nav-item" onclick="irPara('mimos', this)"><span>🎟️</span>Mimos</div>
+        <div class="nav-item" onclick="irPara('jogos', this)"><span>🎮</span>Jogos</div>
+        <div class="nav-item" onclick="irPara('fotos', this)"><span>📸</span>Fotos</div>
+        <div class="nav-item" onclick="irPara('sonhos', this)"><span>✨</span>Sonhos</div>
+        <div class="nav-item" onclick="irPara('correio', this)"><span>💌</span>Correio</div>
     </nav>
 
     <main id="app" class="hidden">
         <section id="home" class="secao ativa">
-            <h1 class="titulo-lux" id="msgBoasVindas" style="font-family: 'Great Vibes', cursive; font-size: 2.8rem; color: var(--gold); margin: 15px 0;">Para Meu Amor</h1>
+            <h1 class="titulo-lux" id="msgBoasVIndas">Para Meu Amor</h1>
             <img src="Amor.png" style="width:100%; max-width:350px; border-radius:25px; border: 3px solid var(--gold); margin-bottom: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
 
             <div id="timer" style="font-family: 'Great Vibes', cursive; font-size: 2rem; color: var(--gold); margin-bottom: 15px; text-align: center; line-height: 1.3;"></div>
@@ -184,24 +184,24 @@
         </section>
 
         <section id="mimos" class="secao">
-            <h2 class="titulo-lux" style="font-family: 'Great Vibes', cursive; font-size: 2.8rem; color: var(--gold); margin: 15px 0;">Cupons de Carinho 🎟️</h2>
+            <h2 class="titulo-lux">Cupons de Carinho 🎟️</h2>
             <div id="cuponsGrid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width:100%; max-width:400px;"></div>
         </section>
 
         <section id="jogos" class="secao">
-            <h2 class="titulo-lux" style="font-family: 'Great Vibes', cursive; font-size: 2.8rem; color: var(--gold); margin: 15px 0;">Arena de Jogos 🎮</h2>
+            <h2 class="titulo-lux">Arena de Jogos 🎮</h2>
             
             <div id="menu-jogos" style="width:100%; max-width:400px;">
-                <div class="game-menu-btn" onclick="window.abrirJogo('quiz')"><span>❓</span>Quiz das Categorias</div>
-                <div class="game-menu-btn" onclick="window.abrirJogo('velha')"><span>❌</span>Jogo da Velha Romântico</div>
-                <div class="game-menu-btn" onclick="window.abrirJogo('timeline')"><span>⏳</span>Nossa Linha do Tempo</div>
-                <div class="game-menu-btn" onclick="window.abrirJogo('prefere')"><span>🔄</span>O Que Você Prefere?</div>
-                <div class="game-menu-btn" onclick="window.abrirJogo('puzzle')"><span>🧩</span>Quebra-Cabeça Fofo</div>
+                <div class="game-menu-btn" onclick="abrirJogo('quiz')"><span>❓</span>Quiz de Afinidade</div>
+                <div class="game-menu-btn" onclick="abrirJogo('velha')"><span>❌</span>Jogo da Velha Romântico</div>
+                <div class="game-menu-btn" onclick="abrirJogo('timeline')"><span>⏳</span>Nossa Linha do Tempo</div>
+                <div class="game-menu-btn" onclick="abrirJogo('prefere')"><span>🔄</span>O Que Você Prefere?</div>
+                <div class="game-menu-btn" onclick="abrirJogo('puzzle')"><span>🧩</span>Quebra-Cabeça Fofo</div>
             </div>
 
             <div id="jogo-quiz" class="sub-jogo-container">
                 <div class="glass-card">
-                    <button class="btn-lux" style="padding:8px; font-size:0.75rem; margin-bottom:10px;" onclick="window.voltarMenuJogos()">↩ Voltar à Arena</button>
+                    <button class="btn-lux" style="padding:8px; font-size:0.75rem; margin-bottom:10px;" onclick="voltarMenuJogos()">↩ Voltar à Arena</button>
                     <div id="quiz-categoria" style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--gold); font-weight: bold; margin-bottom: 5px;"></div>
                     <h3 id="quiz-pergunta" style="font-family:'Playfair Display'; margin:10px 0;">Carregando...</h3>
                     
@@ -216,7 +216,7 @@
 
             <div id="jogo-velha" class="sub-jogo-container">
                 <div class="glass-card">
-                    <button class="btn-lux" style="padding:8px; font-size:0.75rem; margin-bottom:10px;" onclick="window.voltarMenuJogos()">↩ Voltar à Arena</button>
+                    <button class="btn-lux" style="padding:8px; font-size:0.75rem; margin-bottom:10px;" onclick="voltarMenuJogos()">↩ Voltar à Arena</button>
                     <div id="velha-vez" style="font-weight:bold; color:var(--gold); margin-bottom:10px;">Carregando...</div>
                     <div class="velha-grid" id="tabuleiro-velha"></div>
                     <div id="velha-desafio" style="font-size:0.85rem; padding:15px; background:rgba(255,255,255,0.05); border-radius:15px; border:1px solid var(--purple); display:none; font-style:italic; margin-bottom:10px;"></div>
@@ -227,7 +227,7 @@
 
             <div id="jogo-timeline" class="sub-jogo-container">
                 <div class="glass-card">
-                    <button class="btn-lux" style="padding:8px; font-size:0.75rem; margin-bottom:10px;" onclick="window.voltarMenuJogos()">↩ Voltar à Arena</button>
+                    <button class="btn-lux" style="padding:8px; font-size:0.75rem; margin-bottom:10px;" onclick="voltarMenuJogos()">↩ Voltar à Arena</button>
                     <p style="font-size:0.8rem; color:var(--gold); margin-bottom:12px;">Preencham os slots na ordem histórica real!</p>
                     <select id="select-timeline-fato" style="margin-bottom:15px;"></select>
                     <div id="slots-timeline"></div>
@@ -238,22 +238,21 @@
 
             <div id="jogo-prefere" class="sub-jogo-container">
                 <div class="glass-card">
-                    <button class="btn-lux" style="padding:8px; font-size:0.75rem; margin-bottom:10px;" onclick="window.voltarMenuJogos()">↩ Voltar à Arena</button>
-                    <div id="prefere-alvo" style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--gold); font-weight: bold; margin-bottom: 5px;"></div>
-                    <h3 id="prefere-pergunta" style="font-family:'Playfair Display'; margin-bottom:15px;">Carregando pergunta...</h3>
-                    
-                    <div class="opcoes-quiz-grid" id="prefere-opcoes-box"></div>
-                    
-                    <button class="btn-lux" id="btn-confirmar-prefere" style="display:none; background:var(--gold); color:#000; margin-top:15px;">Confirmar Escolha 🔒</button>
-                    
-                    <div id="prefere-resultado" style="margin-top:20px; font-size:0.9rem; line-height:1.4; font-weight:bold; min-height:40px;">Aguardando votos...</div>
-                    <button class="btn-lux" id="btn-proximo-prefere" style="display:none; background:linear-gradient(45deg, #9d4edd, #7b2cbf); color:#fff;">Próxima Rodada ➡️</button>
+                    <button class="btn-lux" style="padding:8px; font-size:0.75rem; margin-bottom:10px;" onclick="voltarMenuJogos()">↩ Voltar à Arena</button>
+                    <h3 style="font-family:'Playfair Display'; margin-bottom:15px;">O que você prefere?</h3>
+                    <div class="opcoes-quiz-grid">
+                        <div class="quiz-opt" id="prefere-optA"></div>
+                        <p style="color:var(--gold); font-weight:bold; font-size:1.1rem; margin:5px 0; text-align:center;">OU</p>
+                        <div class="quiz-opt" id="prefere-optB"></div>
+                    </div>
+                    <div id="prefere-resultado" style="margin-top:20px; font-size:0.9rem; line-height:1.4; font-weight:bold; min-height:40px;"></div>
+                    <button class="btn-lux" id="btn-proximo-prefere" style="display:none; background:var(--gold); color:#000;">Próxima Rodada ➡️</button>
                 </div>
             </div>
 
             <div id="jogo-puzzle" class="sub-jogo-container">
                 <div class="glass-card">
-                    <button class="btn-lux" style="padding:8px; font-size:0.75rem; margin-bottom:10px;" onclick="window.voltarMenuJogos()">↩ Voltar à Arena</button>
+                    <button class="btn-lux" style="padding:8px; font-size:0.75rem; margin-bottom:10px;" onclick="voltarMenuJogos()">↩ Voltar à Arena</button>
                     
                     <div id="puzzle-turno-txt" style="font-weight:bold; color:var(--gold); margin-bottom:12px;">Carregando...</div>
                     
@@ -278,30 +277,30 @@
         </section>
 
         <section id="fotos" class="secao">
-            <h2 class="titulo-lux" style="font-family: 'Great Vibes', cursive; font-size: 2.8rem; color: var(--gold); margin: 15px 0;">Nossos Momentos ✨</h2>
+            <h2 class="titulo-lux">Nossos Momentos ✨</h2>
             <div class="glass-card">
                 <input type="file" id="inputFoto" accept="image/*" style="display:none;">
                 <button class="btn-lux" onclick="document.getElementById('inputFoto').click()">Selecionar da Galeria</button>
-                <button class="btn-lux" id="btnUpload" onclick="window.enviarFotoDirect()" style="background:linear-gradient(45deg, #2a9d8f, #e9c46a); display:none; margin-top:8px;">Enviar Foto ✨</button>
+                <button class="btn-lux" id="btnUpload" onclick="enviarFotoDirect()" style="background:linear-gradient(45deg, #2a9d8f, #e9c46a); display:none; margin-top:8px;">Enviar Foto ✨</button>
                 <div id="statusUpload" style="font-size:0.8rem; margin-top:8px; color:var(--gold);"></div>
             </div>
             <div class="mural-fotos" id="muralFotos"></div>
         </section>
 
         <section id="sonhos" class="secao">
-            <h2 class="titulo-lux" style="font-family: 'Great Vibes', cursive; font-size: 2.8rem; color: var(--gold); margin: 15px 0;">Nossos Sonhos ✨</h2>
+            <h2 class="titulo-lux">Nossos Sonhos ✨</h2>
             <div id="listaSonhos" style="width:100%; max-width:400px; margin-bottom: 15px;"></div>
             <div class="glass-card">
                 <input type="text" id="inputSonho" placeholder="O que vamos realizar?">
-                <button class="btn-lux" onclick="window.addSonho()">Adicionar Sonho</button>
+                <button class="btn-lux" onclick="addSonho()">Adicionar Sonho</button>
             </div>
         </section>
 
         <section id="correio" class="secao">
-            <h2 class="titulo-lux" style="font-family: 'Great Vibes', cursive; font-size: 2.8rem; color: var(--gold); margin: 15px 0;">Cartinhas de Amor 💌</h2>
+            <h2 class="titulo-lux">Cartinhas de Amor 💌</h2>
             <div class="glass-card">
                 <textarea id="textoC" rows="4" placeholder="Escreva algo lindo..."></textarea>
-                <button class="btn-lux" onclick="window.enviarC()">Enviar com Amor 💌</button>
+                <button class="btn-lux" onclick="enviarC()">Enviar com Amor 💌</button>
             </div>
             <div id="muralC" style="width:100%; max-width:400px;"></div>
         </section>
@@ -322,16 +321,14 @@
             e.preventDefault(); depherrPrompt = e; installContainer.style.display = 'block';
         });
 
-        if (installBtn) {
-            installBtn.addEventListener('click', async () => {
-                if (depherrPrompt) {
-                    depherrPrompt.prompt();
-                    const { outcome } = await depherrPrompt.userChoice;
-                    if (outcome === 'accepted') installContainer.style.display = 'none';
-                    depherrPrompt = null;
-                }
-            });
-        }
+        installBtn.addEventListener('click', async () => {
+            if (depherrPrompt) {
+                depherrPrompt.prompt();
+                const { outcome } = await depherrPrompt.userChoice;
+                if (outcome === 'accepted') installContainer.style.display = 'none';
+                depherrPrompt = null;
+            }
+        });
 
         window.abrirJogo = (idJogo) => {
             document.getElementById('menu-jogos').style.display = 'none';
@@ -347,7 +344,7 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-        import { getDatabase, ref, push, onValue, update, remove } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
+        import { getDatabase, ref, push, onValue, update, remove, get } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyCz3H8bjiuS2gNvxUr_G3Csd21wL5J1gLw",
@@ -360,7 +357,6 @@
         const db = getDatabase(app);
         let usuarioAtivo = "";
 
-        // Vinculando funções cruciais ao objeto global window para o HTML encontrá-las
         window.irPara = (id, el) => {
             document.querySelectorAll('.secao').forEach(s => s.classList.remove('ativa'));
             document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('ativo'));
@@ -368,57 +364,20 @@
             el.classList.add('ativo');
         };
 
-        window.verFotoGrande = (src) => { 
-            document.getElementById('imgExpandida').src = src; 
-            document.getElementById('lightbox').classList.add('show'); 
-        };
-        
-        window.fecharFotoGrande = () => {
-            document.getElementById('lightbox').classList.remove('show');
-        };
-
-        window.addSonho = () => {
-            const v = document.getElementById('inputSonho').value;
-            if(v) push(ref(db, 'sonhos_v2'), { texto: v, status: false });
-            document.getElementById('inputSonho').value = "";
-        };
-
-        window.enviarC = () => {
-            const v = document.getElementById('textoC').value;
-            if(v) push(ref(db, 'correio_v2'), { texto: `${v}\n\n— Assinado: ${usuarioAtivo}` });
-            document.getElementById('textoC').value = "";
-        };
-
-        window.enviarFotoDirect = () => {
-            const file = document.getElementById('inputFoto').files[0];
-            if (!file) return;
-            const r = new FileReader(); r.readAsDataURL(file);
-            r.onload = (ev) => {
-                push(ref(db, 'mural_fotos_direto'), { imagem: ev.target.result, autor: usuarioAtivo, data: new Date().toLocaleDateString() });
-                document.getElementById('btnUpload').style.display = 'none';
-            };
-        };
-
-        // Escuta direta de clique do botão para evitar falhas assíncronas
-        document.getElementById('btn-entrar-acao').addEventListener('click', () => {
+        window.entrar = () => {
             const nomeInput = document.getElementById('user-name').value.trim();
-            const senhaInput = document.getElementById('pw').value.trim();
-            
-            if(senhaInput === "2810" && nomeInput !== "") {
+            if(document.getElementById('pw').value === "2810" && nomeInput !== "") {
                 usuarioAtivo = nomeInput;
-                document.getElementById('msgBoasVindas').innerText = "Oi, " + usuarioAtivo + "!";
+                document.getElementById('msgBoasVIndas').innerText = "Oi, " + usuarioAtivo + "!";
                 document.getElementById('login').classList.add('hidden');
                 document.getElementById('app').classList.remove('hidden');
                 document.getElementById('menu').classList.remove('hidden');
-                
                 initVisual();
                 initMimosERaspas();
                 sync();
                 syncJogos();
-            } else {
-                alert("Nome inválido ou Senha Incorreta! 🌟");
             }
-        });
+        };
 
         function initVisual() {
             const h = new Date().getHours();
@@ -479,7 +438,6 @@
                     item.appendChild(txt); item.appendChild(canvas); rGrid.appendChild(item);
 
                     setTimeout(() => {
-                        if (!canvas.offsetWidth) return;
                         canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight;
                         const ctx = canvas.getContext('2d');
                         ctx.fillStyle = '#9d4edd'; ctx.fillRect(0,0,canvas.width,canvas.height);
@@ -502,7 +460,7 @@
                         canvas.addEventListener('touchstart', () => raspando = true);
                         canvas.addEventListener('touchend', () => raspando = false);
                         canvas.addEventListener('touchmove', mover);
-                    }, 400);
+                    }, 300);
                 }
             }
         }
@@ -510,6 +468,16 @@
         document.getElementById('inputFoto').addEventListener('change', (e) => {
             if (e.target.files[0]) document.getElementById('btnUpload').style.display = 'block';
         });
+
+        window.enviarFotoDirect = () => {
+            const file = document.getElementById('inputFoto').files[0];
+            if (!file) return;
+            const r = new FileReader(); r.readAsDataURL(file);
+            r.onload = (ev) => {
+                push(ref(db, 'mural_fotos_direto'), { imagem: ev.target.result, autor: usuarioAtivo, data: new Date().toLocaleDateString() });
+                document.getElementById('btnUpload').style.display = 'none';
+            };
+        };
 
         function sync() {
             onValue(ref(db, 'mural_fotos_direto'), s => {
@@ -535,20 +503,37 @@
             });
         }
 
+        window.addSonho = () => {
+            const v = document.getElementById('inputSonho').value;
+            if(v) push(ref(db, 'sonhos_v2'), { texto: v, status: false });
+            document.getElementById('inputSonho').value = "";
+        };
+
+        window.enviarC = () => {
+            const v = document.getElementById('textoC').value;
+            if(v) push(ref(db, 'correio_v2'), { texto: `${v}\n\n— Assinado: ${usuarioAtivo}` });
+            document.getElementById('textoC').value = "";
+        };
+
+        window.verFotoGrande = (src) => { document.getElementById('imgExpandida').src = src; document.getElementById('lightbox').classList.add('show'); };
+        window.fecharFotoGrande = () => document.getElementById('lightbox').classList.remove('show');
+
 
         /* ==========================================================================
-           ENGINE DA ARENA DE JOGOS COOPERATIVA CORRIGIDA
+           ENGINE DA ARENA DE JOGOS COOPERATIVA CORRIGIDA (SEM LOOPS / TRAVAMENTOS)
            ========================================================================== */
         function syncJogos() {
             
-            // --- JOGO 1: QUIZ CATEGORIZADO ---
+            // --- JOGO 1: QUIZ ALTERNADO (SOBRE MIM / SOBRE ELE / SOBRE ELA) ---
             const perguntasQuiz = [
                 { c: "Sobre Ela", p: "Qual o maior sonho de consumo dela atualmente?", o: ["Trocar de celular", "Viagem internacional", "Mudar o guarda-roupa", "Comprar um carro"] },
                 { c: "Sobre Ele", p: "Qual o hobby favorito dele quando está sozinho?", o: ["Jogar videogame", "Ouvir música/Podcasts", "Ver vídeos/Séries", "Dormir"] },
+                { c: "Sobre Ela", p: "Qual a comida que ela come que deixa ela instantaneamente feliz?", o: ["Chocolate/Doces", "Hambúrguer/Pizza", "Comida Japonesa", "Açaí bem completo"] },
+                { c: "Sobre Ele", p: "Qual estilo de roupa ou tênis ele mais gosta de ganhar?", o: ["Streetwear / Casual", "Esportivo", "Social / Alinhado", "Qualquer um confortavel"] },
                 { c: "Sobre o Casal", p: "O que nós dois mais gostamos de fazer juntos nos finais de semana?", o: ["Sair para comer", "Ficar de bobeira conversando", "Maratona de filmes/séries", "Planejar o futuro"] }
             ];
 
-            let selecaoTemporariaQuiz = null;
+            let selecaoTemporaria = null;
             const quizRef = ref(db, 'arena_jogos/quiz');
 
             onValue(quizRef, snapshot => {
@@ -556,7 +541,17 @@
                 const r = data.rodada % perguntasQuiz.length;
                 const questao = perguntasQuiz[r];
 
-                document.getElementById('quiz-categoria').innerText = questao.c;
+                // Ajuste inteligente para mostrar "Sobre Mim" caso a categoria seja a do próprio usuário logado
+                let categoriaTexto = questao.c;
+                const ehEduarda = usuarioAtivo.toLowerCase().includes("eduarda") || usuarioAtivo.toLowerCase().includes("duda");
+                
+                if (questao.c === "Sobre Ela" && ehEduarda) {
+                    categoriaTexto = "Sobre Mim (Ela)";
+                } else if (questao.c === "Sobre Ele" && !ehEduarda) {
+                    categoriaTexto = "Sobre Mim (Ele)";
+                }
+
+                document.getElementById('quiz-categoria').innerText = categoriaTexto;
                 document.getElementById('quiz-pergunta').innerText = questao.p;
 
                 const boxOpcoes = document.getElementById('quiz-opcoes');
@@ -582,14 +577,14 @@
                     } else {
                         if (jaConfirmei && data.confirmadas[usuarioAtivo] === idx) {
                             btn.classList.add('confirmada');
-                        } else if (!jaConfirmei && selecaoTemporariaQuiz === idx) {
+                        } else if (!jaConfirmei && selecaoTemporaria === idx) {
                             btn.classList.add('selecionada');
                         }
                     }
 
                     btn.onclick = () => {
                         if (!jaConfirmei && chavesConf.length < 2) {
-                            selecaoTemporariaQuiz = idx;
+                            selecaoTemporaria = idx;
                             document.getElementById('btn-confirmar-quiz').style.display = 'block';
                             document.querySelectorAll('#quiz-opcoes .quiz-opt').forEach(b => b.classList.remove('selecionada'));
                             btn.classList.add('selecionada');
@@ -617,27 +612,30 @@
                     btnConfirmar.style.display = 'none';
                     const players = Object.keys(data.confirmadas);
                     if (data.confirmadas[players[0]] === data.confirmadas[players[1]]) {
-                        statusTxt.innerText = "Sintonia Perfeita! Vocês se conhecem muito! 😍🎉";
+                        statusTxt.innerText = "Sintonia Perfeita! Vocês responderam a mesma coisa! 😍🎉";
                     } else {
-                        statusTxt.innerText = "Respostas Diferentes! Que tal conversarem sobre isso? 💔";
+                        statusTxt.innerText = "Respostas Diferentes! Que tal conversarem sobre isso? 🥰";
                     }
                     btnProx.style.display = 'block';
                 }
-
-                btnConfirmar.onclick = () => {
-                    if (selecaoTemporariaQuiz !== null) {
-                        update(ref(db, 'arena_jogos/quiz/confirmadas'), { [usuarioAtivo]: selecaoTemporariaQuiz });
-                        selecaoTemporariaQuiz = null;
-                        btnConfirmar.style.display = 'none';
-                    }
-                };
-
-                btnProx.onclick = () => {
-                    remove(ref(db, 'arena_jogos/quiz/confirmadas')).then(() => {
-                        update(quizRef, { rodada: data.rodada + 1 });
-                    });
-                };
             });
+
+            document.getElementById('btn-confirmar-quiz').onclick = () => {
+                if (selecaoTemporaria !== null) {
+                    update(ref(db, 'arena_jogos/quiz/confirmadas'), { [usuarioAtivo]: selecaoTemporaria });
+                    selecaoTemporaria = null;
+                    document.getElementById('btn-confirmar-quiz').style.display = 'none';
+                }
+            };
+
+            document.getElementById('btn-proximo-quiz').onclick = () => {
+                get(ref(db, 'arena_jogos/quiz')).then(snap => {
+                    const rAtual = snap.val()?.rodada || 0;
+                    remove(ref(db, 'arena_jogos/quiz/confirmadas')).then(() => {
+                        update(ref(db, 'arena_jogos/quiz'), { rodada: rAtual + 1 });
+                    });
+                });
+            };
 
 
             // --- JOGO 2: JOGO DA VELHA ---
@@ -646,13 +644,13 @@
                 update(velhaRef, { tabuleiro: ["", "", "", "", "", "", "", "", ""], turno: usuarioAtivo, criadorTurno: usuarioAtivo, vencedor: "", desafio: "", desafioPendente: false, quemDeveCumprir: "" });
             };
             document.getElementById('btn-cumprir-desafio').onclick = () => {
-                onValue(velhaRef, snap => {
+                get(velhaRef).then(snap => {
                     const currentData = snap.val();
                     if (currentData && currentData.desafioPendente && currentData.quemDeveCumprir === usuarioAtivo) {
                         const proximo = (usuarioAtivo.toLowerCase().includes("eduarda") || usuarioAtivo.toLowerCase().includes("duda")) ? "Namorado" : "Eduarda";
                         update(velhaRef, { turno: proximo, desafioPendente: false, quemDeveCumprir: "" });
                     }
-                }, { onlyOnce: true });
+                });
             };
             onValue(velhaRef, snapshot => {
                 let data = snapshot.val(); if (!data) return;
@@ -684,11 +682,11 @@
             window.alocarFatoNoSlot = (slotIdx) => {
                 const val = document.getElementById('select-timeline-fato').value;
                 if (val) {
-                    onValue(timelineRef, snap => {
+                    get(timelineRef).then(snap => {
                         let novosSlots = [...(snap.val() || { slots: ["", "", "", ""] }).slots];
                         novosSlots[slotIdx] = val;
                         update(timelineRef, { slots: novosSlots });
-                    }, { onlyOnce: true });
+                    });
                     document.getElementById('select-timeline-fato').value = "";
                 }
             };
@@ -702,7 +700,7 @@
                 });
                 const selectFatos = document.getElementById('select-timeline-fato');
                 selectFatos.innerHTML = '<option value="">-- Vincular Acontecimento --</option>';
-                timelineFatos.forEach(f => { if (!data.slots.includes(f)) selectFatos.innerHTML += `<option value="${f}">${f}</option>'; });
+                timelineFatos.forEach(f => { if (!data.slots.includes(f)) selectFatos.innerHTML += `<option value="${f}">${f}</option>`; });
                 const resBox = document.getElementById('timeline-resultado');
                 if (!data.slots.includes("")) {
                     let perfeito = true; for(let i=0; i<timelineFatos.length; i++) { if(data.slots[i] !== timelineFatos[i]) perfeito = false; }
@@ -711,123 +709,52 @@
             });
 
 
-            // --- JOGO 4: O QUE VOCÊ PREFERE ---
+            // --- JOGO 4: O QUE VOCÊ PREFERE? ---
             const perguntasPrefere = [
-                { c: "Preferência Dela 💁‍♀️", p: "O que ELA prefere ganhar num dia aleatório?", o: ["Um buquê de flores lindo 💐", "Uma caixa de chocolates e doces 🍫"] },
-                { c: "Preferência Dele 🙋‍♂️", p: "O que ELE prefere fazer em um dia chuvoso?", o: ["Ficar jogando/assistindo coladinho 🎮", "Pedir um delivery pesado e dormir 🍕"] },
-                { c: "Preferência do Casal 💜", p: "O que vocês preferem para as próximas férias?", o: ["Uma cabana isolada nas montanhas ⛰️", "Um resort com piscina na praia 🌊"] },
-                { c: "Preferência Dela 💁‍♀️", p: "Estilo de date preferido DELA:", o: ["Jantar mega romântico à luz de velas 🕯️", "Fast food no shopping rindo bastante 🍔"] },
-                { c: "Preferência Dele 🙋‍♂️", p: "Superpoder que ELE gostaria de ter:", o: ["Poder voar para qualquer canto 🦅", "Poder ler mentes e pensamentos 🧠"] }
+                { a: "Fim de semana numa cabana isolada ⛰️", b: "Hotel com piscina na praia 🌊" },
+                { a: "Maratona de filmes com pipoca em casa 🎬", b: "Jantar chique num restaurante inédito 🍷" },
+                { a: "Passar o dia cozinhando juntos 🍳", b: "Pedir um delivery caprichado 🍕" }
             ];
-
-            let selecaoTemporariaPrefere = null;
-            const prefereRef = ref(db, 'arena_jogos/prefere_realtime');
-
+            const prefereRef = ref(db, 'arena_jogos/prefere');
+            
+            document.getElementById('prefere-optA').onclick = () => { update(ref(db, 'arena_jogos/prefere/votos'), { [usuarioAtivo]: 'A' }); };
+            document.getElementById('prefere-optB').onclick = () => { update(ref(db, 'arena_jogos/prefere/votos'), { [usuarioAtivo]: 'B' }); };
+            
             onValue(prefereRef, snapshot => {
-                const data = snapshot.val() || { rodada: 0, confirmadas: {} };
-                const r = data.rodada % perguntasPrefere.length;
-                const questao = perguntasPrefere[r];
-
-                document.getElementById('prefere-alvo').innerText = questao.c;
-                document.getElementById('prefere-pergunta').innerText = questao.p;
-
-                const boxOpcoes = document.getElementById('prefere-opcoes-box');
-                boxOpcoes.innerHTML = "";
-
-                const chavesConf = data.confirmadas ? Object.keys(data.confirmadas) : [];
-                const jaConfirmei = data.confirmadas && data.confirmadas[usuarioAtivo] !== undefined;
-
-                questao.o.forEach((opcao, idx) => {
-                    const btn = document.createElement('div');
-                    btn.className = 'quiz-opt';
-                    btn.innerText = opcao;
-
-                    if (chavesConf.length >= 2) {
-                        const players = Object.keys(data.confirmadas);
-                        const v1 = data.confirmadas[players[0]];
-                        const v2 = data.confirmadas[players[1]];
-                        if (v1 === v2) {
-                            if (idx === v1) btn.classList.add('correta');
-                        } else {
-                            if (idx === v1 || idx === v2) btn.classList.add('errada');
-                        }
-                    } else {
-                        if (jaConfirmei && data.confirmadas[usuarioAtivo] === idx) {
-                            btn.classList.add('confirmada');
-                        } else if (!jaConfirmei && selecaoTemporariaPrefere === idx) {
-                            btn.classList.add('selecionada');
-                        }
-                    }
-
-                    btn.onclick = () => {
-                        if (!jaConfirmei && chavesConf.length < 2) {
-                            selecaoTemporariaPrefere = idx;
-                            document.getElementById('btn-confirmar-prefere').style.display = 'block';
-                            document.querySelectorAll('#prefere-opcoes-box .quiz-opt').forEach(b => b.classList.remove('selecionada'));
-                            btn.classList.add('selecionada');
-                        }
-                    };
-                    boxOpcoes.appendChild(btn);
-                });
-
-                const boxResultado = document.getElementById('prefere-resultado');
-                const btnConfirmar = document.getElementById('btn-confirmar-prefere');
-                const btnProxPrefere = document.getElementById('btn-proximo-prefere');
-
-                if (chavesConf.length === 0) {
-                    boxResultado.innerText = "Faça a sua escolha e trave o seu voto!";
-                    btnProxPrefere.style.display = 'none';
-                } else if (chavesConf.length === 1) {
-                    if (jaConfirmei) {
-                        boxResultado.innerText = "Seu voto foi registrado! Esperando o par escolher... ⏳";
-                        btnConfirmar.style.display = 'none';
-                    } else {
-                        boxResultado.innerText = "Seu par já escolheu! Qual o seu palpite? 🫵🔥";
-                    }
-                    btnProxPrefere.style.display = 'none';
-                } else if (chavesConf.length >= 2) {
-                    btnConfirmar.style.display = 'none';
-                    const players = Object.keys(data.confirmadas);
+                const data = snapshot.val() || { rodada: 0, votos: {} };
+                const rodadaAtual = data.rodada % perguntasPrefere.length; const p = perguntasPrefere[rodadaAtual];
+                const btnA = document.getElementById('prefere-optA'); const btnB = document.getElementById('prefere-optB');
+                btnA.innerText = p.a; btnB.innerText = p.b;
+                let meusVotos = data.votos || {};
+                btnA.className = `quiz-opt ${meusVotos[usuarioAtivo] === 'A' ? 'selecionada' : ''}`;
+                btnB.className = `quiz-opt ${meusVotos[usuarioAtivo] === 'B' ? 'selecionada' : ''}`;
+                const boxResultado = document.getElementById('prefere-resultado'); const btnProxPrefere = document.getElementById('btn-proximo-prefere');
+                const jogaram = Object.keys(meusVotos);
+                if (jogaram.length === 0) { boxResultado.innerHTML = "Escolha sua opção!"; btnProxPrefere.style.display = 'none'; }
+                else if (jogaram.length === 1) { boxResultado.innerHTML = "Aguardando o voto do seu par... ⏳"; btnProxPrefere.style.display = 'none'; }
+                else if (jogaram.length >= 2) {
                     let elaPrefere = ""; let elePrefere = "";
-                    
-                    players.forEach(pN => {
-                        const idxVoto = data.confirmadas[pN];
-                        const txtV = questao.o[idxVoto];
-                        if(pN.toLowerCase().includes("eduarda") || pN.toLowerCase().includes("duda")) {
-                            elaPrefere = txtV;
-                        } else {
-                            elePrefere = txtV;
-                        }
+                    jogaram.forEach(pN => {
+                        const txtV = meusVotos[pN] === 'A' ? p.a : p.b;
+                        if(pN.toLowerCase().includes("eduarda") || pN.toLowerCase().includes("duda")) elaPrefere = txtV; else elePrefere = txtV;
                     });
-
-                    let matchTxt = "";
-                    if (data.confirmadas[players[0]] === data.confirmadas[players[1]]) {
-                        matchTxt = "<p style='color:var(--green); margin-top:10px;'>Sintonia Perfeita! Vocês escolheram igual! 💕🎉</p>";
-                    } else {
-                        matchTxt = "<p style='color:var(--pink); margin-top:10px;'>Gostos diferentes ou falta de conhecimento? 👀💬</p>";
-                    }
-
-                    boxResultado.innerHTML = `<div style='text-align:left; font-size:0.8rem; background:rgba(0,0,0,0.3); padding:10px; border-radius:10px;'><strong>💁‍♀️ Ela escolheu:</strong> ${elaPrefere || "Ainda não votou"}<br><strong>🙋‍♂️ Ele escolheu:</strong> ${elePrefere || "Ainda não votou"}</div>` + matchTxt;
+                    let match = (meusVotos[jogaram[0]] === meusVotos[jogaram[1]]) ? "<p style='color:var(--green);'>Sintonia Confirmada! 💕</p>" : "<p style='color:var(--pink);'>Gostos diferentes! 🥰</p>";
+                    boxResultado.innerHTML = `<div style='text-align:left; font-size:0.8rem;'><strong>💁‍♀️ Ela prefere:</strong> ${elaPrefere}<br><strong>🙋‍♂️ Ele prefere:</strong> ${elePrefere}</div>` + match;
                     btnProxPrefere.style.display = 'block';
                 }
-
-                btnConfirmar.onclick = () => {
-                    if (selecaoTemporariaPrefere !== null) {
-                        update(ref(db, 'arena_jogos/prefere_realtime/confirmadas'), { [usuarioAtivo]: selecaoTemporariaPrefere });
-                        selecaoTemporariaPrefere = null;
-                        btnConfirmar.style.display = 'none';
-                    }
-                };
-
-                btnProxPrefere.onclick = () => {
-                    remove(ref(db, 'arena_jogos/prefere_realtime/confirmadas')).then(() => {
-                        update(prefereRef, { rodada: data.rodada + 1 });
-                    });
-                };
             });
 
+            document.getElementById('btn-proximo-prefere').onclick = () => {
+                get(ref(db, 'arena_jogos/prefere')).then(snap => {
+                    const rPref = snap.val()?.rodada || 0;
+                    remove(ref(db, 'arena_jogos/prefere/votos')).then(() => {
+                        update(ref(db, 'arena_jogos/prefere'), { rodada: rPref + 1 });
+                    });
+                });
+            };
 
-            // --- JOGO 5: QUEBRA-CABEÇA ---
+
+            // --- JOGO 5: QUEBRA-CABEÇA COOPERATIVO ---
             const puzzleImagensFofas = [
                 "https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=350&q=80",
                 "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=350&q=80",
