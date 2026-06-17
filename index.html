@@ -54,7 +54,7 @@
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
         }
 
-        .titulo-lux { font-family: 'Great Vibes', cursive; font-size: 2.8rem; color: var(--gold); margin: 15px 0; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
+        .titulo-lux font-family: 'Great Vibes', cursive; font-size: 2.8rem; color: var(--gold); margin: 15px 0; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
 
         /* Raspadinhas */
         .grid-raspa { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; width: 100%; }
@@ -615,7 +615,7 @@
                         }
 
                         let raspando = false;
-                        const registrarGanhador = () => {
+                        const registrarGaurador = () => {
                             if (!foiReveladaGlobally && !jaRaspouHoje) {
                                 update(ref(db, `arena_jogos/raspadinha_global/logsCliques/${idSlotUnico}`), { usuario: usuarioAtivo, data: hojeStr });
                                 get(raspadinhaRef).then(snapRefresh => {
@@ -637,10 +637,10 @@
                             ctx.arc(clientX - rect.left, clientY - rect.top, 20, 0, Math.PI*2); ctx.fill();
                         };
 
-                        canvas.addEventListener('mousedown', () => { if(!jaRaspouHoje && !foiReveladaGlobally) { raspando = true; registrarGanhador(); } });
+                        canvas.addEventListener('mousedown', () => { if(!jaRaspouHoje && !foiReveladaGlobally) { raspando = true; registrarGaurador(); } });
                         canvas.addEventListener('mouseup', () => raspando = false);
                         canvas.addEventListener('mousemove', mover);
-                        canvas.addEventListener('touchstart', () => { if(!jaRaspouHoje && !foiReveladaGlobally) { raspando = true; registrarGanhador(); } });
+                        canvas.addEventListener('touchstart', () => { if(!jaRaspouHoje && !foiReveladaGlobally) { raspando = true; registrarGaurador(); } });
                         canvas.addEventListener('touchend', () => raspando = false);
                         canvas.addEventListener('touchmove', mover);
                     }, 300);
@@ -661,7 +661,8 @@
 
             onValue(quizRef, snapshot => {
                 const data = snapshot.val() || { rodada: 0, confirmadas: {} };
-                const r = data.rodada % perguntasQuiz.length;
+                // Correção do erro que travava as perguntas: garante que rodada nunca seja nula ou indefinida
+                const r = (data.rodada !== undefined && data.rodada !== null) ? (data.rodada % perguntasQuiz.length) : 0;
                 const questao = perguntasQuiz[r];
 
                 let categoriaTexto = questao.c;
@@ -846,7 +847,9 @@
 
             onValue(prefereRef, snapshot => {
                 const data = snapshot.val() || { rodada: 0, votos: {} };
-                const rodadaAtual = data.rodada % perguntasPrefere.length; const p = perguntasPrefere[rodadaAtual];
+                // Correção do erro que travava as perguntas: garante que rodada nunca seja nula ou indefinida
+                const rodadaAtual = (data.rodada !== undefined && data.rodada !== null) ? (data.rodada % perguntasPrefere.length) : 0;
+                const p = perguntasPrefere[rodadaAtual];
                 
                 document.getElementById('prefere-categoria').innerText = p.c;
                 const btnA = document.getElementById('prefere-optA'); const btnB = document.getElementById('prefere-optB');
@@ -890,12 +893,13 @@
                 });
             };
 
-            // --- QUEBRA-CABEÇA ---
+            // --- QUEBRA-CABEÇA (IMAGENS CORRIGIDAS DIRETAMENTE DO PIXABAY) ---
             const puzzleImagensFofas = [
-                "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=400&q=80",
-                "https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=400&q=80",
-                "https://images.unsplash.com/photo-1507666405821-822e0343b63e?w=400&q=80",
-                "https://images.unsplash.com/photo-1591561954557-26941169b49e?w=400&q=80"
+                "https://cdn.pixabay.com/photo/2024/02/28/07/42/cat-8601420_640.jpg",
+                "https://cdn.pixabay.com/photo/2023/09/04/10/55/bunny-8232490_640.jpg",
+                "https://cdn.pixabay.com/photo/2023/12/08/10/16/cat-8437388_640.jpg",
+                "https://cdn.pixabay.com/photo/2020/07/11/17/33/corgi-5394747_640.jpg",
+                "https://cdn.pixabay.com/photo/2023/08/18/14/00/panda-8198616_640.jpg"
             ];
 
             const puzzleRef = ref(db, 'arena_jogos/puzzle_real');
@@ -905,6 +909,7 @@
                 get(puzzleRef).then(snap => {
                     const pData = snap.val() || { historicoImagens: [] }; let vistas = pData.historicoImagens || [];
                     let filtradas = puzzleImagensFofas.filter(img => !vistas.includes(img));
+                    // Garante rotação limpa de imagens inéditas
                     if (filtradas.length === 0) { vistas = []; filtradas = [...puzzleImagensFofas]; }
                     const imgAleatoria = filtradas[Math.floor(Math.random() * filtradas.length)];
                     update(puzzleRef, { imagemUrl: imgAleatoria, tamanhoGrade: N, gridPosicoes: gridVazia, turno: usuarioAtivo, criadorTurno: usuarioAtivo, historicoImagens: vistas });
