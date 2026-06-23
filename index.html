@@ -10,1169 +10,136 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
-    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@400;600&family=Playfair+Display:ital,wght=0,700;1,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@400;600&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
 
     <style>
         :root { --gold: #d4af37; --purple: #7b2cbf; --dark: #0a001a; --pink: #ff4d6d; --green: #2a9d8f; --red: #e63946; --orange: #f4a261; }
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
-
-        body { 
-            margin: 0; font-family: 'Montserrat', sans-serif; overflow-x: hidden; height: 100vh; width: 100vw;
-            background: var(--dark); color: white; transition: 1s;
-        }
-
+        body { margin: 0; font-family: 'Montserrat', sans-serif; overflow-x: hidden; height: 100vh; width: 100vw; background: var(--dark); color: white; transition: 1s; }
         .coracao-bg { position: absolute; animation: flutuar 5s infinite ease-in-out; z-index: 0; pointer-events: none; }
-        @keyframes flutuar { 
-            0%, 100% { transform: scale(1) translateY(0) rotate(0deg); opacity: 0.2; } 
-            50% { transform: scale(1.8) translateY(-20px) rotate(15deg); opacity: 0.5; } 
-        }
-
-        .pensamento-amor {
-            position: fixed; top: 12%; width: 100%; text-align: center;
-            font-family: 'Great Vibes', cursive; font-size: 1.8rem; color: var(--gold); z-index: 5;
-            animation: brilhoMensagem 6s infinite ease-in-out;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-        }
+        @keyframes flutuar { 0%, 100% { transform: scale(1) translateY(0) rotate(0deg); opacity: 0.2; } 50% { transform: scale(1.8) translateY(-20px) rotate(15deg); opacity: 0.5; } }
+        .pensamento-amor { position: fixed; top: 12%; width: 100%; text-align: center; font-family: 'Great Vibes', cursive; font-size: 1.8rem; color: var(--gold); z-index: 5; animation: brilhoMensagem 6s infinite ease-in-out; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
         @keyframes brilhoMensagem { 0%, 100% { opacity: 0; transform: scale(0.9); } 50% { opacity: 1; transform: scale(1.1); } }
-
         .astro { position: absolute; top: 20px; right: 20px; font-size: 3rem; z-index: 1; filter: drop-shadow(0 0 10px var(--gold)); }
-
         .secao { display: none; height: 100vh; width: 100%; padding: 20px 20px 120px; overflow-y: auto; position: relative; z-index: 2; }
         .secao.ativa { display: flex; flex-direction: column; align-items: center; }
-
-        .nav-bar {
-            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 95%; max-width: 500px;
-            background: rgba(0,0,0,0.85); backdrop-filter: blur(15px); border-radius: 30px; display: flex; padding: 10px; border: 1px solid var(--purple); z-index: 1000;
-        }
+        .nav-bar { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 95%; max-width: 500px; background: rgba(0,0,0,0.85); backdrop-filter: blur(15px); border-radius: 30px; display: flex; padding: 10px; border: 1px solid var(--purple); z-index: 1000; }
         .nav-item { color: #fff; opacity: 0.4; font-size: 0.6rem; cursor: pointer; text-align: center; flex: 1; }
         .nav-item.ativo { opacity: 1; color: var(--gold); font-weight: bold; }
         .nav-item span { display: block; font-size: 1.1rem; margin-bottom: 2px; }
-
-        .glass-card {
-            background: rgba(255,255,255,0.08); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.15);
-            border-radius: 25px; padding: 20px; width: 100%; max-width: 400px; margin-bottom: 15px; text-align: center;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-        }
-
-        .titulo-lux { 
-            font-family: 'Great Vibes', cursive !important; 
-            font-size: 3.2rem; 
-            color: var(--gold); 
-            margin: 15px 0; 
-            text-shadow: 2px 2px 6px rgba(0,0,0,0.4); 
-            text-align: center;
-        }
-
-        /* Raspadinhas */
-        .grid-raspa { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; width: 100%; max-width: 340px; margin: 0 auto; }
-        .raspa-item { position: relative; aspect-ratio: 1.2; border-radius: 18px; overflow: hidden; background: #fff; border: 2.5px solid var(--purple); box-shadow: 0 6px 16px rgba(0,0,0,0.3); }
-        .texto-escondido { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; color: #1a0033; font-weight: bold; text-align: center; z-index: 1; font-family: 'Montserrat', sans-serif; padding: 8px; line-height: 1.2; }
-        canvas { position: absolute; inset: 0; z-index: 2; touch-action: none; }
-
-        /* Cupons */
-        .mimo-card { background: linear-gradient(135deg, rgba(123, 44, 191, 0.3), rgba(255, 77, 109, 0.2)); border: 1.5px dashed var(--gold); border-radius: 15px; padding: 15px; text-align: center; color: white; display: flex; flex-direction: column; justify-content: space-between; }
-        .mimo-card.usado { border-style: solid; border-color: rgba(255,255,255,0.2); opacity: 0.5; }
-        .mimo-titulo { font-weight: bold; font-size: 0.9rem; color: var(--gold); margin-bottom: 5px; }
-        .mimo-titulo.usado-txt { text-decoration: line-through; color: #ccc; }
-        .mimo-desc { font-size: 0.75rem; opacity: 0.9; margin-bottom: 10px; }
-
-        /* Calendário Real */
-        .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; margin-top: 10px; }
-        .dia-cal { font-size: 0.7rem; padding: 10px 0; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; background: rgba(255,255,255,0.05); cursor: pointer; transition: 0.2s; }
-        .marcado { background: var(--purple) !important; color: white; border-color: var(--gold); box-shadow: 0 0 10px var(--purple); font-weight: bold; }
-
-        .btn-lux { 
-            background: linear-gradient(45deg, var(--purple), #9d4edd); 
-            color: white; border: none; padding: 16px; border-radius: 50px; 
-            font-weight: bold; width: 100%; cursor: pointer; margin-top: 10px;
-            font-family: 'Montserrat', sans-serif; letter-spacing: 1px;
-            box-shadow: 0 4px 15px rgba(123, 44, 191, 0.4);
-        }
-        .btn-lux:disabled { background: #555 !important; cursor: not-allowed; box-shadow: none; color: #aaa; }
-
-        input, textarea, select { 
-            width: 100%; background: rgba(255,255,255,0.1); border: 1.5px solid var(--purple); 
-            border-radius: 15px; padding: 14px; color: white; margin-bottom: 12px;
-            font-family: 'Montserrat', sans-serif;
-        }
-        option { background: var(--dark); color: white; }
-
+        .glass-card { background: rgba(255,255,255,0.08); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.15); border-radius: 25px; padding: 20px; width: 100%; max-width: 400px; margin-bottom: 15px; text-align: center; box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37); }
+        .titulo-lux { font-family: 'Great Vibes', cursive !important; font-size: 3.2rem; color: var(--gold); margin: 15px 0; text-shadow: 2px 2px 6px rgba(0,0,0,0.4); text-align: center; }
+        .btn-lux { background: linear-gradient(45deg, var(--purple), #9d4edd); color: white; border: none; padding: 16px; border-radius: 50px; font-weight: bold; width: 100%; cursor: pointer; margin-top: 10px; font-family: 'Montserrat', sans-serif; letter-spacing: 1px; box-shadow: 0 4px 15px rgba(123, 44, 191, 0.4); }
+        .btn-lux:disabled { background: #555 !important; cursor: not-allowed; }
+        input, textarea, select { width: 100%; background: rgba(255,255,255,0.1); border: 1.5px solid var(--purple); border-radius: 15px; padding: 14px; color: white; margin-bottom: 12px; }
         .overlay { position: fixed; inset: 0; background: radial-gradient(circle, #1a0033, #050010); z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; }
         .hidden { display: none !important; }
-
-        .mural-fotos { display: flex; flex-direction: column-reverse; gap: 12px; width: 100%; max-width: 400px; }
-        .foto-card { position: relative; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 8px; border-radius: 15px; text-align: center; }
-        .foto-card img { width: 100%; height: auto; display: block; border-radius: 10px; border: 1px solid var(--purple); cursor: pointer; }
-        .foto-card span { font-size: 0.65rem; display: block; margin-top: 7px; color: #ccc; }
-
-        .foto-lightbox {
-            position: fixed; inset: 0; background: rgba(0, 0, 0, 0.95);
-            display: none; align-items: center; justify-content: center;
-            z-index: 10000; padding: 20px; opacity: 0; transition: opacity 0.3s ease;
-        }
-        .foto-lightbox.show { display: flex; opacity: 1; }
-        .foto-lightbox img { max-width: 100%; max-height: 85vh; border-radius: 15px; border: 2px solid var(--gold); box-shadow: 0 0 30px rgba(212, 175, 55, 0.3); }
-
-        /* Estilos da Arena de Jogos */
         .sub-jogo-container { display: none; width: 100%; max-width: 400px; flex-direction: column; align-items: center; }
         .sub-jogo-container.ativo { display: flex; }
-        .game-menu-btn { background: rgba(255,255,255,0.05); border: 1px solid var(--purple); padding: 15px; border-radius: 15px; width: 100%; margin-bottom: 10px; text-align: left; display: flex; align-items: center; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: 0.2s; }
-        .game-menu-btn:active { background: rgba(123, 44, 191, 0.2); }
-        .game-menu-btn span { font-size: 1.8rem; margin-right: 15px; }
-
-        /* Cores Dinâmicas dos Botões do Quiz Avançado */
-        .opcoes-quiz-grid { display: flex; flex-direction: column; gap: 10px; width: 100%; margin-top: 15px; }
-        .quiz-opt { background: rgba(255,255,255,0.1); border: 1px solid var(--purple); border-radius: 12px; padding: 14px; font-weight: bold; cursor: pointer; color: white; text-align: left; transition: 0.2s; font-size: 0.9rem; }
-        .quiz-opt.selecionada { background: var(--orange) !important; border-color: #fff !important; color: #000 !important; }
-        .quiz-opt.correta { background: var(--green) !important; border-color: #fff !important; color: white !important; }
-        .quiz-opt.errada { background: var(--red) !important; border-color: #fff !important; color: white !important; }
-
-        /* Jogo da velha */
-        .velha-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; width: 100%; max-width: 300px; margin: 15px 0; }
-        .velha-celula { background: rgba(255,255,255,0.08); border: 2px solid var(--purple); aspect-ratio: 1; border-radius: 15px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; font-weight: bold; cursor: pointer; }
-
-        /* Linha do tempo */
-        .timeline-slot { background: rgba(255,255,255,0.05); border: 1.5px dashed rgba(255,255,255,0.3); border-radius: 15px; padding: 14px; width: 100%; margin-bottom: 10px; font-size: 0.85rem; min-height: 50px; text-align: center; cursor: pointer; transition: 0.2s; }
-        .timeline-slot.filled { border-style: solid; border-color: var(--gold); background: rgba(214, 175, 55, 0.15); font-weight: bold; }
-        .timeline-slot.slot-correto { background: rgba(42, 157, 143, 0.3) !important; border-color: var(--green) !important; }
-        .timeline-slot.slot-errado { background: rgba(230, 57, 70, 0.3) !important; border-color: var(--red) !important; }
-
-        /* Quebra-Cabeça */
+        .game-menu-btn { background: rgba(255,255,255,0.05); border: 1px solid var(--purple); padding: 15px; border-radius: 15px; width: 100%; margin-bottom: 10px; text-align: left; display: flex; align-items: center; font-size: 0.9rem; font-weight: 600; cursor: pointer; }
+        
+        /* Puzzle specific styles */
         .puzzle-grid-real { display: grid; gap: 4px; width: 100%; max-width: 320px; background: rgba(0,0,0,0.5); padding: 6px; border-radius: 15px; border: 2px solid var(--purple); margin: 15px 0; }
         .puzzle-slot-real { aspect-ratio: 1; background: rgba(255,255,255,0.05); border: 1px dashed rgba(255,255,255,0.2); border-radius: 6px; display: flex; align-items: center; justify-content: center; overflow: hidden; cursor: pointer; position: relative; font-size: 0.7rem; color: rgba(255,255,255,0.3); }
         .puzzle-pecas-pool { display: flex; gap: 10px; overflow-x: auto; width: 100%; padding: 10px 5px; margin-bottom: 10px; background: rgba(255,255,255,0.03); border-radius: 12px; }
         .puzzle-peca-item { width: 65px; height: 65px; flex-shrink: 0; border-radius: 6px; border: 2px solid var(--gold); overflow: hidden; cursor: pointer; position: relative; }
         .puzzle-peca-item.selecionada { outline: 3px solid var(--pink); transform: scale(1.05); }
-
-        /* Estilo Abas Temas do Quiz */
-        .menu-temas-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; margin-top: 10px; }
-        .btn-tema-box { background: rgba(255,255,255,0.05); border: 1.5px solid var(--purple); padding: 12px; border-radius: 12px; color: white; font-size: 0.75rem; font-weight: bold; cursor: pointer; text-align: center; }
-        .btn-tema-box.ativo { border-color: var(--gold); background: rgba(123, 44, 191, 0.3); color: var(--gold); }
     </style>
 </head>
 <body>
 
     <div id="login" class="overlay">
-        <h1 class="titulo-lux" style="font-size: 3.8rem;">Nosso Jardim</h1>
-        <p style="font-family: 'Great Vibes', cursive; color: var(--gold); font-size: 1.6rem; margin-bottom: 20px;">Onde o amor floresce...</p>
+        <h1 class="titulo-lux">Nosso Jardim</h1>
         <input type="text" id="user-name" placeholder="Seu Nome">
         <input type="password" id="pw" placeholder="Senha Especial">
-        <button class="btn-lux" onclick="entrar()">Entrar no Coração</button>
+        <button class="btn-lux" onclick="entrar()">Entrar</button>
     </div>
-
-    <div id="lightbox" class="foto-lightbox" onclick="fecharFotoGrande()">
-        <img id="imgExpandida" src="" alt="Foto Expandida">
-    </div>
-
-    <div id="astro-icon" class="astro">☀️</div>
-    <div id="bg-coracoes"></div>
-    <div class="pensamento-amor" id="msgAmor">Seu amor está thinking em você...</div>
 
     <nav class="nav-bar hidden" id="menu">
         <div class="nav-item ativo" onclick="irPara('home', this)"><span>🏠</span>Início</div>
-        <div class="nav-item" onclick="irPara('mimos', this)"><span>🎟️</span>Mimos</div>
         <div class="nav-item" onclick="irPara('jogos', this)"><span>🎮</span>Jogos</div>
-        <div class="nav-item" onclick="irPara('fotos', this)"><span>📸</span>Fotos</div>
-        <div class="nav-item" onclick="irPara('sonhos', this)"><span>✨</span>Sonhos</div>
-        <div class="nav-item" onclick="irPara('correio', this)"><span>💌</span>Correio</div>
     </nav>
 
     <main id="app" class="hidden">
         <section id="home" class="secao ativa">
-            <h1 class="titulo-lux" id="msgBoasVIndas">Para Meu Amor</h1>
-            <img src="Amor.png" style="width:100%; max-width:350px; border-radius:25px; border: 3px solid var(--gold); margin-bottom: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
-
-            <div id="timer" style="font-family: 'Great Vibes', cursive; font-size: 2.2rem; color: var(--gold); margin-bottom: 15px; text-align: center; line-height: 1.3;"></div>
-
-            <div id="pwa-install-container" style="display: none; width: 100%; max-width: 400px; margin-bottom: 15px;">
-                <button id="btn-pwa-install" class="btn-lux" style="background: linear-gradient(45deg, #d4af37, #b59023); color: #0a001a; box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);">Instalar Aplicativo 📲</button>
-            </div>
-
-            <div class="glass-card">
-                <p id="label-raspa" style="font-size:0.7rem; font-weight:bold; letter-spacing:2px; color: var(--gold);">SURPRESA DE HOJE 🎁</p>
-                <div id="raspadinha-bloqueio" style="display:none; color: var(--pink); font-size:0.85rem; font-weight: bold; margin: 10px 0;"></div>
-                <div class="grid-raspa" id="raspaGrid"></div>
-            </div>
-
-            <div class="glass-card">
-                <p style="font-size:0.7rem; font-weight:bold; letter-spacing:1px;">NOSSO CALENDÁRIO 📅</p>
-                <div class="cal-grid" id="calGrid"></div>
-            </div>
-        </section>
-
-        <section id="mimos" class="secao">
-            <h2 class="titulo-lux">Cupons de Carinho 🎟️</h2>
-            <div id="cuponsGrid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width:100%; max-width:400px;"></div>
+            <h1 class="titulo-lux" id="msgBoasVIndas">Olá!</h1>
         </section>
 
         <section id="jogos" class="secao">
             <h2 class="titulo-lux">Arena de Jogos 🎮</h2>
 
             <div id="menu-jogos" style="width:100%; max-width:400px;">
-                <div class="game-menu-btn" onclick="abrirJogo('quiz')"><span>❓</span>Quiz de Afinidade Super</div>
-                <div class="game-menu-btn" onclick="abrirJogo('velha')"><span>❌</span>Jogo da Velha Romântico</div>
-                <div class="game-menu-btn" onclick="abrirJogo('timeline')"><span>⏳</span>Nossa Linha do Tempo</div>
-                <div class="game-menu-btn" onclick="abrirJogo('prefere')"><span>🔄</span>O Que Você Prefere?</div>
                 <div class="game-menu-btn" onclick="abrirJogo('puzzle')"><span>🧩</span>Quebra-Cabeça Fofo</div>
-            </div>
-
-            <div id="jogo-quiz" class="sub-jogo-container">
-                <div class="glass-card">
-                    <button class="btn-lux" style="padding:8px; font-size:0.75rem; margin-bottom:10px;" onclick="voltarMenuJogos()">↩ Voltar à Arena</button>
-                    <div id="quiz-categoria-avancado" style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--gold); font-weight: bold; margin-bottom: 5px;">CATEGORIA</div>
-                    <h3 id="quiz-pergunta-avancado" style="font-family:'Playfair Display'; margin:10px 0; font-size: 1.2rem;">Carregando Pergunta...</h3>
-
-                    <div class="opcoes-quiz-grid" id="quiz-opcoes-avancado"></div>
-
-                    <div id="quiz-status-avancado" style="margin-top:15px; font-size:0.85rem; font-weight:bold; min-height:40px; color: var(--gold);">Sincronizando...</div>
-                    <button class="btn-lux" id="btn-proximo-quiz-avancado" style="display:none; background:var(--gold); color:#000;">Próxima Pergunta ➡️</button>
-                    
-                    <hr style="border: 0; border-top: 1px dashed rgba(255,255,255,0.2); margin: 20px 0 10px;">
-                    <p style="font-size:0.7rem; font-weight:bold; color:var(--gold);">MUDAR DE TEMA EM TEMPO REAL:</p>
-                    <div class="menu-temas-grid">
-                        <div class="btn-tema-box" id="tema-tab-1" onclick="window.mudarTemaOnline(1)">ROMANCE 💖</div>
-                        <div class="btn-tema-box" id="tema-tab-2" onclick="window.mudarTemaOnline(2)">DIVERSÃO 🎭</div>
-                        <div class="btn-tema-box" id="tema-tab-3" onclick="window.mudarTemaOnline(3)">MEMÓRIA 🧠</div>
-                        <div class="btn-tema-box" id="tema-tab-4" onclick="window.mudarTemaOnline(4)">FUTURO ✈️</div>
-                        <div class="btn-tema-box" id="tema-tab-5" onclick="window.mudarTemaOnline(5)">ESPECIAIS ✨</div>
-                        <div class="btn-tema-box" id="tema-tab-6" onclick="window.mudarTemaOnline(6)">TEMA "ELE" 🧔</div>
-                        <div class="btn-tema-box" id="tema-tab-7" onclick="window.mudarTemaOnline(7)">TEMA "ELA" 👩✨</div>
-                    </div>
                 </div>
-            </div>
-
-            <div id="jogo-velha" class="sub-jogo-container">
-                <div class="glass-card">
-                    <button class="btn-lux" style="padding:8px; font-size:0.75rem; margin-bottom:10px;" onclick="voltarMenuJogos()">↩ Voltar à Arena</button>
-                    <div id="velha-vez" style="font-weight:bold; color:var(--gold); margin-bottom:10px;">Carregando...</div>
-                    <div class="velha-grid" id="tabuleiro-velha"></div>
-                    <div id="velha-desafio" style="font-size:0.85rem; padding:15px; background:rgba(255,255,255,0.05); border-radius:15px; border:1px solid var(--purple); display:none; font-style:italic; margin-bottom:10px;"></div>
-                    <button class="btn-lux" id="btn-cumprir-desafio" style="display:none; background:linear-gradient(45deg, #2a9d8f, #e9c46a); color:#0a001a; margin-bottom:15px;">Confirmo que cumpri! 💜</button>
-                    <button class="btn-lux" id="btn-reset-velha" style="font-size:0.8rem; padding:10px;">Reiniciar Jogo 🔄</button>
-                </div>
-            </div>
-
-            <div id="jogo-timeline" class="sub-jogo-container">
-                <div class="glass-card">
-                    <button class="btn-lux" style="padding:8px; font-size:0.75rem; margin-bottom:10px;" onclick="voltarMenuJogos()">↩ Voltar à Arena</button>
-                    <p style="font-size:0.8rem; color:var(--gold); margin-bottom:12px;">Preencham os slots na ordem histórica real!</p>
-                    <select id="select-timeline-fato" style="margin-bottom:15px;"></select>
-                    <div id="slots-timeline"></div>
-                    <div id="timeline-resultado" style="margin-top:15px; font-size:0.9rem; font-weight:bold; color:var(--gold);"></div>
-                    <button class="btn-lux" id="btn-compare-timeline" style="background:var(--green); font-size:0.85rem; padding:12px; margin-top:10px;">Finalizar e Comparar 📊</button>
-                    <button class="btn-lux" id="btn-clear-timeline" style="background:#ff4d6d; font-size:0.8rem; padding:10px; margin-top:10px;">Zerar Ordem 🔄</button>
-                </div>
-            </div>
-
-            <div id="jogo-prefere" class="sub-jogo-container">
-                <div class="glass-card">
-                    <button class="btn-lux" style="padding:8px; font-size:0.75rem; margin-bottom:10px;" onclick="voltarMenuJogos()">↩ Voltar à Arena</button>
-                    <div id="prefere-categoria" style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--gold); font-weight: bold; margin-bottom: 5px;"></div>
-                    <h3 style="font-family:'Playfair Display'; margin-bottom:15px;">O que prefere?</h3>
-                    <div class="opcoes-quiz-grid">
-                        <div class="quiz-opt" id="prefere-optA"></div>
-                        <p style="color:var(--gold); font-weight:bold; font-size:1.1rem; margin:5px 0; text-align:center;">OU</p>
-                        <div class="quiz-opt" id="prefere-optB"></div>
-                    </div>
-                    <div id="prefere-resultado" style="margin-top:20px; font-size:0.9rem; line-height:1.4; font-weight:bold; min-height:40px;">Carregando pergunta...</div>
-                    <button class="btn-lux" id="btn-proximo-prefere" style="display:none; background:var(--gold); color:#000;">Próxima Rodada ➡️</button>
-                </div>
-            </div>
 
             <div id="jogo-puzzle" class="sub-jogo-container">
                 <div class="glass-card">
                     <button class="btn-lux" style="padding:8px; font-size:0.75rem; margin-bottom:10px;" onclick="voltarMenuJogos()">↩ Voltar à Arena</button>
-
                     <div id="puzzle-turno-txt" style="font-weight:bold; color:var(--gold); margin-bottom:12px;">Carregando...</div>
-
-                    <div style="margin-bottom: 15px; text-align: left;">
-                        <label style="font-size:0.75rem; color:var(--gold); font-weight:bold; display:block; margin-bottom:5px;">Dificuldade do Painel:</label>
-                        <select id="select-puzzle-tamanho" onchange="window.mudarDificuldadePuzzle(this.value)">
-                            <option value="3">9 Peças (Fácil)</option>
-                            <option value="4">16 Peças (Médio)</option>
-                            <option value="5">25 Peças (Desafio Extremo)</option>
-                        </select>
-                    </div>
-
-                    <p style="font-size:0.7rem; opacity:0.8; margin-bottom:10px;">Escolha uma peça do carrossel e depois clique no quadrado correspondente no tabuleiro!</p>
-
+                    <select id="select-puzzle-tamanho" onchange="window.mudarDificuldadePuzzle(this.value)">
+                        <option value="3">9 Peças (Fácil)</option>
+                        <option value="4">16 Peças (Médio)</option>
+                    </select>
                     <div class="puzzle-pecas-pool" id="pool-pecas"></div>
                     <div class="puzzle-grid-real" id="grid-puzzle-real"></div>
-
                     <div id="puzzle-status" style="margin-top:10px; font-size:0.85rem; font-weight:bold; color:var(--gold);"></div>
-                    <button class="btn-lux" id="btn-concluir-puzzle" style="background:var(--green); font-size:0.9rem; padding:12px; margin-top:10px; display:none;">Concluir Quebra-Cabeça ✓</button>
-                    <button class="btn-lux" id="btn-reset-puzzle" style="background:#ff4d6d; font-size:0.8rem; padding:10px; margin-top:10px;">Forçar Reinício / Trocar 🔄</button>
+                    <button class="btn-lux" id="btn-concluir-puzzle" style="display:none;">Concluir 🧩</button>
+                    <button class="btn-lux" id="btn-reset-puzzle" style="background:#ff4d6d;">Resetar 🔄</button>
                 </div>
             </div>
         </section>
-
-        <section id="fotos" class="secao">
-            <h2 class="titulo-lux">Nossos Momentos ✨</h2>
-            <div class="glass-card">
-                <input type="file" id="inputFoto" accept="image/*" style="display:none;">
-                <button class="btn-lux" onclick="document.getElementById('inputFoto').click()">Selecionar da Galeria</button>
-                <button class="btn-lux" id="btnUpload" onclick="enviarFotoDirect()" style="background:linear-gradient(45deg, #2a9d8f, #e9c46a); display:none; margin-top:8px;">Enviar Foto ✨</button>
-                <div id="statusUpload" style="font-size:0.8rem; margin-top:8px; color:var(--gold);"></div>
-            </div>
-            <div class="mural-fotos" id="muralFotos"></div>
-        </section>
-
-        <section id="sonhos" class="secao">
-            <h2 class="titulo-lux">Nossos Sonhos ✨</h2>
-            <div id="listaSonhos" style="width:100%; max-width:400px; margin-bottom: 15px;"></div>
-            <div class="glass-card">
-                <input type="text" id="inputSonho" placeholder="O que vamos realizar?">
-                <button class="btn-lux" onclick="addSonho()">Adicionar Sonho</button>
-            </div>
-        </section>
-
-        <section id="correio" class="secao">
-            <h2 class="titulo-lux">Cartinhas de Amor 💌</h2>
-            <div class="glass-card">
-                <textarea id="textoC" rows="4" placeholder="Escreva algo lindo..."></textarea>
-                <button class="btn-lux" onclick="enviarC()">Enviar com Amor 💌</button>
-            </div>
-            <div id="muralC" style="width:100%; max-width:400px;"></div>
-        </section>
     </main>
 
-    <script>
-        let depherrPrompt;
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+        import { getDatabase, ref, onValue, update, get } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
+
+        // CONFIGURAÇÃO (Insira sua config aqui)
+        const db = getDatabase(initializeApp({ /* ... sua config ... */ }));
+        
         let pecaSelecionadaLocal = null;
-        const installContainer = document.getElementById('pwa-install-container');
-        const installBtn = document.getElementById('btn-pwa-install');
+        let usuarioAtivo = "";
 
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('sw.js').catch(err => console.log(null));
-            });
-        }
-
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault(); depherrPrompt = e; installContainer.style.display = 'block';
-        });
-
-        installBtn.addEventListener('click', async () => {
-            if (depherrPrompt) {
-                depherrPrompt.prompt();
-                const { outcome } = await depherrPrompt.userChoice;
-                if (outcome === 'accepted') installContainer.style.display = 'none';
-                depherrPrompt = null;
-            }
-        });
-
-        window.abrirJogo = (idJogo) => {
+        window.abrirJogo = (id) => {
             document.getElementById('menu-jogos').style.display = 'none';
-            document.querySelectorAll('.sub-jogo-container').forEach(c => c.classList.remove('ativo'));
-            document.getElementById('jogo-' + idJogo).classList.add('ativo');
+            document.getElementById('jogo-' + id).classList.add('ativo');
         };
 
         window.voltarMenuJogos = () => {
             document.querySelectorAll('.sub-jogo-container').forEach(c => c.classList.remove('ativo'));
             document.getElementById('menu-jogos').style.display = 'block';
         };
-    </script>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-        import { getDatabase, ref, push, onValue, update, remove, get, set } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyCz3H8bjiuS2gNvxUr_G3Csd21wL5J1gLw",
-            authDomain: "project-3726343372287499417.firebaseapp.com",
-            databaseURL: "https://project-3726343372287499417-default-rtdb.firebaseio.com",
-            projectId: "project-3726343372287499417"
+        // --- LÓGICA DO PUZZLE ---
+        const puzzleRef = ref(db, 'arena_jogos/puzzle_real');
+        
+        window.mudarDificuldadePuzzle = (tamanho) => {
+            const N = parseInt(tamanho);
+            update(puzzleRef, { tamanhoGrade: N, gridPosicoes: Array(N * N).fill(""), turno: usuarioAtivo });
         };
 
-        const app = initializeApp(firebaseConfig);
-        const db = getDatabase(app);
-        let usuarioAtivo = "";
-        let meuPerfilQuiz = ""; // Define se é 'ela' ou 'ele' para as salas sincronizadas
-
-        window.irPara = (id, el) => {
-            document.querySelectorAll('.secao').forEach(s => s.classList.remove('ativa'));
-            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('ativo'));
-            document.getElementById(id).classList.add('ativa');
-            el.classList.add('ativo');
-        };
-
-        window.entrar = () => {
-            const nomeInput = document.getElementById('user-name').value.trim();
-            if(document.getElementById('pw').value === "2810" && nomeInput !== "") {
-                usuarioAtivo = nomeInput;
-                
-                // Mapeamento automático inteligente de perfil
-                if(usuarioAtivo.toLowerCase().includes("eduarda") || usuarioAtivo.toLowerCase().includes("duda")) {
-                    meuPerfilQuiz = "ela";
-                } else {
-                    meuPerfilQuiz = "ele";
-                }
-
-                document.getElementById('msgBoasVIndas').innerText = "Oi, " + usuarioAtivo + "!";
-                document.getElementById('login').classList.add('hidden');
-                document.getElementById('app').classList.remove('hidden');
-                document.getElementById('menu').classList.remove('hidden');
-                initVisual();
-                initMimos();
-                sync();
-                syncJogos();
-            }
-        };
-
-        function initVisual() {
-            const h = new Date().getHours();
-            const isDia = h >= 6 && h < 18;
-            document.body.style.background = isDia ? "radial-gradient(circle, #7b2cbf, #1a0033)" : "linear-gradient(to bottom, #050010, #1a0033)";
-            document.getElementById('astro-icon').innerText = isDia ? "☀️" : "🌙";
-
-            const bg = document.getElementById('bg-coracoes'); bg.innerHTML = "";
-            for(let i=0; i<15; i++) {
-                const c = document.createElement('div'); c.className = 'coracao-bg'; c.innerText = '💜';
-                c.style.left = Math.random() * 100 + 'vw'; c.style.top = Math.random() * 100 + 'vh';
-                c.style.fontSize = '25px'; c.style.animationDelay = Math.random() * 5 + 's'; bg.appendChild(c);
-            }
-
-            const dataInicio = new Date("2025-10-28T00:00:00");
-            const dataHoje = new Date();
-            let anos = dataHoje.getFullYear() - dataInicio.getFullYear();
-            let meses = dataHoje.getMonth() - dataInicio.getMonth();
-            if (meses < 0) { anos--; meses += 12; }
-            if (dataHoje.getDate() < dataInicio.getDate()) { meses--; if (meses < 0) { anos--; meses += 12; } }
-
-            let parteRelativa = (anos > 0 ? anos + " Anos " : "") + (meses > 0 ? meses + " Meses" : "");
-            if(!parteRelativa) parteRelativa = "Nossos Primeiros Dias";
-            const totalDias = Math.floor((dataHoje - dataInicio) / (1000 * 60 * 60 * 24));
-            document.getElementById('timer').innerHTML = `${parteRelativa} Juntos<br><span style="font-size: 1.1rem; opacity: 0.85;">(${totalDias} dias)</span>`;
-
-            const cal = document.getElementById('calGrid'); cal.innerHTML = "";
-
-            onValue(ref(db, 'calendario_marcas'), snapshot => {
-                const marcadosNoBanco = snapshot.val() || {};
-                cal.innerHTML = "";
-
-                for(let i = 1; i <= 31; i++) {
-                    const d = document.createElement('div');
-                    d.className = "dia-cal";
-                    d.innerText = i;
-
-                    if (marcadosNoBanco[i]) {
-                        d.classList.add('marcado');
-                    }
-
-                    d.onclick = () => {
-                        const estadoAtual = marcadosNoBanco[i] ? null : true;
-                        update(ref(db, 'calendario_marcas'), { [i]: estadoAtual });
-                    };
-                    cal.appendChild(d);
-                }
-            });
-        }
-
-        function initMimos() {
-            const lotesCuponsSemanas = [
-                [
-                    { id: "c1", t: "Vale Beijo 💋", d: "Pode ser trocado por um beijo apaixonado a qualquer hora." },
-                    { id: "c2", t: "Vale Massagem 💆‍♂️", d: "Garante uma massagem relaxante caprichada de 15 minutos." },
-                    { id: "c3", t: "Vale Cinema em Casa 🎬", d: "Você escolhe o filme e a pipoca fica por conta do par." },
-                    { id: "c4", t: "Vale Jantar Especial 🍷", d: "Direito a uma refeição caprichada escolhida por você." }
-                ],
-                [
-                    { id: "c5", t: "Vale Cafuné sem Limite 💤", d: "Até você pegar no sono completo com todo carinho." },
-                    { id: "c6", t: "Vale Sorvete / Açaí 🍧", d: "Um momento doce pago inteiramente pelo seu amor." },
-                    { id: "c7", t: "Vale Abraço de 1 Minuto 🫂", d: "Aquele abraço apertado para zerar todas as suas preocupações." },
-                    { id: "c8", t: "Vale Ouvir sem Reclamação 💬", d: "Direito a desabafar sobre qualquer assunto com atenção total." }
-                ],
-                [
-                    { id: "c9", t: "Vale Dormir Juntinho 🛌", d: "Um dia inteiro de preguiça e dengo debaixo das cobertas." },
-                    { id: "c10", t: "Vale Delivery Surpresa 🍕", d: "O parceiro escolhe e pede sua comida favorita em segredo." },
-                    { id: "c11", t: "Vale Despedida Demorada 🥺", d: "Mais 20 minutinhos extras de dengo antes de ir embora." },
-                    { id: "c12", t: "Vale Te Amo Especial 📜", d: "Uma cartinha improvisada feita na hora listando suas qualidades." }
-                ]
-            ];
-
-            const hoje = new Date();
-            const primeiraData = new Date(hoje.getFullYear(), 0, 1);
-            const numeroSemana = Math.ceil((((hoje - primeiraData) / 86400000) + primeiraData.getDay() + 1) / 7);
-            const loteAtualIdx = numeroSemana % lotesCuponsSemanas.length;
-            const cuponsDaSemana = lotesCuponsSemanas[loteAtualIdx];
-
-            onValue(ref(db, 'mimos_estados'), snapshot => {
-                const estados = snapshot.val() || {};
-                const mGrid = document.getElementById('cuponsGrid');
-                if(!mGrid) return;
-                mGrid.innerHTML = "";
-
-                cuponsDaSemana.forEach(c => {
-                    const foiUsado = estados[c.id] && estados[c.id].usado;
-                    const cardClass = foiUsado ? "mimo-card usado" : "mimo-card";
-                    const tituloClass = foiUsado ? "mimo-titulo usado-txt" : "mimo-titulo";
-                    const btnTxt = foiUsado ? "Resgatado ✓" : "Resgatar Mimo 🎟️";
-                    const btnDisabled = foiUsado ? "disabled" : "";
-
-                    const cardHtml = `
-                        <div class="${cardClass}">
-                            <div class="${tituloClass}">${c.t}</div>
-                            <div class="mimo-desc">${c.d}</div>
-                            <button class="btn-lux" style="font-size:0.65rem; padding:8px; margin:0;" ${btnDisabled} onclick="window.resgatarCupomReal('${c.id}')">${btnTxt}</button>
-                        </div>
-                    `;
-                    mGrid.innerHTML += cardHtml;
-                });
-            });
-        }
-
-        window.resgatarCupomReal = (idCupom) => {
-            update(ref(db, `mimos_estados/${idCupom}`), { usado: true, por: usuarioAtivo }).then(() => {
-                alert('Cupom Ativado e Riscado! Tire um print para cobrar o seu amor!');
-            });
-        };
-
-        document.getElementById('inputFoto').addEventListener('change', (e) => {
-            if (e.target.files[0]) document.getElementById('btnUpload').style.display = 'block';
+        onValue(puzzleRef, snapshot => {
+            let data = snapshot.val();
+            if (!data) return;
+            
+            const N = data.tamanhoGrade || 3;
+            const boardReal = document.getElementById('grid-puzzle-real');
+            boardReal.style.gridTemplateColumns = `repeat(${N}, 1fr)`;
+            
+            // ... (restante da lógica de renderização que você já tinha)
         });
 
-        window.enviarFotoDirect = () => {
-            const file = document.getElementById('inputFoto').files[0];
-            if (!file) return;
-            const r = new FileReader(); r.readAsDataURL(file);
-            r.onload = (ev) => {
-                push(ref(db, 'mural_fotos_direto'), { imagem: ev.target.result, autor: usuarioAtivo, timestamp: Date.now() });
-                document.getElementById('btnUpload').style.display = 'none';
-            };
+        // Funções de navegação básicas
+        window.irPara = (id, el) => {
+            document.querySelectorAll('.secao').forEach(s => s.classList.remove('ativa'));
+            document.getElementById(id).classList.add('ativa');
         };
-
-        function sync() {
-            onValue(ref(db, 'mural_fotos_direto'), s => {
-                const mural = document.getElementById('muralFotos'); if(mural) { mural.innerHTML = "";
-                s.forEach(c => {
-                    mural.innerHTML += `<div class="foto-card"><img src="${c.val().imagem}" onclick="window.verFotoGrande(this.src)"><span>Por: ${c.val().autor}</span></div>`;
-                }); }
-            });
-
-            onValue(ref(db, 'sonhos_v2'), s => {
-                const l = document.getElementById('listaSonhos'); if(l) { l.innerHTML = "";
-                s.forEach(item => {
-                    l.innerHTML += `<div style="display:flex; background:rgba(255,255,255,0.1); padding:10px; border-radius:15px; margin-bottom:8px; text-align:left;">
-                        <input type="checkbox" ${item.val().status?'checked':''} onchange="update(ref(getDatabase(), 'sonhos_v2/${item.key}'), {status:!${item.val().status}})" style="width:20px; margin-right:10px;">
-                        <span style="${item.val().status?'text-decoration:line-through;opacity:0.5;':''}">${item.val().texto}</span>
-                    </div>`;
-                }); }
-            });
-
-            onValue(ref(db, 'correio_v2'), s => {
-                const m = document.getElementById('muralC'); if(m) { m.innerHTML = "";
-                s.forEach(c => { m.innerHTML = `<div class="glass-card" style="text-align:left;">${c.val().texto}</div>` + m.innerHTML; }); }
-            });
-        }
-
-        window.addSonho = () => {
-            const v = document.getElementById('inputSonho').value;
-            if(v) push(ref(db, 'sonhos_v2'), { texto: v, status: false });
-            document.getElementById('inputSonho').value = "";
+        
+        window.entrar = () => {
+            document.getElementById('login').classList.add('hidden');
+            document.getElementById('app').classList.remove('hidden');
+            document.getElementById('menu').classList.remove('hidden');
         };
-
-        window.enviarC = () => {
-            const v = document.getElementById('textoC').value;
-            if(v) push(ref(db, 'correio_v2'), { texto: `${v}\n\n— Assinado: ${usuarioAtivo}` });
-            document.getElementById('textoC').value = "";
-        };
-
-        window.verFotoGrande = (src) => { document.getElementById('imgExpandida').src = src; document.getElementById('lightbox').classList.add('show'); };
-        window.fecharFotoGrande = () => document.getElementById('lightbox').classList.remove('show');
-
-        function syncJogos() {
-            // --- LOGICA DAS RASPADINHAS ---
-            const todosOsPremiosConfig = [
-                "Vale Abraço Apertado 🫂", "Beijo de 1 Minuto 💋", "Mensagem Fofa Surpresa 📝", "Café na Cama ☕",
-                "Massagem nos Pés 🦶", "Vale cafuné até dormir 😴", "Rodada de perguntas sinceras 💬", "Cinema com direito a doce 🍫"
-            ];
-
-            const raspadinhaRef = ref(db, 'arena_jogos/raspadinha_global');
-
-            onValue(raspadinhaRef, snapshot => {
-                const dadosR = snapshot.val() || { loteAtual: [], historicoUsados: [], logsCliques: {} };
-                const rGrid = document.getElementById('raspaGrid');
-                const msgBloqueio = document.getElementById('raspadinha-bloqueio');
-                const hojeStr = new Date().toISOString().split('T')[0];
-
-                if (!dadosR.loteAtual || dadosR.loteAtual.length < 4) {
-                    let disponiveis = todosOsPremiosConfig.filter(p => !dadosR.historicoUsados || !dadosR.historicoUsados.includes(p));
-                    if (disponiveis.length < 4) { dadosR.historicoUsados = []; disponiveis = [...todosOsPremiosConfig]; }
-                    disponiveis.sort(() => Math.random() - 0.5);
-                    const novoLote = disponiveis.slice(0, 4);
-                    update(raspadinhaRef, { loteAtual: novoLote, historicoUsados: [...(dadosR.historicoUsados || []), ...novoLote] });
-                    return;
-                }
-
-                let jaRaspouHoje = false;
-                if (dadosR.logsCliques) {
-                    Object.values(dadosR.logsCliques).forEach(log => {
-                        if (log.usuario === usuarioAtivo && log.data === hojeStr) jaRaspouHoje = true;
-                    });
-                }
-
-                if (jaRaspouHoje) {
-                    msgBloqueio.innerText = "Você já abriu sua raspadinha de hoje! Volte amanhã! ✨";
-                    msgBloqueio.style.display = "block"; rGrid.style.opacity = "0.4"; rGrid.style.pointerEvents = "none";
-                } else {
-                    msgBloqueio.style.display = "none"; rGrid.style.opacity = "1"; rGrid.style.pointerEvents = "auto";
-                }
-
-                rGrid.innerHTML = "";
-
-                let proximaLiberadaIdx = 0;
-                if (dadosR.logsCliques) {
-                    for(let k=0; k<4; k++) {
-                        if(dadosR.logsCliques[`slot_${k}`]) { proximaLiberadaIdx = k + 1; }
-                    }
-                }
-
-                dadosR.loteAtual.forEach((premio, idx) => {
-                    const item = document.createElement('div'); item.className = 'raspa-item';
-                    const txt = document.createElement('div'); txt.className = 'texto-escondido';
-                    txt.innerText = premio;
-                    const canvas = document.createElement('canvas');
-                    item.appendChild(txt); item.appendChild(canvas); rGrid.appendChild(item);
-
-                    const idSlotUnico = `slot_${idx}`;
-                    const foiReveladaGlobally = dadosR.logsCliques && dadosR.logsCliques[idSlotUnico];
-                    const estaBloqueadaPorOrdem = idx > proximaLiberadaIdx;
-
-                    setTimeout(() => {
-                        canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight;
-                        const ctx = canvas.getContext('2d');
-
-                        if (foiReveladaGlobally) {
-                            ctx.clearRect(0, 0, canvas.width, canvas.height);
-                            txt.innerText = `${premio}\n(por ${dadosR.logsCliques[idSlotUnico].usuario})`;
-                            item.style.background = "#e2d4f0";
-                        } else {
-                            ctx.fillStyle = '#9d4edd'; ctx.fillRect(0,0,canvas.width,canvas.height);
-                            ctx.fillStyle = '#ffffff'; ctx.font = 'bold 11px Montserrat'; ctx.textAlign = 'center';
-
-                            if(estaBloqueadaPorOrdem) {
-                                ctx.fillText('🔒 Trancada', canvas.width/2, canvas.height/2 + 4);
-                            } else {
-                                ctx.fillText('Raspe Aqui 💜', canvas.width/2, canvas.height/2 + 4);
-                            }
-                        }
-
-                        let raspando = false;
-                        const registrarGaurador = () => {
-                            if (!foiReveladaGlobally && !jaRaspouHoje && !estaBloqueadaPorOrdem) {
-                                update(ref(db, `arena_jogos/raspadinha_global/logsCliques/${idSlotUnico}`), { usuario: usuarioAtivo, data: hojeStr });
-                                get(raspadinhaRef).then(snapRefresh => {
-                                    const atualizado = snapRefresh.val();
-                                    if (atualizado.logsCliques && Object.keys(atualizado.logsCliques).length >= 4) {
-                                        remove(ref(db, 'arena_jogos/raspadinha_global/logsCliques'));
-                                        remove(ref(db, 'arena_jogos/raspadinha_global/loteAtual'));
-                                    }
-                                });
-                            }
-                        };
-
-                        const mover = (e) => {
-                            if(!raspando || jaRaspouHoje || foiReveladaGlobally || estaBloqueadaPorOrdem) return;
-                            const rect = canvas.getBoundingClientRect();
-                            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-                            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-                            ctx.globalCompositeOperation = 'destination-out'; ctx.beginPath();
-                            ctx.arc(clientX - rect.left, clientY - rect.top, 20, 0, Math.PI*2); ctx.fill();
-                        };
-
-                        const iniciarAcao = () => {
-                            if (estaBloqueadaPorOrdem && !foiReveladaGlobally) {
-                                alert("Abra as raspadinhas anteriores primeiro! 💕");
-                                return;
-                            }
-                            if(!jaRaspouHoje && !foiReveladaGlobally) { raspando = true; registrarGaurador(); }
-                        };
-
-                        canvas.addEventListener('mousedown', iniciarAcao);
-                        canvas.addEventListener('mouseup', () => raspando = false);
-                        canvas.addEventListener('mousemove', mover);
-                        canvas.addEventListener('touchstart', iniciarAcao);
-                        canvas.addEventListener('touchend', () => raspando = false);
-                        canvas.addEventListener('touchmove', mover);
-                    }, 300);
-                });
-            });
-
-
-            // --- NOVO BANCO DE PERGUNTAS DO QUIZ AVANÇADO INTEGRADO ---
-            const bancoPerguntasAvancado = {
-                1: [
-                    { p: "Qual o melhor lugar para um encontro perfeito?", o: ["Jantar à luz de velas 🕯️", "Piquenique no parque 🌳", "Ir ao cinema 🎬", "Ficar em casa vendo série 🍿"] },
-                    { p: "Quem demonstrou interesse primeiro?", o: ["Ela 👸", "Ele 🧔", "Os dois juntos ⚡", "Foi por mensagem 📱"] },
-                    { p: "Qual o apelido carinhoso mais usado?", o: ["Amor/Mô ❤️", "Bê/Baby 👶", "Vida 🌍", "Apelido secreto 🤫"] },
-                    { p: "Qual o abraço perfeito?", o: ["Demorado e apertado 🤗", "Espontâneo de surpresa ⚡", "Acolhedor antes de dormir 🛌", "Andando na rua 🗺️"] },
-                    { p: "O que mais une vocês dois no dia a dia?", o: ["O senso de humor 😂", "As conversas profundas 🗣️", "O carinho constante 🥰", "Os planos futuros ✈️"] },
-                    { p: "Qual música define melhor vocês?", o: ["Uma balada romântica 🎵", "Uma música animada 💃", "A de um filme que viram 🍿", "Ainda não escolhermos uma 🎼"] },
-                    { p: "Se pudessem parar o tempo juntos, onde seria?", o: ["Num final de semana relaxante 💆", "No momento do primeiro beijo 💋", "Em uma viagem especial 🗺️", "No sofá de casa jogando conversa fora 🛋️"] },
-                    { p: "Qual a melhor forma de demonstrar amor?", o: ["Palavras de apoio 🗣️", "Dar presentes significativos 🎁", "Gestos de serviço diários 🛠️", "Tempo de qualidade juntos ⏳"] },
-                    { p: "Como seria o domingo de manhã perfeito?", o: ["Dormir até tarde 💤", "Café da manhã caprichado na cama ☕", "Sair para passear cedo ☀️", "Assistir desenhos/séries antigos 📺"] },
-                    { p: "Qual detalhe físico você mais repara no outro?", o: ["O sorriso 😾", "O olhar/olhos 👀", "O cabelo 💇", "As mãos 🤝"] },
-                    { p: "Quem é mais propenso a planejar surpresas?", o: ["Ela 👸", "Ele 🧔", "Nenhum dos dois é muito fã 🤷", "Os dois tentam igualmente ⚡"] },
-                    { p: "O que não pode faltar em uma noite de filmes?", o: ["Pipoca salgada clássica 🍿", "Doces e chocolates 🍫", "Cobertores e frio ❄️", "Pauses eternos para conversar 💬"] },
-                    { p: "Qual presente tem mais valor sentimental?", o: ["Uma carta feita à mão ✉️", "Uma joia ou acessório 💍", "Algo utilitário que precisava muito 🎒", "Uma viagem juntos 🗺️"] },
-                    { p: "Se fossem uma dupla dinâmica de ficção, seriam:", o: ["Shrek e Fiona 💚", "Mickey e Minnie 🐭", "Batman e Robin 🦇", "Gomez e Morticia Addams 🖤"] },
-                    { p: "Qual o melhor tipo de cafuné?", o: ["Leve para dar sono 💤", "Firme para relaxar 💆", "Nas costas ao invés da cabeça 🖐️", "Qualquer um vindo do parceiro 🥰"] },
-                    { p: "Quem acorda de melhor humor?", o: ["Ela 👸", "Ele 🧔", "Os dois são zumbis de manhã 🧟", "Depende do dia da semana 📆"] },
-                    { p: "A melhor viagem romântica seria para:", o: ["Uma praia deserta e paradisíaca 🏖️", "Uma cabana fria nas montanhas 🏔️", "Uma grande metrópole turística 🏙️", "Um parque de diversões temático 🎢"] }
-                ],
-                2: [
-                    { p: "Qual filme vocês mais assistiram juntos?", o: ["Vingadores 🎬", "Star Wars 🚀", "Harry Potter ✨", "Shrek 💚"] },
-                    { p: "Quem tem o pior gosto para piadas?", o: ["Ela 👸", "Ele 🧔", "As piadas são tão ruins que dão a volta e ficam boas 😂", "Temos o mesmo humor refinado 🧠"] },
-                    { p: "Se o casal ganhasse na loteria hoje, qual seria o primeiro impulso?", o: ["Viajar pelo mundo sem rumo ✈️", "Comprar uma mansão tecnológica 🏡", "Investir tudo em segredo 💰", "Demitir-se do emprego com estilo 💼"] },
-                    { p: "Quem corre mais risco de se perder no supermercado?", o: ["Ela 👸", "Ele 🧔", "Os dois se distraem muito fácil 🛒", "Nenhum, seguimos a lista rigidamente 📝"] },
-                    { p: "Se fôssemos participar de um reality show, qual seria?", o: ["De férias com o ex (caos) 🌊", "Power Couple (parceria) ⚡", "Masterchef Duplas (comida) 🍳", "BBB (fama) 👁️"] },
-                    { p: "Quem gasta mais tempo escolhendo o que comer?", o: ["Ela 👸", "Ele 🧔", "Ficamos num loop infinito de 'você escolhe' 🔄", "Decidimos em 2 segundos ⚡"] },
-                    { p: "Qual o pior superpoder para um de vocês ter?", o: ["Ler mentes (zero segredos) 🧠", "Invisibilidade (susto toda hora) 👻", "Super audição (ouvir ronco alto) 👂", "Teletransporte (cobrança de pressa) ⚡"] },
-                    { p: "Qual meme resume perfeitamente a nossa dinâmica?", o: ["O estressado & O calmo 🧘", "Duas pessoas com zero neurônios funcionando 🤪", "Românticos bregas 🌹", "Fome acumulada 24h 🍔"] },
-                    { p: "Quem é o motorista/co-piloto mais desesperado?", o: ["Ela reclama de tudo 👸", "Ele corre demais 🧔", "Nenhum, nossa viagem é pura paz 🚗", "Nenhum sabe navegar direito 🗺️"] },
-                    { p: "Se pudéssemos comer apenas uma comida pelo resto da vida?", o: ["Pizza eterna 🍕", "Hambúrguer artesanal 🍔", "Comida japonesa 🍣", "Arroz, feijão e batata frita 🍛"] },
-                    { p: "Quem é o mais acumulador de abas abertas no celular?", o: ["Ela (mais de 50 abas) 👸", "Ele (tudo bagunçado) 🧔", "Os dois sofrem desse mal 📱", "Tudo fechado e limpo sempre 🧹"] },
-                    { p: "Quem tem mais probabilidade de rir em um momento sério?", o: ["Ela 👸", "Ele 🧔", "Os dois começam a rir juntos pelo olhar 👀", "Somos extremamente maduros e sérios 👔"] },
-                    { p: "Qual maior motivo de discussões bobas?", o: ["Onde vamos comer 🍽️", "A temperatura do quarto/ventilador ❄️", "Quem esqueceu de responder a mensagem 📱", "Quem enrola mais para se arrumar ⏰"] },
-                    { p: "Se a nossa vida fosse uma série de comédia, qual seria?", o: ["The Office 👔", "Friends ☕", "Modern Family 🏡", "Todo Mundo Odeia o Chris 🛹"] },
-                    { p: "Quem é o mestre em inventar dancinhas idiotas na cozinha?", o: ["Ela 👸", "Ele 🧔", "Fazemos coreografias juntos 🕺", "Assistimos julgando a loucura alheia 🤨"] },
-                    { p: "Qual bicho de estimação exótico combina com a gente?", o: ["Uma capivara calma 🦦", "Um furão hiperativo 🦡", "Uma arara tagarela 🦜", "Nenhum, foco em cão/gato clássico 🐶"] }
-                ],
-                3: [
-                    { p: "Qual a data exata do aniversário de namoro?", o: ["Lembramos o dia exato 📅", "Sabemos o mês aproximado 🍂", "Confundimos o ano 🗓️", "Temos que olhar sempre no celular 📱"] },
-                    { p: "Onde aconteceu o nosso primeiro beijo?", o: ["No carro / transporte 🚗", "Na rua / lugar público 🌳", "Na casa de um de nós 🏡", "Em uma festa / evento 🎉"] },
-                    { p: "Qual foi a primeira impressão que ela teve dele?", o: ["Achou tímido/quieto 🤫", "Achou engraçado/falante 🗣️", "Achou muito bonito 🥰", "Achou meio estranho/marrento 🤨"] },
-                    { p: "E qual foi a primeira impressão que ele teve dela?", o: ["Maravilhosa e intimidadora 👸", "Super simpática e fofa 😊", "Estilosa / autêntica ✨", "Diferente de todo mundo 🌍"] },
-                    { p: "Quem disse 'eu te amo' pela primeira vez?", o: ["Ela tomou a iniciativa 👸", "Ele falou primeiro 🧔", "Foi automático e ao mesmo tempo ⚡", "Demorou muito para os dois falarem ⏱️"] },
-                    { p: "Qual foi o nosso primeiro desentendimento bobo?", o: ["Por causa de ciúmes bobo 😠", "Horários ou atrasos ⏰", "Falta de comunicação no Whats 📱", "Não lembramos de tão irrelevante 🧠"] },
-                    { p: "Qual foi a primeira comida que compartilhamos?", o: ["Lanche / Hambúrguer 🍔", "Pizza 🍕", "Doce / Sorvete 🍦", "Comida caseira / restaurante 🍽️"] },
-                    { p: "Quem demorou mais para se arrumar no primeiro encontro?", o: ["Ela, com certeza 👸", "Ele foi o mais vaidoso 🧔", "Ninguém atrasou, cronometrado ⏱️", "Foi tudo muito improvisado e rápido 🏃"] },
-                    { p: "Qual presente dado no início marcou mais?", o: ["Um item de vestuário 👕", "Algo feito à mão / carta ✉️", "Uma comida favorita 🍫", "Um objeto decorativo / geek 🎮"] },
-                    { p: "Quem lembra mais das datas de aniversário de parentes?", o: ["Ela lembra de todos 👸", "Ele gerencia essa parte 🧔", "Esquecemos juntos e nos salvamos 🗓️", "O Google Agenda salva a nossa vida 🤖"] },
-                    { p: "Qual a lembrança mais engraçada do começo?", o: ["Um tombo ou mico público 🤸", "Uma confusão de caminhos/GPS 🗺️", "Alguém gaguejando de nervoso 💬", "Conhecer a família por surpresa 🚪"] },
-                    { p: "O primeiro filme que assistiram juntos na vida foi:", o: ["No cinema com pipoca cara 🎬", "Na TV de casa se escondendo 📺", "Nenhum, só conversamos 🗣️", "Ficou passando de fundo e nem vimos 🤫"] },
-                    { p: "Quem puxou assunto no primeiro contato?", o: ["Ela mandou direct/mensagem 👸", "Ele respondeu um stories / chamou 🧔", "Amigos em comum apresentaram pessoalmente 👥", "Foi obra do destino absoluto ✨"] },
-                    { p: "Qual música tocava muito na época que se conheceram?", o: ["Um hit do rádio/Spotify 📻", "Uma música do artista favorito de vocês 🎵", "Nenhuma específica, o mundo estava em silêncio 🤫", "Várias músicas misturadas 🎧"] },
-                    { p: "Qual roupa um dos dois usou no primeiro encontro que marcou?", o: ["Um casaco / jaqueta específico 🧥", "Um tênis estiloso 👟", "Uma cor marcante (preto/vermelho) 🎨", "Não fazemos a menor ideia 🤷"] },
-                    { p: "Onde foi a nossa primeira foto juntos?", o: ["Espelho clássico 🤳", "Lugar aberto / natureza 🌳", "Dentro do carro 🚗", "Alguém tirou para nós 📸"] },
-                    { p: "Quem guarda mais recordações físicas (ingressos, papéis)?", o: ["Ela tem uma caixinha 👸", "Ele guarda tudo com carinho 🧔", "Perdemos tudo ao longo do tempo 🗑️", "Nosso acervo é 100% digital ☁️"] }
-                ],
-                4: [
-                    { p: "Onde gostariam de morar no futuro?", o: ["Apartamento moderno 🏢", "Casa em Bairro Calmo 🏡", "Perto da natureza / sítio 🍃", "Fora do país ✈️"] },
-                    { p: "Quantos filhos ou pets pretendem ter no total?", o: ["Apenas pets (mini zoológico) 🐶", "1 filho + pets 👶", "2 ou mais filhos 👨‍👩‍👧‍👦", "Nenhum plano fixo, deixa fluir 🍃"] },
-                    { p: "Qual o destino dos sonhos para a próxima grande viagem?", o: ["Europa histórica 🗼", "Praias do Nordeste / Maldivas 🏖️", "Nova York / Destino Urbano 🏙️", "Japão / Cultura Geek 🗺️"] },
-                    { p: "Como vocês se imaginam daqui a 10 anos?", o: ["Estáveis na carreira e viajando muito 💼", "Com nossa casa própria totalmente decorada 🏡", "Começando um negócio próprio juntos 🚀", "Ricos e aposentados cedo (sonho) 💰"] },
-                    { p: "Qual o estilo de decoração da futura casa?", o: ["Minimalista e moderno (preto e branco) 🖤", "Rústico e aconchegante (madeira e plantas) 🪵", "Nerd / Gamer cheio de colecionáveis 🎮", "Bagunça organizada confortável 🛋️"] },
-                    { p: "Quem vai comandar a cozinha na casa própria?", o: ["Ela será a chef 👸", "Ele assumirá as panelas 🧔", "Divisão perfeita / Cada dia um cozinha 🤝", "O iFood será nosso melhor amigo 🛵"] },
-                    { p: "Qual eletrodoméstico caro é o sonho de consumo?", o: ["Airfryer gigante de última geração 🍟", "Robô aspirador inteligente 🤖", "Geladeira inverse que faz gelo na porta 🧊", "Lava e Seca que faz tudo sozinha 🧺"] },
-                    { p: "Se pudessem abrir um negócio juntos, seria no ramo de:", o: ["Alimentação / Café / Doceria ☕", "Tecnologia / Loja Online 💻", "Moda / Vestuário 👕", "Turismo / Pousada na praia 🏖️"] },
-                    { p: "Qual hábito atual pretendem manter para sempre?", o: ["O cafuné antes de dormir 💤", "As noites de maratona de séries 🍿", "Sair para jantar em datas especiais 🍽️", "Apoiar os sonhos malucos um do outro 🚀"] },
-                    { p: "Qual o maior objetivo financeiro de curto prazo?", o: ["Trocar ou comprar um carro 🚗", "Juntar dinheiro para dar entrada na casa 💰", "Fazer uma super viagem planejada ✈️", "Quitar todas as contas e respirar 🧘"] },
-                    { p: "Quem vai surtar mais na hora de escolher os móveis?", o: ["Ela (perfeccionista) 👸", "Ele (preocupado com espaço) 🧔", "Os dois vão brigar na Leroy Merlin 🛠️", "Contrataremos um arquiteto para salvar o casamento 📐"] },
-                    { p: "Como será a comemoração de aniversário de casamento ideal?", o: ["Festa gigante com amigos 🎉", "Jantar extremamente chique exclusivo 🕯️", "Uma viagem de fuga de fim de semana 🚗", "Ficar em casa curtindo a nossa companhia 🛌"] },
-                    { p: "Qual o primeiro item geek/decorativo que vai pra sala?", o: ["Um quadro gigante de filme/série 🖼️", "Uma estante cheia de livros / mangás 📚", "Videogame de última geração em destaque 🎮", "Uma planta grande bem cuidada 🌿"] },
-                    { p: "Quem vai acordar no meio da noite se o alarme tocar?", o: ["Ele vai armado com uma vassoura 🧔", "Ela vai investigar cheia de coragem 👸", "Trancamos a porta e fingimos demência 🚪", "O cachorro/gato resolve o problema 🐶"] },
-                    { p: "Qual idioma vocês deveriam aprender juntos?", o: ["Inglês avançado para viajar 🇺🇸", "Japonês para ler mangás/animes 🇯🇵", "Francês/Italiano por puro charme 🇮🇹", "Nossa própria linguagem de sinais 🤟"] },
-                    { p: "Se tivessem um canal no YouTube no futuro, seria de:", o: ["Vlogs de Viagem 🗺️", "Culinária e Testes de Comida 🍕", "Gamer / Gameplays em dupla 🎮", "Humor / Casal cotidiano 😂"] }
-                ],
-                5: [
-                    { p: "Qual a maior virtude do relacionamento?", o: ["Confiança total 🤝", "Carinho diário 🥰", "Parceria total 🚀", "Risadas bobas 😂"] },
-                    { p: "O que fortalece a relação nos momentos difíceis?", o: ["A paciência mútua 🧘", "A capacidade de conversar e resolver 🗣️", "O abraço que cura qualquer estresse 🤗", "Saber dar espaço ao outro ⏳"] },
-                    { p: "Qual o maior aprendizado que um trouxe para o outro?", o: ["A ser mais calmo / paciente 🌊", "A expressar melhor os sentimentos 💬", "A ter mais ambição e sonhar alto 🚀", "A aproveitar os pequenos momentos da vida ☀️"] },
-                    { p: "O que faz o outro se sentir mais amado?", o: ["Elogios sinceros do nada 🗣️", "Defender o parceiro na frente dos outros 🛡️", "Lembrar de detalhes bobos que ele gosta 🍫", "Estar presente fisicamente quando tudo tá ruim 🤝"] },
-                    { p: "Qual palavra define perfeitamente o nosso amor?", o: ["Cumplicidade 🔗", "Intensidade 🔥", "Paz 🕊️", "Aventura 🗺️"] },
-                    { p: "Como lidamos com as diferenças de personalidade?", o: ["Nos completamos perfeitamente 🧩", "Rimos das manias opostas 😂", "Negociamos até achar o meio termo 🤝", "Ignoramos e seguimos a vida 🤷"] },
-                    { p: "O que torna o nosso casal único em comparação aos outros?", o: ["Nossa sintonia e piadas internas 🧠", "A forma leve como resolvemos as coisas 🕊️", "Nossa rotina cheia de carinho 🥰", "A nossa lealdade inabalável 🛡️"] },
-                    { p: "Quando um está triste, o que o outro faz de melhor?", o: ["Escuta sem julgar por horas 🗣️", "Traz uma comida gostosa pra animar 🍔", "Faz palhaçada até arrancar um sorriso 😂", "Fica quietinho abraçado dando apoio 🤗"] },
-                    { p: "O que você mais admira na evolução do outro?", o: ["A maturidade emotional 🧠", "A dedicação ao trabalho / estudos 💼", "O cuidado com o relacionamento 🥰", "O crescimento pessoal contínuo 🚀"] },
-                    { p: "Qual o segredo para manter o fogo e o romance?", o: ["Quebrar a rotina sempre que dá ⚡", "Manter os olhares e elogios diários 👀", "Respeitar a individualidade de cada um ⏳", "Beijos demorados do nada 💋"] },
-                    { p: "Qual o momento mais marcante de superação juntos?", o: ["Um problema de saúde / cansaço 🏥", "Dificuldade financeira temporária 💰", "Fase de distância ou falta de tempo ⏳", "Decisões difíceis sobre o futuro 🗺️"] },
-                    { p: "O que você sente quando fica muito tempo longe do outro?", o: ["Saudade física esmagadora 💔", "Vontade de compartilhar tudo por Whats 📱", "Foco nas tarefas para o tempo passar rápido ⏱️", "Paz sabendo que logo estaremos juntos 🕊️"] },
-                    { p: "Qual a melhor parte de envelhecer ao lado do outro?", o: ["Ver as mudanças físicas com carinho 👵👨‍🦳", "Construir uma história cheia de memórias 📚", "Ter um porto seguro eterno para voltar ⚓", "Poder ser 100% você mesmo sem máscaras 🎭"] },
-                    { p: "O que a sua família pensa do seu parceiro?", o: ["Amam mais do que a mim 🤦", "Aprovam totalmente e acham incrível 👍", "Respeitam e gostam muito 🤝", "É o xodó das reuniões familiares 🏡"] },
-                    { p: "Qual promessa silenciosa fazemos todos os dias?", o: ["Não ir dormir brigados 🛌", "Estar lá aconteça o que acontecer 🛡️", "Tentar ser uma pessoa melhor para o outro 🚀", "Fazer o outro sorrir pelo menos uma vez 😂"] },
-                    { p: "O nosso amor se parece mais com:", o: ["Um porto seguro calmo em dia de chuva ⚓", "Uma fogueira quente no inverno 🔥", "Uma viagem de montanha-russa emocionante 🎢", "Um livro que nunca queremos parar de ler 📚"] }
-                ],
-                6: [
-                    { p: "Qual o prato ou lanche favorito do Ele?", o: ["Lasanha / Massas 🍝", "Pizza artesanal 🍕", "Hambúrguer super recheado 🍔", "Churrasco clássico 🥩"] },
-                    { p: "Qual o maior hobby dele nos tempos livres?", o: ["Jogar videogame / PC 🎮", "Assistir futebol / esportes ⚽", "Ver séries / animes / filmes 📺", "Dormir profundamente 💤"] },
-                    { p: "O que deixa o Ele mais estressado no dia a dia?", o: ["Gente lerda / trânsito lento 🚗", "Fome extrema (muda o humor) 🍔", "Falta de acesso ao sono / cansaço acumulado 😴", "Bagunça extrema onde precisa achar algo 🧺"] },
-                    { p: "Qual o estilo de roupa que ele se sente mais confortável?", o: ["Camiseta de anime/geek + bermuda 🩳", "Moletom largo e calça confortável 🧥", "Estilo arrumadinho com camisa 👔", "Qualquer trapo preto que achar na gaveta 🖤"] },
-                    { p: "Qual a maior mania irritante ou engraçada do Ele?", o: ["Ficar balançando a perna sem parar 🦵", "Esquecer onde deixou a chave/carteira 🔑", "Fazer barulhos estranhos do nada 🤪", "Demorar uma eternidade no banheiro 🚽"] },
-                    { p: "Se ele pudesse ter um carro dos sonhos?", o: ["Um esportivo ultra rápido (Ferrari/Porsche) 🏎️", "Um SUV gigante confortável 🚙", "Um carro antigo clássico restaurado 🚗", "Uma moto de alta cilindrada 🏍️"] },
-                    { p: "Qual sabor de pizza ele escolhe sem errar?", o: ["Calabresa clássica 🍕", "Quatro Queijos 🧀", "Frango com Catupiry 🍗", "Sabor exótico / doce 🍫"] },
-                    { p: "Como ele reage quando assiste a um filme triste?", o: ["Chora escondido limpando o olho rápido 😢", "Diz que entrou um cisco no olho 👁️", "Não se abala, coração de pedra 🗿", "Chora rios de lágrimas junto com ela 😭"] },
-                    { p: "Quem é o super-herói favorito dele?", o: ["Batman (o brabo) 🦇", "Homem-Aranha (clássico) 🕷️", "Iron Man (tecnológico) 🤖", "Não curte muito super-heróis 🤷"] },
-                    { p: "Qual a marca de tênis ou calçado que ele prefere?", o: ["Nike / Adidas (esportivo) 👟", "Vans / All Star (casual) 🛹", "Chinelo 24h por dia se puder 🩴", "Bota / Sapato robusto 🥾"] },
-                    { p: "Qual o maior medo dele?", o: ["Alturas / Brinquedos radicais 🎢", "Insetos voadores / Baratas 🪳", "Ficar sem dinheiro / desempregado 💰", "Perder as pessoas que ama ❤️"] },
-                    { p: "O que ele prefere fazer no frio?", o: ["Ficar embaixo da coberta jogando 🎮", "Dormir o dia inteiro 💤", "Comer fondue / caldos quentes 🍲", "Reclamar que prefere o calor ☀️"] },
-                    { p: "Qual o doce que ele não consegue resistir?", o: ["Chocolate meio amargo / ao leite 🍫", "Pudim clássico de leite condensado 🍮", "Sorvete de massa 🍦", "Açaí completo cheio de adicionais 🍇"] },
-                    { p: "Qual jogo marcou a infância dele?", o: ["GTA San Andreas / Vice City 🚗", "Counter-Strike / League of Legends 💻", "Super Mario / Sonic clássicos 🍄", "Futebol (Bomba Patch / FIFA) ⚽"] },
-                    { p: "Como ele demonstra que está bravo sem falar nada?", o: ["Fica em silêncio absoluto mudando o rosto 😐", "Responde tudo de forma corta e direta 📝", "Começa a fazer as coisas com força/barulho 💥", "Ele não consegue esconder, reclama na hora 🗣️"] },
-                    { p: "Se o Ele pudesse viajar no tempo, iria para:", o: ["O futuro ver a tecnologia robótica 🚀", "A época dos dinossauros 🦖", "Os anos 80/90 curtir a cultura pop 📼", "O passado para corrigir algum mico bobo 🧠"] },
-                    { p: "O que ele mais elogia nela?", o: ["A beleza física e os olhos 😍", "A inteligência e determinação 🧠", "O cheiro e o abraço macio 🥰", "O senso de humor e as risadas 😂"] }
-                ],
-                7: [
-                    { p: "Qual é o maior sonho de consumo dela atualmente? 🛍️", o: ["Uma roupa ou sapato específico 👠", "Um eletrônico novo 📱", "Itens de maquiagem ou skincare 🧴", "Algo para o quarto dela 🛏️"] },
-                    { p: "Se ela pudesse mudar de nome, qual você acha que ela escolheria? 🪪", o: ["Eduarda ✨", "Maria 🌸", "Outro nome super diferente 🔮", "Ela gosta do nome que tem 🥰"] },
-                    { p: "O que ela mais gosta de fazer quando está num dia triste para se animar? 💖", o: ["Desenhar ou fazer arte 🎨", "Ouvir música no fone 🎧", "Ficar no celular vendo vídeos 📱", "Conversar com ele 💬"] },
-                    { p: "Qual é a mania ou o hábito mais engraçado/estranho que ela tem? 🤔", o: ["O jeito que fala certas palavras 🗣️", "Ficar mexendo no cabelo toda hora 💇‍♀️", "Mudar de humor do nada 🎢", "Cantar ou dançar sozinha 💃"] },
-                    { p: "Qual estilo de filme ou série ela prefere assistir? 🍿", o: ["Romance bem clichê 💘", "Ação, carros e velocidade 🏎️", "Suspense ou terror 👻", "Comédia para dar risada 😂"] },
-                    { p: "Se ela ganhasse na loteria hoje, qual seria a primeira coisa que ela compraria? 💸", o: ["Roupas e maquiagens caras 💄", "O carro dos sonhos dela 🚗", "Materiais de arte ou estudos 📚", "Guardaria tudo bem escondido no banco 🏦"] },
-                    { p: "Qual é o maior medo ou fobia dela? 😨", o: ["De algum bicho (inseto, sapo, etc.) 🕷️", "De ficar sozinha 👤", "De escuro 🌑", "De perder quem ela ama 💔"] },
-                    { p: "Qual é a comida ou lanche que ela nunca recusa, não importa a hora? 😋", o: ["Um doce ou chocolate 🍫", "Pizza ou hambúrguer 🍔", "Açaí bem caprichado 🍧", "A comida maravilhosa da mãe dela 🍲"] },
-                    { p: "O que mais irrita ela no dia a dia? 😡", o: ["Gente lerda ou falsidade 😒", "Passar muito calor 🥵", "Internet caindo ou ruim 📶", "Falta de atenção 🤷‍♀️"] },
-                    { p: "Qual é a talento secreto dela (ou algo que ela faz muito bem)? 🌟", o: ["Desenhar lindamente ✏️", "Maquiagem e estilo 💅", "Organizar as coisas perfeitamente 🗂️", "Ouvir e dar bons conselhos 🫂"] },
-                    { p: "Se ela pudesse viajar para qualquer lugar do mundo amanhã, para onde seria? ✈️", o: ["Uma praia paradisíaca 🏖️", "Uma cidade histórica e bonita 🏰", "Um lugar bem frio fora do país ❄️", "Qualquer lugar, desde que bem acompanhada 🗺️"] },
-                    { p: "Qual é a cor favorita dela para usar em roupas ou acessórios? 🎨", o: ["Preto ou tons escuros 🖤", "Rosa ou cores pastéis 🌸", "Branco ou cores bem claras 🤍", "Cores vivas e vibrantes ❤️"] },
-                    { p: "Como ela reage quando está com muito ciúmes? 👀", o: ["Fica super quieta e de cara amarrada 😠", "Diz logo o que está incomodando 🗣️", "Disfarça e finge que nada aconteceu 🎭", "Dá uma cobrada de leve com ironia 😏"] },
-                    { p: "Qual é a estação do ano favorita dela? 🍂", o: ["Inverno (frio e moletom) ❄️", "Verão (sol e calor) ☀️", "Primavera ou Outono 🌸", "Ela ama mesmo é dia chuvoso 🌧️"] },
-                    { p: "Quem ela costuma responder mais rápido nas redes sociais? 💬", o: ["O namorado 🥰", "As amigas da escola 🎒", "A família 🏠", "Ela demora séculos para responder todo mundo ⏳"] },
-                    { p: "Qual é a coisa que ela faz que faz o namorado sorrir na hora? 😍", o: ["O jeito que ela sorri ou olha para ele 👀", "Quando manda uma mensagem fofa do nada 📝", "As piadas e palhaçadas dela 🤪", "O abraço apertado dela 🫂"] },
-                    { p: "Se o namorado pudesse definir ela em apenas uma palavra, qual seria? 👑", o: ["Incrível ✨", "Determinada 💪", "Fofa 🧸", "Marrenta 😜"] }
-                ]
-            };
-
-            const salaQuizRefAvancado = ref(db, "sala_quiz_avancada");
-            let votadoNestaRodadaAvancado = false;
-            let perguntaIndiceAvancado = 0;
-            let categoriaAtualAvancada = 1;
-
-            window.mudarTemaOnline = function(temaId) {
-                update(salaQuizRefAvancado, {
-                    categoria: temaId,
-                    indice: 0,
-                    voto_ela: "",
-                    voto_ele: ""
-                });
-            };
-
-            window.avancarRodadaOnline = function() {
-                update(salaQuizRefAvancado, {
-                    voto_ela: "",
-                    voto_ele: "",
-                    indice: perguntaIndiceAvancado + 1
-                });
-            };
-
-            onValue(salaQuizRefAvancado, (snapshot) => {
-                const dados = snapshot.val();
-                if (!dados) {
-                    set(salaQuizRefAvancado, { categoria: 1, indice: 0, voto_ela: "", voto_ele: "" });
-                    return;
-                }
-
-                if (dados.categoria !== categoriaAtualAvancada || dados.indice !== perguntaIndiceAvancado) {
-                    categoriaAtualAvancada = dados.categoria;
-                    perguntaIndiceAvancado = dados.indice;
-                    votadoNestaRodadaAvancado = false;
-                }
-
-                // Estilizar aba ativa do tema selecionado
-                document.querySelectorAll('.btn-tema-box').forEach(b => b.classList.remove('ativo'));
-                const elAbaAtiva = document.getElementById(`tema-tab-${categoriaAtualAvancada}`);
-                if(elAbaAtiva) elAbaAtiva.classList.add('ativo');
-
-                const pool = bancoPerguntasAvancado[categoriaAtualAvancada] || bancoPerguntasAvancado[1];
-                const dadosPergunta = pool[perguntaIndiceAvancado];
-
-                const elCat = document.getElementById("quiz-categoria-avancado");
-                const elPerg = document.getElementById("quiz-pergunta-avancado");
-                const elOpcoes = document.getElementById("quiz-opcoes-avancado");
-                const elStatus = document.getElementById("quiz-status-avancado");
-                const elBtnProx = document.getElementById("btn-proximo-quiz-avancado");
-
-                if (!dadosPergunta) {
-                    elCat.innerText = "FIM DAS PERGUNTAS!";
-                    elPerg.innerText = "Parabéns! Vocês completaram este tema. Selecionem outro abaixo! 💕";
-                    elOpcoes.innerHTML = "";
-                    elStatus.innerText = "";
-                    elBtnProx.style.display = "none";
-                    return;
-                }
-
-                const nomesTemas = ["", "Romance 💖", "Diversão 🎭", "Memória 🧠", "Futuro ✈️", "Especiais ✨", "Tema 'Ele' 🧔", "Tema 'Ela' 👩✨"];
-                elCat.innerText = `TEMA: ${nomesTemas[categoriaAtualAvancada]} — PERGUNTA ${perguntaIndiceAvancado + 1}`;
-                elPerg.innerText = dadosPergunta.p;
-
-                const alternativas = ["A", "B", "C", "D"];
-                const meuVoto = meuPerfilQuiz === "ela" ? dados.voto_ela : dados.voto_ele;
-                const votoParceiro = meuPerfilQuiz === "ela" ? dados.voto_ele : dados.voto_ela;
-
-                // Fluxo de exibição das opções
-                elOpcoes.innerHTML = "";
-                alternativas.forEach((alt, i) => {
-                    const btn = document.createElement("div");
-                    btn.className = "quiz-opt";
-                    btn.innerText = `${alt}) ${dadosPergunta.o[i]}`;
-
-                    if (dados.voto_ela && dados.voto_ele) {
-                        // Se ambos votaram, mostra acertos ou erros
-                        if (dados.voto_ela === dados.voto_ele) {
-                            if (alt === dados.voto_ela) btn.classList.add("correta");
-                        } else {
-                            if (alt === meuVoto) btn.classList.add("errada");
-                            if (alt === votoParceiro) btn.classList.add("correta"); // Destaca a do par como Alvo alternativo
-                        }
-                    } else {
-                        // Se ainda está em andamento, marca o selecionado temporariamente se já votou
-                        if (meuVoto === alt) btn.classList.add("selecionada");
-                    }
-
-                    btn.onclick = () => {
-                        if (!dados.voto_ela || !dados.voto_ele) {
-                            if ((meuPerfilQuiz === "ela" && !dados.voto_ela) || (meuPerfilQuiz === "ele" && !dados.voto_ele)) {
-                                update(salaQuizRefAvancado, { [`voto_${meuPerfilQuiz}`]: alt });
-                            }
-                        }
-                    };
-                    elOpcoes.appendChild(btn);
-                });
-
-                // Controlar mensagens de status e botão de avançar
-                if (dados.voto_ela && dados.voto_ele) {
-                    elBtnProx.style.display = "block";
-                    elBtnProx.onclick = () => window.avancarRodadaOnline();
-                    if (dados.voto_ela === dados.voto_ele) {
-                        elStatus.innerHTML = "<span style='color:var(--green);'>SINTONIA PERFEITA! Vocês escolheram a mesma opção! 🎉😍</span>";
-                    } else {
-                        elStatus.innerHTML = "<span style='color:var(--pink);'>Respostas diferentes! Conversem sobre a escolha de cada um! 🥰</span>";
-                    }
-                } else {
-                    elBtnProx.style.display = "none";
-                    if (!dados.voto_ela && !dados.voto_ele) {
-                        elStatus.innerText = "Ninguém respondeu ainda. Dê o seu palpite!";
-                    } else {
-                        const pendente = !dados.voto_ela ? "Ela 👩‍🦰" : "Ele 🧔";
-                        if ((meuPerfilQuiz === "ela" && dados.voto_ela) || (meuPerfilQuiz === "ele" && dados.voto_ele)) {
-                            elStatus.innerText = `Sua resposta foi salva! Aguardando o voto de: ${pendente} ⏳`;
-                        } else {
-                            elStatus.innerText = "Seu amor já respondeu! Só falta você! 🫵💜";
-                        }
-                    }
-                }
-            });
-
-
-            // --- JOGO DA VELHA ---
-            const velhaRef = ref(db, 'arena_jogos/velha');
-            document.getElementById('btn-reset-velha').onclick = () => {
-                update(velhaRef, { tabuleiro: ["", "", "", "", "", "", "", "", ""], turno: usuarioAtivo, criadorTurno: usuarioAtivo, vencedor: "", desafio: "", desafioPendente: false, quemDeveCumprir: "" });
-            };
-            document.getElementById('btn-cumprir-desafio').onclick = () => {
-                get(velhaRef).then(snap => {
-                    const currentData = snap.val();
-                    if (currentData && currentData.desafioPendente && currentData.quemDeveCumprir === usuarioAtivo) {
-                        const proximo = (usuarioAtivo.toLowerCase().includes("eduarda") || usuarioAtivo.toLowerCase().includes("duda")) ? "Namorado" : "Eduarda";
-                        update(velhaRef, { turno: proximo, desafioPendente: false, quemDeveCumprir: "" });
-                    }
-                });
-            };
-            onValue(velhaRef, snapshot => {
-                let data = snapshot.val(); if (!data) return;
-                const txtVez = document.getElementById('velha-vez'); const btnDesafio = document.getElementById('btn-cumprir-desafio');
-                const meuEmoji = (data.criadorTurno === usuarioAtivo) ? "💜" : "💛";
-                if (data.vencedor) { txtVez.innerText = `Fim! Ganhador: ${data.vencedor} 🎉`; btnDesafio.style.display = 'none'; }
-                else if (data.desafioPendente) { txtVez.innerText = `⚠️ Desafio para ${data.quemDeveCumprir}.`; btnDesafio.style.display = data.quemDeveCumprir === usuarioAtivo ? 'block' : 'none'; }
-                else { txtVez.innerText = data.turno === usuarioAtivo ? `Sua vez! (${meuEmoji}) 🫵` : `Vez de: ${data.turno}`; btnDesafio.style.display = 'none'; }
-                const desBox = document.getElementById('velha-desafio'); desBox.innerText = data.desafio ? `🔥 Desafio:\n${data.desafio}` : ""; desBox.style.display = data.desafio ? 'block' : 'none';
-                const gridVelha = document.getElementById('tabuleiro-velha'); gridVelha.innerHTML = "";
-                data.tabuleiro.forEach((valor, idx) => {
-                    const celula = document.createElement('div'); celula.className = "velha-celula"; celula.innerText = valor;
-                    celula.onclick = () => {
-                        if (data.turno === usuarioAtivo && !data.desafioPendente && valor === "" && !data.vencedor) {
-                            let novoTab = [...data.tabuleiro]; novoTab[idx] = meuEmoji;
-                            let v = ""; const linhas = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
-                            linhas.forEach(l => { if(novoTab[l[0]] && novoTab[l[0]]===novoTab[l[1]] && novoTab[l[0]]===novoTab[l[2]]) { v = usuarioAtivo; } });
-                            update(velhaRef, { tabuleiro: novoTab, vencedor: v, desafio: "Diga 3 motivos pelos quais ama seu parceiro! ❤️", desafioPendente: !v, quemDeveCumprir: usuarioAtivo });
-                        }
-                    }; gridVelha.appendChild(celula);
-                });
-            });
-
-            // --- LINHA DO TEMPO ---
-            const timelineFatos = ["Primeiro Oi virtual 📱", "Nosso primeiro beijo 💋", "O pedido oficial 💜", "Nossa primeira foto juntos 📸"];
-            const timelineRef = ref(db, 'arena_jogos/timeline');
-
-            document.getElementById('btn-clear-timeline').onclick = () => { 
-                update(timelineRef, { slots: ["", "", "", ""], comparado: false }); 
-            };
-
-            window.alocarFatoNoSlot = (slotIdx) => {
-                const val = document.getElementById('select-timeline-fato').value;
-                if (val) {
-                    get(timelineRef).then(snap => {
-                        let novosSlots = [...(snap.val() || { slots: ["", "", "", ""] }).slots];
-                        novosSlots[slotIdx] = val;
-                        update(timelineRef, { slots: novosSlots, comparado: false });
-                    });
-                    document.getElementById('select-timeline-fato').value = "";
-                }
-            };
-
-            document.getElementById('btn-compare-timeline').onclick = () => {
-                update(timelineRef, { comparado: true });
-            };
-
-            onValue(timelineRef, snapshot => {
-                const data = snapshot.val() || { slots: ["", "", "", ""], comparado: false };
-                const boxSlots = document.getElementById('slots-timeline'); boxSlots.innerHTML = "";
-
-                data.slots.forEach((conteudo, idx) => {
-                    const slot = document.createElement('div'); 
-                    slot.className = `timeline-slot ${conteudo ? 'filled' : ''}`;
-
-                    if (data.comparado && conteudo !== "") {
-                        if (conteudo === timelineFatos[idx]) slot.classList.add('slot-correto');
-                        else slot.classList.add('slot-errado');
-                    }
-
-                    slot.innerText = conteudo ? `Etapa ${idx + 1}: ${conteudo}` : `[ Posição ${idx + 1} ]`;
-                    slot.onclick = () => window.alocarFatoNoSlot(idx); boxSlots.appendChild(slot);
-                });
-
-                const selectFatos = document.getElementById('select-timeline-fato');
-                selectFatos.innerHTML = '<option value="">-- Vincular Acontecimento --</option>';
-                timelineFatos.forEach(f => { if (!data.slots.includes(f)) selectFatos.innerHTML += `<option value="${f}">${f}</option>`; });
-
-                const resBox = document.getElementById('timeline-resultado');
-                if (data.comparado) {
-                    let perfeito = true; for(let i=0; i<timelineFatos.length; i++) { if(data.slots[i] !== timelineFatos[i]) perfeito = false; }
-                    resBox.innerHTML = perfeito ? "<span style='color:var(--green);'>Ordem Histórica Perfeita! 🏆💖</span>" : "<span style='color:var(--red);'>Algumas etapas estão erradas. Revisem e rearranjem! 🔄</span>";
-                } else { resBox.innerText = "Preencham e cliquem em Finalizar e Comparar..."; }
-            });
-
-            // --- O QUE VOCÊ PREFERE ---
-            const perguntasPrefere = [
-                { c: "Gostos Dela (Eduarda)", a: "Fim de semana numa cabana isolada ⛰️", b: "Hotel com piscina na praia 🌊", respostaReal: "B" },
-                { c: "Gostos Dele (Namorado)", a: "Maratona de filmes com pipoca em casa 🎬", b: "Jantar chique num restaurante inédito 🍷", respostaReal: "A" }
-            ];
-            const prefereRef = ref(db, 'arena_jogos/prefere');
-
-            document.getElementById('prefere-optA').onclick = () => { update(ref(db, 'arena_jogos/prefere/votos'), { [usuarioAtivo]: 'A' }); };
-            document.getElementById('prefere-optB').onclick = () => { update(ref(db, 'arena_jogos/prefere/votos'), { [usuarioAtivo]: 'B' }); };
-
-            onValue(prefereRef, snapshot => {
-                const data = snapshot.val() || { rodada: 0, votos: {} };
-                const rodadaAtual = (data.rodada !== undefined && data.rodada !== null) ? (data.rodada % perguntasPrefere.length) : 0;
-                const p = perguntasPrefere[rodadaAtual];
-
-                document.getElementById('prefere-categoria').innerText = p.c;
-                const btnA = document.getElementById('prefere-optA'); const btnB = document.getElementById('prefere-optB');
-                btnA.innerText = p.a; btnB.innerText = p.b;
-
-                let meusVotos = data.votos || {};
-                const jogaram = Object.keys(meusVotos);
-                const jaVotei = meusVotos[usuarioAtivo] !== undefined;
-
-                if (jogaram.length >= 2) {
-                    const v1 = meusVotos[jogaram[0]]; const v2 = meusVotos[jogaram[1]];
-                    btnA.className = `quiz-opt ${p.respostaReal === 'A' ? 'correta' : (v1 === 'A' || v2 === 'A' ? 'errada' : '')}`;
-                    btnB.className = `quiz-opt ${p.respostaReal === 'B' ? 'correta' : (v1 === 'B' || v2 === 'B' ? 'errada' : '')}`;
-                } else {
-                    btnA.className = `quiz-opt ${meusVotos[usuarioAtivo] === 'A' ? 'confirmada' : ''}`;
-                    btnB.className = `quiz-opt ${meusVotos[usuarioAtivo] === 'B' ? 'confirmada' : ''}`;
-                }
-
-                const boxResultado = document.getElementById('prefere-resultado'); const btnProxPrefere = document.getElementById('btn-proximo-prefere');
-                if (jogaram.length === 0) { boxResultado.innerHTML = "Escolha sua option!"; btnProxPrefere.style.display = 'none'; }
-                else if (jogaram.length === 1) { 
-                    if(jaVotei) boxResultado.innerHTML = "Sua opção foi enviada! Aguardando o voto do seu par... ⏳"; 
-                    else boxResultado.innerHTML = "Seu amor já votou! Escolha o seu! 🫵💜";
-                    btnProxPrefere.style.display = 'none'; 
-                }
-                else if (jogaram.length >= 2) {
-                    let elaPrefere = meusVotos[jogaram.find(n => n.toLowerCase().includes("eduarda") || n.toLowerCase().includes("duda"))] === 'A' ? p.a : p.b;
-                    let elePrefere = meusVotos[jogaram.find(n => !n.toLowerCase().includes("eduarda") && !n.toLowerCase().includes("duda"))] === 'A' ? p.a : p.b;
-                    let match = (meusVotos[jogaram[0]] === meusVotos[jogaram[1]] && meusVotos[jogaram[0]] === p.respostaReal) ? "<p style='color:var(--green);'>Vocês estão sincronizados! 😍🎉</p>" : "<p style='color:var(--red);'>Que pena, vocês não acertaram. 🥰</p>";
-                    boxResultado.innerHTML = `<div style='text-align:left; font-size:0.8rem;'><strong>💁‍♀️ Palpite dela:</strong> ${elaPrefere}<br><strong>🙋‍♂️ Palpite dele:</strong> ${elePrefere}</div>` + match;
-                    btnProxPrefere.style.display = 'block';
-                }
-            });
-
-            document.getElementById('btn-proximo-prefere').onclick = () => {
-                get(ref(db, 'arena_jogos/prefere')).then(snap => {
-                    const rPref = snap.val()?.rodada || 0;
-                    remove(ref(db, 'arena_jogos/prefere/votos')).then(() => {
-                        update(ref(db, 'arena_jogos/prefere'), { rodada: rPref + 1 });
-                    });
-                });
-            };
-
-            // --- QUEBRA-CABEÇA ---
-            const puzzleImagensFofas = [
-                "https://cdn.pixabay.com/photo/2024/02/28/07/42/cat-8601420_640.jpg",
-                "https://cdn.pixabay.com/photo/2023/09/04/10/55/bunny-8232490_640.jpg",
-                "https://cdn.pixabay.com/photo/2023/12/08/10/16/cat-8437388_640.jpg",
-                "https://cdn.pixabay.com/photo/2020/07/11/17/33/corgi-5394747_640.jpg",
-                "https://cdn.pixabay.com/photo/2023/08/18/14/00/panda-8198616_640.jpg"
-            ];
-
-            const puzzleRef = ref(db, 'arena_jogos/puzzle_real');
-
-            window.mudarDificuldadePuzzle = (tamanho) => {
-                const N = parseInt(tamanho); const gridVazia = Array(N * N).fill("");
-                get(puzzleRef).then(snap => {
-                    const pData = snap.val() || { historicoImagens: [] }; let vistas = pData.historicoImagens || [];
-                    let filtradas = puzzleImagensFofas.filter(img => !vistas.includes(img));
-                    if (filtradas.length === 0) { vistas = []; filtradas = [...puzzleImagensFofas]; }
-                    const imgAleatoria = filtradas[Math.floor(Math.random() * filtradas.length)];
-                    update(puzzleRef, { imagemUrl: imgAleatoria, tamanhoGrade: N, gridPosicoes: gridVazia, turno: usuarioAtivo, criadorTurno: usuarioAtivo, historicoImagens: vistas });
-                });
-            };
-
-            document.getElementById('btn-concluir-puzzle').onclick = () => {
-                get(puzzleRef).then(snap => {
-                    const dataP = snap.val(); if(dataP && dataP.imagemUrl) {
-                        let historico = dataP.historicoImagens || []; if(!historico.includes(dataP.imagemUrl)) historico.push(dataP.imagemUrl);
-                        const N = dataP.tamanhoGrade || 3; let filtradas = puzzleImagensFofas.filter(img => !historico.includes(img));
-                        if(filtradas.length === 0) { historico = []; filtradas = [...puzzleImagensFofas]; }
-                        const novaImg = filtradas[Math.floor(Math.random() * filtradas.length)];
-                        update(puzzleRef, { imagemUrl: novaImg, gridPosicoes: Array(N * N).fill(""), turno: usuarioAtivo, historicoImagens: historico }).then(() => {
-                            document.getElementById('btn-concluir-puzzle').style.display = 'none';
-                        });
-                    }
-                });
-            };
-
-            document.getElementById('btn-reset-puzzle').onclick = () => { window.mudarDificuldadePuzzle(document.getElementById('select-puzzle-tamanho').value); };
-
-            onValue(puzzleRef, snapshot => {
-                let data = snapshot.val(); if (!data) { window.mudarDificuldadePuzzle(3); return; }
-                const N = data.tamanhoGrade || 3; document.getElementById('select-puzzle-tamanho').value = N;
-                const txtTurno = document.getElementById('puzzle-turno-txt'); const emojiJogador = (data.criadorTurno === usuarioAtivo) ? "💜" : "💛"; const eMeuTurno = data.turno === usuarioAtivo;
-                txtTurno.innerText = eMeuTurno ? `Sua vez! Encaixe uma peça (${emojiJogador}) 🧩` : `Aguarde o movimento de: ${data.turno}`;
-                const boardReal = document.getElementById('grid-puzzle-real'); boardReal.style.gridTemplateColumns = `repeat(${N}, 1fr)`;
-                const poolBox = document.getElementById('pool-pecas'); poolBox.innerHTML = "";
-                const totalPecas = N * N; const tamanhoPecaPx = Math.floor(210 / N); const tamanhoTabuleiroPx = Math.floor(270 / N);
-
-                for(let i = 0; i < totalPecas; i++) {
-                    const pecaNome = `Parte_${i}`;
-                    if (!data.gridPosicoes || !data.gridPosicoes.includes(pecaNome)) {
-                        const pElem = document.createElement('div'); pElem.className = `puzzle-peca-item ${pecaSelecionadaLocal === pecaNome ? 'selecionada' : ''}`;
-                        pElem.innerHTML = `<div style="width:100%; height:100%; background:url('${data.imagemUrl}') -${(i % N) * tamanhoPecaPx}px -${Math.floor(i / N) * tamanhoPecaPx}px / 210px 210px no-repeat;"></div>`;
-                        pElem.onclick = () => { if (eMeuTurno) { pecaSelecionadaLocal = pecaNome; document.querySelectorAll('.puzzle-peca-item').forEach(x => x.classList.remove('selecionada')); pElem.classList.add('selecionada'); } };
-                        poolBox.appendChild(pElem);
-                    }
-                }
-
-                boardReal.innerHTML = ""; const posicoesValidas = data.gridPosicoes || Array(totalPecas).fill("");
-                posicoesValidas.forEach((conteudoSlot, idxSlot) => {
-                    const slot = document.createElement('div'); slot.className = "puzzle-slot-real";
-                    if (conteudoSlot) {
-                        const pIdx = parseInt(conteudoSlot.replace("Parte_", ""));
-                        slot.innerHTML = `<div style="width:100%; height:100%; background:url('${data.imagemUrl}') -${(pIdx % N) * tamanhoTabuleiroPx}px -${Math.floor(pIdx / N) * tamanhoTabuleiroPx}px / 270px 270px no-repeat;"></div>`;
-                    } else { slot.innerText = `${idxSlot + 1}`; }
-                    slot.onclick = () => { if (eMeuTurno && pecaSelecionadaLocal && !conteudoSlot) { let novasPosicoes = [...posicoesValidas]; novasPosicoes[idxSlot] = pecaSelecionadaLocal; const proximoJogador = (usuarioAtivo.toLowerCase().includes("eduarda") || usuarioAtivo.toLowerCase().includes("duda")) ? "Namorado" : "Eduarda"; update(puzzleRef, { gridPosicoes: novasPosicoes, turno: proximoJogador }); pecaSelecionadaLocal = null; } };
-                    boardReal.appendChild(slot);
-                });
-
-                const statusPuzzle = document.getElementById('puzzle-status'); const btnConcluir = document.getElementById('btn-concluir-puzzle');
-                let completo = true; for(let i = 0; i < totalPecas; i++) { if(posicoesValidas[i] !== `Parte_${i}`) completo = false; }
-                if(completo && posicoesValidas.every(x => x !== "")) { statusPuzzle.innerHTML = "✨ Tabuleiro perfeito! Clique abaixo para trocar o animal fofinho! 💜"; btnConcluir.style.display = 'block'; }
-                else { btnConcluir.style.display = 'none'; statusPuzzle.innerHTML = "Unam as peças nas posições corretas."; }
-            });
-        }
     </script>
 </body>
 </html>
