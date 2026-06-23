@@ -216,7 +216,6 @@
                 <div class="game-menu-btn" onclick="abrirJogo('puzzle')"><span>🧩</span>Quebra-Cabeça Fofo</div>
             </div>
 
-            <!-- NOVO QUIZ DE CASAL MULTI-TEMAS INTEGRADO -->
             <div id="jogo-quiz" class="sub-jogo-container">
                 <div class="glass-card">
                     <button class="btn-lux" style="padding:8px; font-size:0.75rem; margin-bottom:10px;" onclick="voltarMenuJogos()">↩ Voltar à Arena</button>
@@ -237,6 +236,7 @@
                         <div class="btn-tema-box" id="tema-tab-4" onclick="window.mudarTemaOnline(4)">FUTURO ✈️</div>
                         <div class="btn-tema-box" id="tema-tab-5" onclick="window.mudarTemaOnline(5)">ESPECIAIS ✨</div>
                         <div class="btn-tema-box" id="tema-tab-6" onclick="window.mudarTemaOnline(6)">TEMA "ELE" 🧔</div>
+                        <div class="btn-tema-box" id="tema-tab-7" onclick="window.mudarTemaOnline(7)">TEMA "ELA" 👩✨</div>
                     </div>
                 </div>
             </div>
@@ -707,7 +707,7 @@
                     { p: "Qual o apelido carinhoso mais usado?", o: ["Amor/Mô ❤️", "Bê/Baby 👶", "Vida 🌍", "Apelido secreto 🤫"] },
                     { p: "Qual o abraço perfeito?", o: ["Demorado e apertado 🤗", "Espontâneo de surpresa ⚡", "Acolhedor antes de dormir 🛌", "Andando na rua 🗺️"] },
                     { p: "O que mais une vocês dois no dia a dia?", o: ["O senso de humor 😂", "As conversas profundas 🗣️", "O carinho constante 🥰", "Os planos futuros ✈️"] },
-                    { p: "Qual música define melhor vocês?", o: ["Uma balada romântica 🎵", "Uma música animada 💃", "A de um filme que viram 🍿", "Ainda não escolhemos uma 🎼"] },
+                    { p: "Qual música define melhor vocês?", o: ["Uma balada romântica 🎵", "Uma música animada 💃", "A de um filme que viram 🍿", "Ainda não escolhermos uma 🎼"] },
                     { p: "Se pudessem parar o tempo juntos, onde seria?", o: ["Num final de semana relaxante 💆", "No momento do primeiro beijo 💋", "Em uma viagem especial 🗺️", "No sofá de casa jogando conversa fora 🛋️"] },
                     { p: "Qual a melhor forma de demonstrar amor?", o: ["Palavras de apoio 🗣️", "Dar presentes significativos 🎁", "Gestos de serviço diários 🛠️", "Tempo de qualidade juntos ⏳"] },
                     { p: "Como seria o domingo de manhã perfeito?", o: ["Dormir até tarde 💤", "Café da manhã caprichado na cama ☕", "Sair para passear cedo ☀️", "Assistir desenhos/séries antigos 📺"] },
@@ -784,7 +784,7 @@
                     { p: "Como lidamos com as diferenças de personalidade?", o: ["Nos completamos perfeitamente 🧩", "Rimos das manias opostas 😂", "Negociamos até achar o meio termo 🤝", "Ignoramos e seguimos a vida 🤷"] },
                     { p: "O que torna o nosso casal único em comparação aos outros?", o: ["Nossa sintonia e piadas internas 🧠", "A forma leve como resolvemos as coisas 🕊️", "Nossa rotina cheia de carinho 🥰", "A nossa lealdade inabalável 🛡️"] },
                     { p: "Quando um está triste, o que o outro faz de melhor?", o: ["Escuta sem julgar por horas 🗣️", "Traz uma comida gostosa pra animar 🍔", "Faz palhaçada até arrancar um sorriso 😂", "Fica quietinho abraçado dando apoio 🤗"] },
-                    { p: "O que você mais admira na evolução do outro?", o: ["A maturidade emocional 🧠", "A dedicação ao trabalho / estudos 💼", "O cuidado com o relacionamento 🥰", "O crescimento pessoal contínuo 🚀"] },
+                    { p: "O que você mais admira na evolução do outro?", o: ["A maturidade emotional 🧠", "A dedicação ao trabalho / estudos 💼", "O cuidado com o relacionamento 🥰", "O crescimento pessoal contínuo 🚀"] },
                     { p: "Qual o segredo para manter o fogo e o romance?", o: ["Quebrar a rotina sempre que dá ⚡", "Manter os olhares e elogios diários 👀", "Respeitar a individualidade de cada um ⏳", "Beijos demorados do nada 💋"] },
                     { p: "Qual o momento mais marcante de superação juntos?", o: ["Um problema de saúde / cansaço 🏥", "Dificuldade financeira temporária 💰", "Fase de distância ou falta de tempo ⏳", "Decisões difíceis sobre o futuro 🗺️"] },
                     { p: "O que você sente quando fica muito tempo longe do outro?", o: ["Saudade física esmagadora 💔", "Vontade de compartilhar tudo por Whats 📱", "Foco nas tarefas para o tempo passar rápido ⏱️", "Paz sabendo que logo estaremos juntos 🕊️"] },
@@ -811,97 +811,27 @@
                     { p: "Como ele demonstra que está bravo sem falar nada?", o: ["Fica em silêncio absoluto mudando o rosto 😐", "Responde tudo de forma corta e direta 📝", "Começa a fazer as coisas com força/barulho 💥", "Ele não consegue esconder, reclama na hora 🗣️"] },
                     { p: "Se o Ele pudesse viajar no tempo, iria para:", o: ["O futuro ver a tecnologia robótica 🚀", "A época dos dinossauros 🦖", "Os anos 80/90 curtir a cultura pop 📼", "O passado para corrigir algum mico bobo 🧠"] },
                     { p: "O que ele mais elogia nela?", o: ["A beleza física e os olhos 😍", "A inteligência e determinação 🧠", "O cheiro e o abraço macio 🥰", "O senso de humor e as risadas 😂"] }
+                ],
+                7: [
+                    { p: "Qual é o maior sonho de consumo dela atualmente? 🛍️", o: ["Uma roupa ou sapato específico 👠", "Um eletrônico novo 📱", "Itens de maquiagem ou skincare 🧴", "Algo para o quarto dela 🛏️"] },
+                    { p: "Se ela pudesse mudar de nome, qual você acha que ela escolheria? 🪪", o: ["Eduarda ✨", "Maria 🌸", "Outro nome super diferente 🔮", "Ela gosta do nome que tem 🥰"] },
+                    { p: "O que ela mais gosta de fazer quando está num dia triste para se animar? 💖", o: ["Desenhar ou fazer arte 🎨", "Ouvir música no fone 🎧", "Ficar no celular vendo vídeos 📱", "Conversar com ele 💬"] },
+                    { p: "Qual é a mania ou o hábito mais engraçado/estranho que ela tem? 🤔", o: ["O jeito que fala certas palavras 🗣️", "Ficar mexendo no cabelo toda hora 💇‍♀️", "Mudar de humor do nada 🎢", "Cantar ou dançar sozinha 💃"] },
+                    { p: "Qual estilo de filme ou série ela prefere assistir? 🍿", o: ["Romance bem clichê 💘", "Ação, carros e velocidade 🏎️", "Suspense ou terror 👻", "Comédia para dar risada 😂"] },
+                    { p: "Se ela ganhasse na loteria hoje, qual seria a primeira coisa que ela compraria? 💸", o: ["Roupas e maquiagens caras 💄", "O carro dos sonhos dela 🚗", "Materiais de arte ou estudos 📚", "Guardaria tudo bem escondido no banco 🏦"] },
+                    { p: "Qual é o maior medo ou fobia dela? 😨", o: ["De algum bicho (inseto, sapo, etc.) 🕷️", "De ficar sozinha 👤", "De escuro 🌑", "De perder quem ela ama 💔"] },
+                    { p: "Qual é a comida ou lanche que ela nunca recusa, não importa a hora? 😋", o: ["Um doce ou chocolate 🍫", "Pizza ou hambúrguer 🍔", "Açaí bem caprichado 🍧", "A comida maravilhosa da mãe dela 🍲"] },
+                    { p: "O que mais irrita ela no dia a dia? 😡", o: ["Gente lerda ou falsidade 😒", "Passar muito calor 🥵", "Internet caindo ou ruim 📶", "Falta de atenção 🤷‍♀️"] },
+                    { p: "Qual é a talento secreto dela (ou algo que ela faz muito bem)? 🌟", o: ["Desenhar lindamente ✏️", "Maquiagem e estilo 💅", "Organizar as coisas perfeitamente 🗂️", "Ouvir e dar bons conselhos 🫂"] },
+                    { p: "Se ela pudesse viajar para qualquer lugar do mundo amanhã, para onde seria? ✈️", o: ["Uma praia paradisíaca 🏖️", "Uma cidade histórica e bonita 🏰", "Um lugar bem frio fora do país ❄️", "Qualquer lugar, desde que bem acompanhada 🗺️"] },
+                    { p: "Qual é a cor favorita dela para usar em roupas ou acessórios? 🎨", o: ["Preto ou tons escuros 🖤", "Rosa ou cores pastéis 🌸", "Branco ou cores bem claras 🤍", "Cores vivas e vibrantes ❤️"] },
+                    { p: "Como ela reage quando está com muito ciúmes? 👀", o: ["Fica super quieta e de cara amarrada 😠", "Diz logo o que está incomodando 🗣️", "Disfarça e finge que nada aconteceu 🎭", "Dá uma cobrada de leve com ironia 😏"] },
+                    { p: "Qual é a estação do ano favorita dela? 🍂", o: ["Inverno (frio e moletom) ❄️", "Verão (sol e calor) ☀️", "Primavera ou Outono 🌸", "Ela ama mesmo é dia chuvoso 🌧️"] },
+                    { p: "Quem ela costuma responder mais rápido nas redes sociais? 💬", o: ["O namorado 🥰", "As amigas da escola 🎒", "A família 🏠", "Ela demora séculos para responder todo mundo ⏳"] },
+                    { p: "Qual é a coisa que ela faz que faz o namorado sorrir na hora? 😍", o: ["O jeito que ela sorri ou olha para ele 👀", "Quando manda uma mensagem fofa do nada 📝", "As piadas e palhaçadas dela 🤪", "O abraço apertado dela 🫂"] },
+                    { p: "Se o namorado pudesse definir ela em apenas uma palavra, qual seria? 👑", o: ["Incrível ✨", "Determinada 💪", "Fofa 🧸", "Marrenta 😜"] }
                 ]
             };
-            7: [ // Tema 7: ELA
-        {
-            pergunta: "Qual é o maior sonho de consumo dela atualmente?",
-            opcoes: ["Uma roupa/sapato específico", "Um eletrônico novo", "Itens de maquiagem/skincare", "Algo para o quarto dela"],
-            resposta: ""
-        },
-        {
-            pergunta: "Se ela pudesse mudar de nome, qual você acha que ela escolheria?",
-            opcoes: ["Eduarda", "Maria", "Outro nome super diferente", "Ela gosta do nome que tem"],
-            resposta: ""
-        },
-        {
-            pergunta: "O que ela mais gosta de fazer quando está num dia triste para se animar?",
-            opcoes: ["Desenhar/Fazer arte", "Ouvir música", "Ficar no celular/Ver vídeos", "Conversar com ele"],
-            resposta: ""
-        },
-        {
-            pergunta: "Qual é a mania ou o hábito mais engraçado/estranho que ela tem?",
-            opcoes: ["O jeito que ela fala certas palavras", "Ficar mexendo no cabelo", "Mudar de humor do nada", "Cantar ou dançar sozinha"],
-            resposta: ""
-        },
-        {
-            pergunta: "Qual estilo de filme ou série ela prefere assistir?",
-            opcoes: ["Romance clichê", "Ação/Carros e velocidade", "Suspense/Terror", "Comédia"],
-            resposta: ""
-        },
-        {
-            pergunta: "Se ela ganhasse na loteria hoje, qual seria a primeira coisa que ela compraria?",
-            opcoes: ["Roupas e maquiagens", "Um carro dos sonhos", "Materiais de arte/estudos", "Guardaria tudo no banco"],
-            resposta: ""
-        },
-        {
-            pergunta: "Qual é o maior medo ou fobia dela?",
-            opcoes: ["De algum bicho (inseto, sapo, etc.)", "De ficar sozinha", "De escuro", "De perder quem ela ama"],
-            resposta: ""
-        },
-        {
-            pergunta: "Qual é a comida ou lanche que ela nunca recusa, não importa a hora?",
-            opcoes: ["Um doce/chocolate", "Pizza ou hambúrguer", "Açaí", "A comida da mãe dela"],
-            # As opções abaixo podem ser adaptadas para o gosto real dela!
-            resposta: ""
-        },
-        {
-            pergunta: "O que mais irrita ela no dia a dia?",
-            opcoes: ["Gente lerda ou falsidade", "Ficar no calor", "Internet ruim", "Falta de atenção"],
-            resposta: ""
-        },
-        {
-            pergunta: "Qual é o talento secreto dela (ou algo que ela faz muito bem)?",
-            opcoes: ["Desenhar lindamente", "Maquiagem/Estilo", "Organizar as coisas", "Ouvir e dar bons conselhos"],
-            resposta: ""
-        },
-        {
-            pergunta: "Se ela pudesse viajar para qualquer lugar do mundo amanhã, para onde seria?",
-            opcoes: ["Uma praia paradisíaca", "Uma cidade histórica", "Um lugar frio fora do país", "Qualquer lugar, desde que bem acompanhada"],
-            resposta: ""
-        },
-        {
-            pergunta: "Qual é a cor favorita dela para usar em roupas ou acessórios?",
-            opcoes: ["Preto/Tons escuros", "Rosa/Cores pastéis", "Branco/Cores claras", "Cores vibrantes"],
-            resposta: ""
-        },
-        {
-            pergunta: "Como ela reage quando está com muito ciúmes?",
-            opcoes: ["Fica super quieta e de cara amarrada", "Diz logo o que está incomodando", "Disfarça e finge que nada aconteceu", "Dá uma cobrada de leve com ironia"],
-            resposta: ""
-        },
-        {
-            pergunta: "Qual é a estação do ano favorita dela?",
-            opcoes: ["Inverno (frio e moletom)", "Verão (sol e praia)", "Primavera/Outono", "Ela prefere dias chuvosos"],
-            resposta: ""
-        },
-        {
-            pergunta: "Quem ela costuma responder mais rápido nas redes sociais?",
-            opcoes: ["O namorado", "As amigas da escola", "A família", "Ela demora para responder todo mundo"],
-            resposta: ""
-        },
-        {
-            pergunta: "Qual é a coisa que ela faz que faz o namorado sorrir na hora?",
-            opcoes: ["O jeito que ela sorri/olha para ele", "Quando ela manda uma mensagem fofa", "As piadas ou palhaçadas dela", "O abraço dela"],
-            resposta: ""
-        },
-        {
-            pergunta: "Se o namorado pudesse definir ela em apenas uma palavra, qual seria?",
-            opcoes: ["Incrível", "Determinada", "Fofa", "Marrenta"],
-            resposta: ""
-        }
-    ]
-
 
             const salaQuizRefAvancado = ref(db, "sala_quiz_avancada");
             let votadoNestaRodadaAvancado = false;
@@ -961,7 +891,7 @@
                     return;
                 }
 
-                const nomesTemas = ["", "Romance 💖", "Diversão 🎭", "Memória 🧠", "Futuro ✈️", "Especiais ✨", "Tema 'Ele' 🧔"];
+                const nomesTemas = ["", "Romance 💖", "Diversão 🎭", "Memória 🧠", "Futuro ✈️", "Especiais ✨", "Tema 'Ele' 🧔", "Tema 'Ela' 👩✨"];
                 elCat.innerText = `TEMA: ${nomesTemas[categoriaAtualAvancada]} — PERGUNTA ${perguntaIndiceAvancado + 1}`;
                 elPerg.innerText = dadosPergunta.p;
 
@@ -1145,7 +1075,7 @@
                 }
 
                 const boxResultado = document.getElementById('prefere-resultado'); const btnProxPrefere = document.getElementById('btn-proximo-prefere');
-                if (jogaram.length === 0) { boxResultado.innerHTML = "Escolha sua opção!"; btnProxPrefere.style.display = 'none'; }
+                if (jogaram.length === 0) { boxResultado.innerHTML = "Escolha sua option!"; btnProxPrefere.style.display = 'none'; }
                 else if (jogaram.length === 1) { 
                     if(jaVotei) boxResultado.innerHTML = "Sua opção foi enviada! Aguardando o voto do seu par... ⏳"; 
                     else boxResultado.innerHTML = "Seu amor já votou! Escolha o seu! 🫵💜";
