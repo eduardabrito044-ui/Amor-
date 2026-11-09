@@ -105,6 +105,16 @@
         .foto-card img, .foto-card video { width: 100%; height: auto; display: block; border-radius: 10px; border: 1px solid var(--purple); cursor: pointer; }
         .foto-card span { font-size: 0.65rem; display: block; margin-top: 7px; color: #ccc; }
 
+        /* Botão de três pontinhos */
+        .btn-pontinhos {
+            position: absolute; top: 12px; right: 12px;
+            background: rgba(0, 0, 0, 0.7); border: 1px solid var(--purple);
+            color: white; border-radius: 50%; width: 32px; height: 32px;
+            font-size: 1rem; cursor: pointer; z-index: 10;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+        }
+
         .foto-lightbox {
             position: fixed; inset: 0; background: rgba(0, 0, 0, 0.95);
             display: none; align-items: center; justify-content: center;
@@ -503,6 +513,19 @@
             remove(ref(db, `pedidos_v2/${key}`));
         };
 
+        // --- FUNÇÕES DE EXCLUSÃO DE FOTOS E VÍDEOS ---
+        window.deletarFoto = (key) => {
+            if (confirm("Deseja mesmo apagar esta foto do mural? 🗑️")) {
+                remove(ref(db, `mural_fotos_direto/${key}`));
+            }
+        };
+
+        window.deletarVideo = (key) => {
+            if (confirm("Deseja mesmo apagar este vídeo do mural? 🗑️")) {
+                remove(ref(db, `mural_videos_direto/${key}`));
+            }
+        };
+
         function initMimos() {
             const lotesCuponsSemanas = [
                 [
@@ -581,19 +604,20 @@
             if (e.target.files[0]) document.getElementById('btnUploadVideo').style.display = 'block';
         });
 
-        // COMPRESSOR INTELIGENTE DE VÍDEO COM SOM (WEB AUDIO API + CANVAS)
+        // COMPRESSOR INTELIGENTE DE VÍDEO COM SOM COMPLETO CORRIGIDO
         window.enviarVideoDirect = async () => {
             const file = document.getElementById('inputVideo').files[0];
             if (!file) return;
 
             const statusEl = document.getElementById('statusUploadVideo');
-            statusEl.innerText = "Comprimindo vídeo com som... Aguarde ⏳";
+            statusEl.innerText = "Processando vídeo com som completo... Aguarde ⏳";
 
             try {
                 const video = document.createElement('video');
                 video.src = URL.createObjectURL(file);
                 video.crossOrigin = "anonymous";
                 video.playsInline = true;
+                video.muted = false;
 
                 await new Promise((resolve, reject) => {
                     video.onloadedmetadata = () => {
@@ -615,9 +639,14 @@
 
                 const AudioContext = window.AudioContext || window.webkitAudioContext;
                 const audioCtx = new AudioContext();
+                if (audioCtx.state === 'suspended') {
+                    await audioCtx.resume();
+                }
+
                 const source = audioCtx.createMediaElementSource(video);
                 const destination = audioCtx.createMediaStreamDestination();
                 source.connect(destination);
+                source.connect(audioCtx.destination);
 
                 const combinedStream = new MediaStream([
                     ...videoStream.getVideoTracks(),
@@ -656,26 +685,23 @@
                 };
 
                 mediaRecorder.start();
-
                 video.currentTime = 0;
-                const drawInterval = setInterval(() => {
-                    ctx.drawImage(video, 0, 0, width, height);
-                    if (video.ended || video.paused) {
-                        clearInterval(drawInterval);
-                        if (mediaRecorder.state !== 'inactive') mediaRecorder.stop();
-                        video.remove();
-                        audioCtx.close();
-                    }
-                }, 1000 / 30);
 
                 video.onended = () => {
-                    clearInterval(drawInterval);
                     if (mediaRecorder.state !== 'inactive') {
                         mediaRecorder.stop();
                     }
                     video.remove();
                     audioCtx.close();
                 };
+
+                const drawFrame = () => {
+                    if (!video.paused && !video.ended) {
+                        ctx.drawImage(video, 0, 0, width, height);
+                        requestAnimationFrame(drawFrame);
+                    }
+                };
+                requestAnimationFrame(drawFrame);
 
             } catch (err) {
                 console.error(err);
@@ -687,14 +713,24 @@
             onValue(ref(db, 'mural_fotos_direto'), s => {
                 const mural = document.getElementById('muralFotos'); if(mural) { mural.innerHTML = "";
                 s.forEach(c => {
-                    mural.innerHTML += `<div class="foto-card"><img src="${c.val().imagem}" onclick="window.verFotoGrande(this.src)"><span>Por: ${c.val().autor}</span></div>`;
+                    mural.innerHTML += `
+                        <div class="foto-card">
+                            <button class="btn-pontinhos" onclick="window.deletarFoto('${c.key}')" title="Deletar foto">⋮</button>
+                            <img src="${c.val().imagem}" onclick="window.verFotoGrande(this.src)">
+                            <span>Por: ${c.val().autor}</span>
+                        </div>`;
                 }); }
             });
 
             onValue(ref(db, 'mural_videos_direto'), s => {
                 const muralV = document.getElementById('muralVideos'); if(muralV) { muralV.innerHTML = "";
                 s.forEach(c => {
-                    muralV.innerHTML += `<div class="foto-card"><video src="${c.val().video}" controls style="width:100%; border-radius:10px; border:1px solid var(--purple);"></video><span>Por: ${c.val().autor}</span></div>`;
+                    muralV.innerHTML += `
+                        <div class="foto-card">
+                            <button class="btn-pontinhos" onclick="window.deletarVideo('${c.key}')" title="Deletar vídeo">⋮</button>
+                            <video src="${c.val().video}" controls style="width:100%; border-radius:10px; border:1px solid var(--purple);"></video>
+                            <span>Por: ${c.val().autor}</span>
+                        </div>`;
                 }); }
             });
 
@@ -812,8 +848,8 @@
                                 get(raspadinhaRef).then(snapRefresh => {
                                     const atualizado = snapRefresh.val();
                                     if (atualizado.logsCliques && Object.keys(atualizado.logsCliques).length >= 4) {
-                                        remove(ref(db, 'arena_jogos/raspadinha_global/logsCliques'));
-                                        remove(ref(db, 'arena_jogos/raspadinha_global/loteAtual'));
+                                        remove(ref(db, `arena_jogos/raspadinha_global/logsCliques`));
+                                        remove(ref(db, `arena_jogos/raspadinha_global/loteAtual`));
                                     }
                                 });
                             }
