@@ -581,19 +581,20 @@
             if (e.target.files[0]) document.getElementById('btnUploadVideo').style.display = 'block';
         });
 
-        // COMPRESSOR INTELIGENTE DE VÍDEO COM SOM (WEB AUDIO API + CANVAS)
+        // COMPRESSOR INTELIGENTE DE VÍDEO COM SOM COMPLETO CORRIGIDO
         window.enviarVideoDirect = async () => {
             const file = document.getElementById('inputVideo').files[0];
             if (!file) return;
 
             const statusEl = document.getElementById('statusUploadVideo');
-            statusEl.innerText = "Comprimindo vídeo com som... Aguarde ⏳";
+            statusEl.innerText = "Processando vídeo com som completo... Aguarde ⏳";
 
             try {
                 const video = document.createElement('video');
                 video.src = URL.createObjectURL(file);
                 video.crossOrigin = "anonymous";
                 video.playsInline = true;
+                video.muted = false;
 
                 await new Promise((resolve, reject) => {
                     video.onloadedmetadata = () => {
@@ -615,9 +616,14 @@
 
                 const AudioContext = window.AudioContext || window.webkitAudioContext;
                 const audioCtx = new AudioContext();
+                if (audioCtx.state === 'suspended') {
+                    await audioCtx.resume();
+                }
+
                 const source = audioCtx.createMediaElementSource(video);
                 const destination = audioCtx.createMediaStreamDestination();
                 source.connect(destination);
+                source.connect(audioCtx.destination);
 
                 const combinedStream = new MediaStream([
                     ...videoStream.getVideoTracks(),
@@ -656,26 +662,23 @@
                 };
 
                 mediaRecorder.start();
-
                 video.currentTime = 0;
-                const drawInterval = setInterval(() => {
-                    ctx.drawImage(video, 0, 0, width, height);
-                    if (video.ended || video.paused) {
-                        clearInterval(drawInterval);
-                        if (mediaRecorder.state !== 'inactive') mediaRecorder.stop();
-                        video.remove();
-                        audioCtx.close();
-                    }
-                }, 1000 / 30);
 
                 video.onended = () => {
-                    clearInterval(drawInterval);
                     if (mediaRecorder.state !== 'inactive') {
                         mediaRecorder.stop();
                     }
                     video.remove();
                     audioCtx.close();
                 };
+
+                const drawFrame = () => {
+                    if (!video.paused && !video.ended) {
+                        ctx.drawImage(video, 0, 0, width, height);
+                        requestAnimationFrame(drawFrame);
+                    }
+                };
+                requestAnimationFrame(drawFrame);
 
             } catch (err) {
                 console.error(err);
