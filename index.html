@@ -65,4 +65,587 @@
 
         /* Raspadinhas */
         .grid-raspa { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; width: 100%; max-width: 340px; margin: 0 auto; }
-        .raspa-item { position: relative; aspect-ratio: 1.2; border-radius: 18px; overflow: hidden;
+        .raspa-item { position: relative; aspect-ratio: 1.2; border-radius: 18px; overflow: hidden; background: #fff; border: 2.5px solid var(--purple); box-shadow: 0 6px 16px rgba(0,0,0,0.3); }
+        .texto-escondido { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; color: #1a0033; font-weight: bold; text-align: center; z-index: 1; font-family: 'Montserrat', sans-serif; padding: 8px; line-height: 1.2; }
+        canvas { position: absolute; inset: 0; z-index: 2; touch-action: none; }
+
+        /* Cupons */
+        .mimo-card { background: linear-gradient(135deg, rgba(123, 44, 191, 0.3), rgba(255, 77, 109, 0.2)); border: 1.5px dashed var(--gold); border-radius: 15px; padding: 15px; text-align: center; color: white; display: flex; flex-direction: column; justify-content: space-between; }
+        .mimo-card.usado { border-style: solid; border-color: rgba(255,255,255,0.2); opacity: 0.5; }
+        .mimo-titulo { font-weight: bold; font-size: 0.9rem; color: var(--gold); margin-bottom: 5px; }
+        .mimo-titulo.usado-txt { text-decoration: line-through; color: #ccc; }
+        .mimo-desc { font-size: 0.75rem; opacity: 0.9; margin-bottom: 10px; }
+
+        /* Calendário Real */
+        .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; margin-top: 10px; }
+        .dia-cal { font-size: 0.7rem; padding: 10px 0; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; background: rgba(255,255,255,0.05); cursor: pointer; transition: 0.2s; }
+        .marcado { background: var(--purple) !important; color: white; border-color: var(--gold); box-shadow: 0 0 10px var(--purple); font-weight: bold; }
+
+        .btn-lux { 
+            background: linear-gradient(45deg, var(--purple), #9d4edd); 
+            color: white; border: none; padding: 16px; border-radius: 50px; 
+            font-weight: bold; width: 100%; cursor: pointer; margin-top: 10px;
+            font-family: 'Montserrat', sans-serif; letter-spacing: 1px;
+            box-shadow: 0 4px 15px rgba(123, 44, 191, 0.4);
+        }
+        .btn-lux:disabled { background: #555 !important; cursor: not-allowed; box-shadow: none; color: #aaa; }
+
+        input, textarea, select { 
+            width: 100%; background: rgba(255,255,255,0.1); border: 1.5px solid var(--purple); 
+            border-radius: 15px; padding: 14px; color: white; margin-bottom: 12px;
+            font-family: 'Montserrat', sans-serif;
+        }
+        option { background: var(--dark); color: white; }
+
+        .overlay { position: fixed; inset: 0; background: radial-gradient(circle, #1a0033, #050010); z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; }
+        .hidden { display: none !important; }
+
+        .mural-fotos { display: flex; flex-direction: column-reverse; gap: 12px; width: 100%; max-width: 400px; }
+        .foto-card { position: relative; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 8px; border-radius: 15px; text-align: center; }
+        .foto-card img, .foto-card video { width: 100%; height: auto; display: block; border-radius: 10px; border: 1px solid var(--purple); cursor: pointer; }
+        .foto-card span { font-size: 0.65rem; display: block; margin-top: 7px; color: #ccc; }
+
+        .foto-lightbox {
+            position: fixed; inset: 0; background: rgba(0, 0, 0, 0.95);
+            display: none; align-items: center; justify-content: center;
+            z-index: 10000; padding: 20px; opacity: 0; transition: opacity 0.3s ease;
+        }
+        .foto-lightbox.show { display: flex; opacity: 1; }
+        .foto-lightbox img { max-width: 100%; max-height: 85vh; border-radius: 15px; border: 2px solid var(--gold); box-shadow: 0 0 30px rgba(212, 175, 55, 0.3); }
+    </style>
+</head>
+<body>
+
+    <div id="login" class="overlay">
+        <h1 class="titulo-lux" style="font-size: 3.8rem;">Nosso Jardim</h1>
+        <p style="font-family: 'Great Vibes', cursive; color: var(--gold); font-size: 1.6rem; margin-bottom: 20px;">Onde o amor floresce...</p>
+        <input type="text" id="user-name" placeholder="Seu Nome">
+        <input type="password" id="pw" placeholder="Senha Especial">
+        <button class="btn-lux" onclick="entrar()">Entrar no Coração</button>
+    </div>
+
+    <div id="lightbox" class="foto-lightbox" onclick="fecharFotoGrande()">
+        <img id="imgExpandida" src="" alt="Foto Expandida">
+    </div>
+
+    <div id="astro-icon" class="astro">☀️</div>
+    <div id="bg-coracoes"></div>
+    <div class="pensamento-amor" id="msgAmor">Seu amor está thinking em você...</div>
+
+    <nav class="nav-bar hidden" id="menu">
+        <div class="nav-item ativo" onclick="irPara('home', this)"><span>🏠</span>Início</div>
+        <div class="nav-item" onclick="irPara('mimos', this)"><span>🎟️</span>Mimos</div>
+        <div class="nav-item" onclick="irPara('fotos', this)"><span>📸</span>Fotos</div>
+        <div class="nav-item" onclick="irPara('videos', this)"><span>🎥</span>Vídeos</div>
+        <div class="nav-item" onclick="irPara('sonhos', this)"><span>✨</span>Sonhos</div>
+        <div class="nav-item" onclick="irPara('correio', this)"><span>💌</span>Correio</div>
+    </nav>
+
+    <main id="app" class="hidden">
+        <section id="home" class="secao ativa">
+            <h1 class="titulo-lux" id="msgBoasVIndas">Para Meu Amor</h1>
+            <img src="Amor.png" style="width:100%; max-width:350px; border-radius:25px; border: 3px solid var(--gold); margin-bottom: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+
+            <div id="timer" style="font-family: 'Great Vibes', cursive; font-size: 2.2rem; color: var(--gold); margin-bottom: 15px; text-align: center; line-height: 1.3;"></div>
+
+            <div id="pwa-install-container" style="display: none; width: 100%; max-width: 400px; margin-bottom: 15px;">
+                <button id="btn-pwa-install" class="btn-lux" style="background: linear-gradient(45deg, #d4af37, #b59023); color: #0a001a; box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);">Instalar Aplicativo 📲</button>
+            </div>
+
+            <!-- BARRA DE HUMOR DIÁRIA -->
+            <div class="glass-card">
+                <p style="font-size:0.7rem; font-weight:bold; letter-spacing:1px; color: var(--gold);">NOSSO HUMOR DE HOJE 🌟</p>
+                <div style="display: flex; gap: 10px; margin-top: 12px;">
+                    <!-- Meu Humor -->
+                    <div style="flex: 1; background: rgba(255,255,255,0.05); padding: 12px; border-radius: 15px; border: 1px solid var(--purple);">
+                        <div style="font-size: 0.75rem; color: var(--gold); font-weight: bold; margin-bottom: 8px;" id="lbl-meu-humor">Meu Humor</div>
+                        <div id="meu-humor-display" style="font-size: 1.5rem; margin-bottom: 8px;">❓</div>
+                        <select id="select-humor" onchange="atualizarMeuHumor(this.value)" style="margin-bottom: 0; padding: 8px; font-size: 0.75rem;">
+                            <option value="">Escolher humor...</option>
+                            <option value="😄 Feliz">😄 Feliz</option>
+                            <option value="🥰 Apaixonado(a)">🥰 Apaixonado(a)</option>
+                            <option value="⚡ Animado(a)">⚡ Animado(a)</option>
+                            <option value="😴 Cansado(a)">😴 Cansado(a)</option>
+                            <option value="🥱 Com sono">🥱 Com sono</option>
+                            <option value="😢 Triste">😢 Triste</option>
+                            <option value="🤒 Doente">🤒 Doente</option>
+                        </select>
+                    </div>
+                    <!-- Humor do Par -->
+                    <div style="flex: 1; background: rgba(255,255,255,0.05); padding: 12px; border-radius: 15px; border: 1px solid var(--purple);">
+                        <div style="font-size: 0.75rem; color: var(--gold); font-weight: bold; margin-bottom: 8px;" id="lbl-parceiro-humor">Humor do Amor</div>
+                        <div id="parceiro-humor-display" style="font-size: 1.5rem; margin-bottom: 8px;">❓</div>
+                        <div id="parceiro-humor-txt" style="font-size: 0.75rem; opacity: 0.8; font-style: italic;">Aguardando...</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass-card">
+                <p id="label-raspa" style="font-size:0.7rem; font-weight:bold; letter-spacing:2px; color: var(--gold);">SURPRESA DE HOJE 🎁</p>
+                <div id="raspadinha-bloqueio" style="display:none; color: var(--pink); font-size:0.85rem; font-weight: bold; margin: 10px 0;"></div>
+                <div class="grid-raspa" id="raspaGrid"></div>
+            </div>
+
+            <div class="glass-card">
+                <p style="font-size:0.7rem; font-weight:bold; letter-spacing:1px;">NOSSO CALENDÁRIO 📅</p>
+                <div class="cal-grid" id="calGrid"></div>
+            </div>
+        </section>
+
+        <section id="mimos" class="secao">
+            <h2 class="titulo-lux">Cupons de Carinho 🎟️</h2>
+            <div id="cuponsGrid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width:100%; max-width:400px;"></div>
+        </section>
+
+        <section id="fotos" class="secao">
+            <h2 class="titulo-lux">Nossas Fotos ✨</h2>
+            <div class="glass-card">
+                <input type="file" id="inputFoto" accept="image/*" style="display:none;">
+                <button class="btn-lux" onclick="document.getElementById('inputFoto').click()">Selecionar Foto da Galeria</button>
+                <button class="btn-lux" id="btnUpload" onclick="enviarFotoDirect()" style="background:linear-gradient(45deg, #2a9d8f, #e9c46a); display:none; margin-top:8px;">Enviar Foto ✨</button>
+                <div id="statusUpload" style="font-size:0.8rem; margin-top:8px; color:var(--gold);"></div>
+            </div>
+            <div class="mural-fotos" id="muralFotos"></div>
+        </section>
+
+        <section id="videos" class="secao">
+            <h2 class="titulo-lux">Nossos Vídeos 🎥</h2>
+            <div class="glass-card">
+                <input type="file" id="inputVideo" accept="video/*" style="display:none;">
+                <button class="btn-lux" onclick="document.getElementById('inputVideo').click()">Selecionar Vídeo da Galeria</button>
+                <button class="btn-lux" id="btnUploadVideo" onclick="enviarVideoDirect()" style="background:linear-gradient(45deg, #2a9d8f, #e9c46a); display:none; margin-top:8px;">Enviar Vídeo 🎥</button>
+                <div id="statusUploadVideo" style="font-size:0.8rem; margin-top:8px; color:var(--gold);"></div>
+            </div>
+            <div class="mural-fotos" id="muralVideos"></div>
+        </section>
+
+        <section id="sonhos" class="secao">
+            <h2 class="titulo-lux">Nossos Sonhos ✨</h2>
+            <div id="listaSonhos" style="width:100%; max-width:400px; margin-bottom: 15px;"></div>
+            <div class="glass-card">
+                <input type="text" id="inputSonho" placeholder="O que vamos realizar?">
+                <button class="btn-lux" onclick="addSonho()">Adicionar Sonho</button>
+            </div>
+        </section>
+
+        <section id="correio" class="secao">
+            <h2 class="titulo-lux">Cartinhas de Amor 💌</h2>
+            <div class="glass-card">
+                <textarea id="textoC" rows="4" placeholder="Escreva algo lindo..."></textarea>
+                <button class="btn-lux" onclick="enviarC()">Enviar com Amor 💌</button>
+            </div>
+            <div id="muralC" style="width:100%; max-width:400px;"></div>
+        </section>
+    </main>
+
+    <script>
+        let depherrPrompt;
+        const installContainer = document.getElementById('pwa-install-container');
+        const installBtn = document.getElementById('btn-pwa-install');
+
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js').catch(err => console.log(null));
+            });
+        }
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault(); depherrPrompt = e; installContainer.style.display = 'block';
+        });
+
+        installBtn.addEventListener('click', async () => {
+            if (depherrPrompt) {
+                depherrPrompt.prompt();
+                const { outcome } = await depherrPrompt.userChoice;
+                if (outcome === 'accepted') installContainer.style.display = 'none';
+                depherrPrompt = null;
+            }
+        });
+    </script>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+        import { getDatabase, ref, push, onValue, update, remove, get, set } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCz3H8bjiuS2gNvxUr_G3Csd21wL5J1gLw",
+            authDomain: "project-3726343372287499417.firebaseapp.com",
+            databaseURL: "https://project-3726343372287499417-default-rtdb.firebaseio.com",
+            projectId: "project-3726343372287499417"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        let usuarioAtivo = "";
+
+        window.irPara = (id, el) => {
+            document.querySelectorAll('.secao').forEach(s => s.classList.remove('ativa'));
+            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('ativo'));
+            document.getElementById(id).classList.add('ativa');
+            el.classList.add('ativo');
+        };
+
+        window.entrar = () => {
+            const nomeInput = document.getElementById('user-name').value.trim();
+            if(document.getElementById('pw').value === "2810" && nomeInput !== "") {
+                usuarioAtivo = nomeInput;
+
+                document.getElementById('msgBoasVIndas').innerText = "Oi, " + usuarioAtivo + "!";
+                document.getElementById('login').classList.add('hidden');
+                document.getElementById('app').classList.remove('hidden');
+                document.getElementById('menu').classList.remove('hidden');
+                initVisual();
+                initMimos();
+                sync();
+                initRaspadinha();
+                initHumorDiario();
+            }
+        };
+
+        function initVisual() {
+            const h = new Date().getHours();
+            const isDia = h >= 6 && h < 18;
+            document.body.style.background = isDia ? "radial-gradient(circle, #7b2cbf, #1a0033)" : "linear-gradient(to bottom, #050010, #1a0033)";
+            document.getElementById('astro-icon').innerText = isDia ? "☀️" : "🌙";
+
+            const bg = document.getElementById('bg-coracoes'); bg.innerHTML = "";
+            for(let i=0; i<15; i++) {
+                const c = document.createElement('div'); c.className = 'coracao-bg'; c.innerText = '💜';
+                c.style.left = Math.random() * 100 + 'vw'; c.style.top = Math.random() * 100 + 'vh';
+                c.style.fontSize = '25px'; c.style.animationDelay = Math.random() * 5 + 's'; bg.appendChild(c);
+            }
+
+            const dataInicio = new Date("2025-10-28T00:00:00");
+            const dataHoje = new Date();
+            let anos = dataHoje.getFullYear() - dataInicio.getFullYear();
+            let meses = dataHoje.getMonth() - dataInicio.getMonth();
+            if (meses < 0) { anos--; meses += 12; }
+            if (dataHoje.getDate() < dataInicio.getDate()) { meses--; if (meses < 0) { anos--; meses += 12; } }
+
+            let parteRelativa = (anos > 0 ? anos + " Anos " : "") + (meses > 0 ? meses + " Meses" : "");
+            if(!parteRelativa) parteRelativa = "Nossos Primeiros Dias";
+            const totalDias = Math.floor((dataHoje - dataInicio) / (1000 * 60 * 60 * 24));
+            document.getElementById('timer').innerHTML = `${parteRelativa} Juntos<br><span style="font-size: 1.1rem; opacity: 0.85;">(${totalDias} dias)</span>`;
+
+            const cal = document.getElementById('calGrid'); cal.innerHTML = "";
+
+            onValue(ref(db, 'calendario_marcas'), snapshot => {
+                const marcadosNoBanco = snapshot.val() || {};
+                cal.innerHTML = "";
+
+                for(let i = 1; i <= 31; i++) {
+                    const d = document.createElement('div');
+                    d.className = "dia-cal";
+                    d.innerText = i;
+
+                    if (marcadosNoBanco[i]) {
+                        d.classList.add('marcado');
+                    }
+
+                    d.onclick = () => {
+                        const estadoAtual = marcadosNoBanco[i] ? null : true;
+                        update(ref(db, 'calendario_marcas'), { [i]: estadoAtual });
+                    };
+                    cal.appendChild(d);
+                }
+            });
+        }
+
+        function initHumorDiario() {
+            const hojeStr = new Date().toISOString().split('T')[0];
+            const humorRef = ref(db, `humor_diario/${hojeStr}`);
+            const meuPerfil = (usuarioAtivo.toLowerCase().includes("eduarda") || usuarioAtivo.toLowerCase().includes("duda")) ? "ela" : "ele";
+            const parceiroPerfil = meuPerfil === "ela" ? "ele" : "ela";
+            const nomeParceiro = meuPerfil === "ela" ? "Seu Amor" : "Eduarda";
+
+            document.getElementById('lbl-meu-humor').innerText = `Meu Humor (${usuarioAtivo})`;
+            document.getElementById('lbl-parceiro-humor').innerText = `Humor de (${nomeParceiro})`;
+
+            onValue(humorRef, snapshot => {
+                const dados = snapshot.val() || {};
+                const meuHumorAtual = dados[meuPerfil] || "";
+                const parceiroHumorAtual = dados[parceiroPerfil] || "";
+
+                const selectEl = document.getElementById('select-humor');
+                if (selectEl && document.activeElement !== selectEl) {
+                    selectEl.value = meuHumorAtual;
+                }
+
+                document.getElementById('meu-humor-display').innerText = meuHumorAtual ? meuHumorAtual : "❓";
+
+                const parceiroDisplay = document.getElementById('parceiro-humor-display');
+                const parceiroTxt = document.getElementById('parceiro-humor-txt');
+
+                if (parceiroHumorAtual) {
+                    parceiroDisplay.innerText = parceiroHumorAtual;
+                    parceiroTxt.innerText = "Atualizado hoje ✨";
+                } else {
+                    parceiroDisplay.innerText = "❓";
+                    parceiroTxt.innerText = "Ainda não definiu hoje ⏳";
+                }
+            });
+        }
+
+        window.atualizarMeuHumor = (valor) => {
+            const hojeStr = new Date().toISOString().split('T')[0];
+            const meuPerfil = (usuarioAtivo.toLowerCase().includes("eduarda") || usuarioAtivo.toLowerCase().includes("duda")) ? "ela" : "ele";
+            update(ref(db, `humor_diario/${hojeStr}`), {
+                [meuPerfil]: valor
+            });
+        };
+
+        function initMimos() {
+            const lotesCuponsSemanas = [
+                [
+                    { id: "c1", t: "Vale Beijo 💋", d: "Pode ser trocado por um beijo apaixonado a qualquer hora." },
+                    { id: "c2", t: "Vale Massagem 💆‍♂️", d: "Garante uma massagem relaxante caprichada de 15 minutos." },
+                    { id: "c3", t: "Vale Cinema em Casa 🎬", d: "Você escolhe o filme e a pipoca fica por conta do par." },
+                    { id: "c4", t: "Vale Jantar Especial 🍷", d: "Direito a uma refeição caprichada escolhida por você." }
+                ],
+                [
+                    { id: "c5", t: "Vale Cafuné sem Limite 💤", d: "Até você pegar no sono completo com todo carinho." },
+                    { id: "c6", t: "Vale Sorvete / Açaí 🍧", d: "Um momento doce pago inteiramente pelo seu amor." },
+                    { id: "c7", t: "Vale Abraço de 1 Minuto 🫂", d: "Aquele abraço apertado para zerar todas as suas preocupações." },
+                    { id: "c8", t: "Vale Ouvir sem Reclamação 💬", d: "Direito a desabafar sobre qualquer assunto com atenção total." }
+                ],
+                [
+                    { id: "c9", t: "Vale Dormir Juntinho 🛌", d: "Um dia inteiro de preguiça e dengo debaixo das cobertas." },
+                    { id: "c10", t: "Vale Delivery Surpresa 🍕", d: "O parceiro escolhe e pede sua comida favorita em segredo." },
+                    { id: "c11", t: "Vale Despedida Demorada 🥺", d: "Mais 20 minutinhos extras de dengo antes de ir embora." },
+                    { id: "c12", t: "Vale Te Amo Especial 📜", d: "Uma cartinha improvisada feita na hora listando suas qualidades." }
+                ]
+            ];
+
+            const hoje = new Date();
+            const primeiraData = new Date(hoje.getFullYear(), 0, 1);
+            const numeroSemana = Math.ceil((((hoje - primeiraData) / 86400000) + primeiraData.getDay() + 1) / 7);
+            const loteAtualIdx = numeroSemana % lotesCuponsSemanas.length;
+            const cuponsDaSemana = lotesCuponsSemanas[loteAtualIdx];
+
+            onValue(ref(db, 'mimos_estados'), snapshot => {
+                const estados = snapshot.val() || {};
+                const mGrid = document.getElementById('cuponsGrid');
+                if(!mGrid) return;
+                mGrid.innerHTML = "";
+
+                cuponsDaSemana.forEach(c => {
+                    const foiUsado = estados[c.id] && estados[c.id].usado;
+                    const cardClass = foiUsado ? "mimo-card usado" : "mimo-card";
+                    const tituloClass = foiUsado ? "mimo-titulo usado-txt" : "mimo-titulo";
+                    const btnTxt = foiUsado ? "Resgatado ✓" : "Resgatar Mimo 🎟️";
+                    const btnDisabled = foiUsado ? "disabled" : "";
+
+                    const cardHtml = `
+                        <div class="${cardClass}">
+                            <div class="${tituloClass}">${c.t}</div>
+                            <div class="mimo-desc">${c.d}</div>
+                            <button class="btn-lux" style="font-size:0.65rem; padding:8px; margin:0;" ${btnDisabled} onclick="window.resgatarCupomReal('${c.id}')">${btnTxt}</button>
+                        </div>
+                    `;
+                    mGrid.innerHTML += cardHtml;
+                });
+            });
+        }
+
+        window.resgatarCupomReal = (idCupom) => {
+            update(ref(db, `mimos_estados/${idCupom}`), { usado: true, por: usuarioAtivo }).then(() => {
+                alert('Cupom Ativado e Riscado! Tire um print para cobrar o seu amor!');
+            });
+        };
+
+        document.getElementById('inputFoto').addEventListener('change', (e) => {
+            if (e.target.files[0]) document.getElementById('btnUpload').style.display = 'block';
+        });
+
+        window.enviarFotoDirect = () => {
+            const file = document.getElementById('inputFoto').files[0];
+            if (!file) return;
+            const r = new FileReader(); r.readAsDataURL(file);
+            r.onload = (ev) => {
+                push(ref(db, 'mural_fotos_direto'), { imagem: ev.target.result, autor: usuarioAtivo, timestamp: Date.now() });
+                document.getElementById('btnUpload').style.display = 'none';
+                document.getElementById('inputFoto').value = "";
+            };
+        };
+
+        document.getElementById('inputVideo').addEventListener('change', (e) => {
+            if (e.target.files[0]) document.getElementById('btnUploadVideo').style.display = 'block';
+        });
+
+        window.enviarVideoDirect = () => {
+            const file = document.getElementById('inputVideo').files[0];
+            if (!file) return;
+            const r = new FileReader(); r.readAsDataURL(file);
+            r.onload = (ev) => {
+                push(ref(db, 'mural_videos_direto'), { video: ev.target.result, autor: usuarioAtivo, timestamp: Date.now() });
+                document.getElementById('btnUploadVideo').style.display = 'none';
+                document.getElementById('inputVideo').value = "";
+            };
+        };
+
+        function sync() {
+            onValue(ref(db, 'mural_fotos_direto'), s => {
+                const mural = document.getElementById('muralFotos'); if(mural) { mural.innerHTML = "";
+                s.forEach(c => {
+                    mural.innerHTML += `<div class="foto-card"><img src="${c.val().imagem}" onclick="window.verFotoGrande(this.src)"><span>Por: ${c.val().autor}</span></div>`;
+                }); }
+            });
+
+            onValue(ref(db, 'mural_videos_direto'), s => {
+                const muralV = document.getElementById('muralVideos'); if(muralV) { muralV.innerHTML = "";
+                s.forEach(c => {
+                    muralV.innerHTML += `<div class="foto-card"><video src="${c.val().video}" controls style="width:100%; border-radius:10px; border:1px solid var(--purple);"></video><span>Por: ${c.val().autor}</span></div>`;
+                }); }
+            });
+
+            onValue(ref(db, 'sonhos_v2'), s => {
+                const l = document.getElementById('listaSonhos'); if(l) { l.innerHTML = "";
+                s.forEach(item => {
+                    l.innerHTML += `<div style="display:flex; background:rgba(255,255,255,0.1); padding:10px; border-radius:15px; margin-bottom:8px; text-align:left;">
+                        <input type="checkbox" ${item.val().status?'checked':''} onchange="update(ref(getDatabase(), 'sonhos_v2/${item.key}'), {status:!${item.val().status}})" style="width:20px; margin-right:10px;">
+                        <span style="${item.val().status?'text-decoration:line-through;opacity:0.5;':''}">${item.val().texto}</span>
+                    </div>`;
+                }); }
+            });
+
+            onValue(ref(db, 'correio_v2'), s => {
+                const m = document.getElementById('muralC'); if(m) { m.innerHTML = "";
+                s.forEach(c => { m.innerHTML = `<div class="glass-card" style="text-align:left;">${c.val().texto}</div>` + m.innerHTML; }); }
+            });
+        }
+
+        window.addSonho = () => {
+            const v = document.getElementById('inputSonho').value;
+            if(v) push(ref(db, 'sonhos_v2'), { texto: v, status: false });
+            document.getElementById('inputSonho').value = "";
+        };
+
+        window.enviarC = () => {
+            const v = document.getElementById('textoC').value;
+            if(v) push(ref(db, 'correio_v2'), { texto: `${v}\n\n— Assinado: ${usuarioAtivo}` });
+            document.getElementById('textoC').value = "";
+        };
+
+        window.verFotoGrande = (src) => { document.getElementById('imgExpandida').src = src; document.getElementById('lightbox').classList.add('show'); };
+        window.fecharFotoGrande = () => document.getElementById('lightbox').classList.remove('show');
+
+        function initRaspadinha() {
+            const todosOsPremiosConfig = [
+                "Vale Abraço Apertado 🫂", "Beijo de 1 Minuto 💋", "Mensagem Fofa Surpresa 📝", "Café na Cama ☕",
+                "Massagem nos Pés 🦶", "Vale cafuné até dormir 😴", "Rodada de perguntas sinceras 💬", "Cinema com direito a doce 🍫"
+            ];
+
+            const raspadinhaRef = ref(db, 'arena_jogos/raspadinha_global');
+
+            onValue(raspadinhaRef, snapshot => {
+                const dadosR = snapshot.val() || { loteAtual: [], historicoUsados: [], logsCliques: {} };
+                const rGrid = document.getElementById('raspaGrid');
+                const msgBloqueio = document.getElementById('raspadinha-bloqueio');
+                const hojeStr = new Date().toISOString().split('T')[0];
+
+                if (!dadosR.loteAtual || dadosR.loteAtual.length < 4) {
+                    let disponiveis = todosOsPremiosConfig.filter(p => !dadosR.historicoUsados || !dadosR.historicoUsados.includes(p));
+                    if (disponiveis.length < 4) { dadosR.historicoUsados = []; disponiveis = [...todosOsPremiosConfig]; }
+                    disponiveis.sort(() => Math.random() - 0.5);
+                    const novoLote = disponiveis.slice(0, 4);
+                    update(raspadinhaRef, { loteAtual: novoLote, historicoUsados: [...(dadosR.historicoUsados || []), ...novoLote] });
+                    return;
+                }
+
+                let jaRaspouHoje = false;
+                if (dadosR.logsCliques) {
+                    Object.values(dadosR.logsCliques).forEach(log => {
+                        if (log.usuario === usuarioAtivo && log.data === hojeStr) jaRaspouHoje = true;
+                    });
+                }
+
+                if (jaRaspouHoje) {
+                    msgBloqueio.innerText = "Você já abriu sua raspadinha de hoje! Volte amanhã! ✨";
+                    msgBloqueio.style.display = "block"; rGrid.style.opacity = "0.4"; rGrid.style.pointerEvents = "none";
+                } else {
+                    msgBloqueio.style.display = "none"; rGrid.style.opacity = "1"; rGrid.style.pointerEvents = "auto";
+                }
+
+                rGrid.innerHTML = "";
+
+                let proximaLiberadaIdx = 0;
+                if (dadosR.logsCliques) {
+                    for(let k=0; k<4; k++) {
+                        if(dadosR.logsCliques[`slot_${k}`]) { proximaLiberadaIdx = k + 1; }
+                    }
+                }
+
+                dadosR.loteAtual.forEach((premio, idx) => {
+                    const item = document.createElement('div'); item.className = 'raspa-item';
+                    const txt = document.createElement('div'); txt.className = 'texto-escondido';
+                    txt.innerText = premio;
+                    const canvas = document.createElement('canvas');
+                    item.appendChild(txt); item.appendChild(canvas); rGrid.appendChild(item);
+
+                    const idSlotUnico = `slot_${idx}`;
+                    const foiReveladaGlobally = dadosR.logsCliques && dadosR.logsCliques[idSlotUnico];
+                    const estaBloqueadaPorOrdem = idx > proximaLiberadaIdx;
+
+                    setTimeout(() => {
+                        canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight;
+                        const ctx = canvas.getContext('2d');
+
+                        if (foiReveladaGlobally) {
+                            ctx.clearRect(0, 0, canvas.width, canvas.height);
+                            txt.innerText = `${premio}\n(por ${dadosR.logsCliques[idSlotUnico].usuario})`;
+                            item.style.background = "#e2d4f0";
+                        } else {
+                            ctx.fillStyle = '#9d4edd'; ctx.fillRect(0,0,canvas.width,canvas.height);
+                            ctx.fillStyle = '#ffffff'; ctx.font = 'bold 11px Montserrat'; ctx.textAlign = 'center';
+
+                            if(estaBloqueadaPorOrdem) {
+                                ctx.fillText('🔒 Trancada', canvas.width/2, canvas.height/2 + 4);
+                            } else {
+                                ctx.fillText('Raspe Aqui 💜', canvas.width/2, canvas.height/2 + 4);
+                            }
+                        }
+
+                        let raspando = false;
+                        const registrarGaurador = () => {
+                            if (!foiReveladaGlobally && !jaRaspouHoje && !estaBloqueadaPorOrdem) {
+                                update(ref(db, `arena_jogos/raspadinha_global/logsCliques/${idSlotUnico}`), { usuario: usuarioAtivo, data: hojeStr });
+                                get(raspadinhaRef).then(snapRefresh => {
+                                    const atualizado = snapRefresh.val();
+                                    if (atualizado.logsCliques && Object.keys(atualizado.logsCliques).length >= 4) {
+                                        remove(ref(db, 'arena_jogos/raspadinha_global/logsCliques'));
+                                        remove(ref(db, 'arena_jogos/raspadinha_global/loteAtual'));
+                                    }
+                                });
+                            }
+                        };
+
+                        const mover = (e) => {
+                            if(!raspando || jaRaspouHoje || foiReveladaGlobally || estaBloqueadaPorOrdem) return;
+                            const rect = canvas.getBoundingClientRect();
+                            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+                            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+                            ctx.globalCompositeOperation = 'destination-out'; ctx.beginPath();
+                            ctx.arc(clientX - rect.left, clientY - rect.top, 20, 0, Math.PI*2); ctx.fill();
+                        };
+
+                        const iniciarAcao = () => {
+                            if (estaBloqueadaPorOrdem && !foiReveladaGlobally) {
+                                alert("Abra as raspadinhas anteriores primeiro! 💕");
+                                return;
+                            }
+                            if(!jaRaspouHoje && !foiReveladaGlobally) { raspando = true; registrarGaurador(); }
+                        };
+
+                        canvas.addEventListener('mousedown', iniciarAcao);
+                        canvas.addEventListener('mouseup', () => raspando = false);
+                        canvas.addEventListener('mousemove', mover);
+                        canvas.addEventListener('touchstart', iniciarAcao);
+                        canvas.addEventListener('touchend', () => raspando = false);
+                        canvas.addEventListener('touchmove', mover);
+                    }, 300);
+                });
+            });
+        }
+    </script>
+</body>
+</html>
