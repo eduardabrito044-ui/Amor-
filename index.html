@@ -117,16 +117,14 @@
         .foto-lightbox.show { display: flex; opacity: 1; }
         .foto-lightbox img { max-width: 100%; max-height: 85vh; border-radius: 15px; border: 2px solid var(--gold); box-shadow: 0 0 30px rgba(212, 175, 55, 0.3); }
 
-        /* Estilos da Arena de Desenho em Tempo Real */
+        /* Estilos da Nova Arena de Desenho em Tempo Real */
         .arena-desenho-container { display: flex; flex-direction: column; width: 100%; max-width: 400px; align-items: center; gap: 10px; }
         .canvas-box { position: relative; width: 100%; aspect-ratio: 1; background: white; border-radius: 20px; border: 3px solid var(--gold); overflow: hidden; box-shadow: 0 0 20px rgba(212, 175, 55, 0.3); }
         #paintCanvas { width: 100%; height: 100%; display: block; touch-action: none; background: white; cursor: crosshair; }
         
-        .paleta-cores { display: flex; gap: 8px; justify-content: center; margin: 5px 0; flex-wrap: wrap; }
-        .cor-btn { width: 32px; height: 32px; border-radius: 50%; border: 2px solid white; cursor: pointer; transition: 0.2s; }
+        .paleta-cores { display: flex; gap: 8px; justify-content: center; margin: 5px 0; flex-wrap: wrap; align-items: center; }
+        .cor-btn { width: 30px; height: 30px; border-radius: 50%; border: 2px solid white; cursor: pointer; transition: 0.2s; }
         .cor-btn.ativo { transform: scale(1.2); border-color: var(--gold); box-shadow: 0 0 10px var(--gold); }
-
-        .ferramentas-desenho { display: flex; gap: 10px; width: 100%; justify-content: center; }
 
         /* Área de Pedidos */
         .pedido-card { background: rgba(255,255,255,0.06); border: 1px solid var(--purple); border-radius: 15px; padding: 12px; margin-bottom: 8px; text-align: left; display: flex; justify-content: space-between; align-items: center; }
@@ -134,16 +132,6 @@
     </style>
 </head>
 <body>
-
-    <!-- TELA DE LOGIN / ENTRADA -->
-    <div id="loginOverlay" class="overlay">
-        <h1 class="titulo-lux" style="font-size: 2.8rem;">Nosso Jardim Eterno</h1>
-        <p style="color: var(--gold); font-size: 0.9rem; margin-bottom: 25px; text-align: center;">Digite sua senha ou nome de acesso para entrar:</p>
-        <div class="glass-card" style="max-width: 320px;">
-            <input type="password" id="senhaApp" placeholder="Sua senha secreta 💜">
-            <button class="btn-lux" onclick="entrarApp()">Entrar no Jardim</button>
-        </div>
-    </div>
 
     <!-- CORAÇÕES FLUTUANTES DE FUNDO -->
     <div id="fundoCoracoes"></div>
@@ -177,16 +165,16 @@
         <div id="listaCupons" style="display: flex; flex-direction: column; gap: 12px; width: 100%; max-width: 400px;"></div>
     </div>
 
-    <!-- SEÇÃO 4: ARENA DE DESENHO EM TEMPO REAL (NOVO!) -->
+    <!-- SEÇÃO 4: ARENA DE DESENHO EM TEMPO REAL (NOVO) -->
     <div id="secao-desenho" class="secao">
-        <h2 class="titulo-lux" style="font-size: 2.5rem; margin-bottom: 5px;">Arena de Desenho</h2>
-        <p style="font-size: 0.75rem; text-align: center; color: #ccc; margin-bottom: 10px;">Desenhe em tempo real e adivinhe o que o outro está criando!</p>
+        <h2 class="titulo-lux" style="font-size: 2.8rem; margin-bottom: 5px;">Arena de Desenho</h2>
+        <p style="font-size: 0.75rem; text-align: center; color: #ccc; margin-bottom: 10px;">Desenhe em tempo real e adivinhe o que o outro criou!</p>
         
         <div class="arena-desenho-container">
-            <!-- Título / Dica do Desenho -->
-            <div class="glass-card" style="padding: 12px; margin-bottom: 5px;">
-                <label style="font-size: 0.7rem; color: var(--gold); display: block; margin-bottom: 3px;">DICA / TÍTULO DO DESENHO:</label>
-                <input type="text" id="inputDica" placeholder="Ex: Nosso filme favorito..." style="margin-bottom: 0; padding: 10px; font-size: 0.85rem;" oninput="atualizarDicaFirebase()">
+            <!-- Título / Dica do Desenho (Em cima) -->
+            <div class="glass-card" style="padding: 12px; margin-bottom: 5px; width: 100%;">
+                <label style="font-size: 0.7rem; color: var(--gold); display: block; margin-bottom: 3px;">TÍTULO / DICA DO DESENHO:</label>
+                <input type="text" id="inputDica" placeholder="Ex: Nosso primeiro encontro..." style="margin-bottom: 0; padding: 10px; font-size: 0.85rem;" oninput="atualizarDicaFirebase()">
             </div>
 
             <!-- Canvas de Desenho -->
@@ -194,27 +182,29 @@
                 <canvas id="paintCanvas"></canvas>
             </div>
 
-            <!-- Paleta de Cores e Ferramentas -->
+            <!-- Paleta de Cores Completa -->
             <div class="paleta-cores">
                 <div class="cor-btn ativo" style="background: #000000;" onclick="mudarCor('#000000', this)"></div>
+                <div class="cor-btn" style="background: #ffffff; border-color: #7b2cbf;" onclick="mudarCor('#ffffff', this)"></div>
                 <div class="cor-btn" style="background: #ff4d6d;" onclick="mudarCor('#ff4d6d', this)"></div>
                 <div class="cor-btn" style="background: #7b2cbf;" onclick="mudarCor('#7b2cbf', this)"></div>
                 <div class="cor-btn" style="background: #d4af37;" onclick="mudarCor('#d4af37', this)"></div>
                 <div class="cor-btn" style="background: #2a9d8f;" onclick="mudarCor('#2a9d8f', this)"></div>
                 <div class="cor-btn" style="background: #e63946;" onclick="mudarCor('#e63946', this)"></div>
+                <div class="cor-btn" style="background: #f4a261;" onclick="mudarCor('#f4a261', this)"></div>
                 <button class="btn-lux" style="padding: 6px 12px; font-size: 0.7rem; margin-top: 0; width: auto;" onclick="limparTela()">🧹 Limpar</button>
             </div>
 
-            <!-- Seção de Adivinhação / Palpite -->
+            <!-- Palavra Secreta (Embaixo) / Adivinhação -->
             <div class="glass-card" style="padding: 12px; margin-top: 5px; width: 100%;">
                 <div id="areaQuemDesenha" style="display: none;">
-                    <label style="font-size: 0.7rem; color: var(--gold); display: block; margin-bottom: 3px;">PALAVRA SECRETA (Só você vê):</label>
-                    <input type="text" id="inputPalavraSecreta" placeholder="Digite o que vai desenhar..." style="margin-bottom: 8px; padding: 10px;" oninput="atualizarPalavraFirebase()">
+                    <label style="font-size: 0.7rem; color: var(--gold); display: block; margin-bottom: 3px;">NOME DO DESENHO (Palavra secreta):</label>
+                    <input type="text" id="inputPalavraSecreta" placeholder="O que você está desenhando?" style="margin-bottom: 8px; padding: 10px;" oninput="atualizarPalavraFirebase()">
                 </div>
 
                 <div id="areaQuemAdivinha">
-                    <label style="font-size: 0.7rem; color: var(--gold); display: block; margin-bottom: 3px;">FAÇA SEU PALPITE:</label>
-                    <input type="text" id="inputPalpite" placeholder="Tente adivinhar o desenho..." style="margin-bottom: 8px; padding: 10px;" oninput="verificarPalpite()">
+                    <label style="font-size: 0.7rem; color: var(--gold); display: block; margin-bottom: 3px;">TENTE ADIVINHAR O NOME:</label>
+                    <input type="text" id="inputPalpite" placeholder="Digite seu palpite aqui..." style="margin-bottom: 8px; padding: 10px;" oninput="verificarPalpite()">
                     <div id="statusAcerto" style="font-size: 0.85rem; font-weight: bold; color: var(--green); min-height: 20px;"></div>
                 </div>
 
@@ -223,7 +213,7 @@
         </div>
     </div>
 
-    <!-- SEÇÃO 5: ÁREA DE PEDIDOS E DESEJOS -->
+    <!-- SEÇÃO 5: ÁREA DE PEDIDOS E DESEJOS (NOVO) -->
     <div id="secao-pedidos" class="secao">
         <h2 class="titulo-lux">Área de Pedidos</h2>
         <p style="font-size: 0.8rem; text-align: center; color: #ccc; margin-bottom: 15px;">Peça mimos, carinhos ou passeios especiais!</p>
@@ -236,13 +226,13 @@
         <div id="listaPedidos" style="width: 100%; max-width: 400px;"></div>
     </div>
 
-    <!-- SEÇÃO 6: FOTOS / GALERIA -->
+    <!-- SEÇÃO 6: FOTOS / GALERIA (PRESERVADA EXATAMENTE COMO ESTAVA) -->
     <div id="secao-fotos" class="secao">
         <h2 class="titulo-lux">Nossas Memórias</h2>
         <div class="mural-fotos" id="muralFotos"></div>
     </div>
 
-    <!-- BARRA DE NAVEGAÇÃO INFERIOR -->
+    <!-- BARRA DE NAVEGAÇÃO INFERIOR (ATUALIZADA COM AS NOVAS ABAS) -->
     <div class="nav-bar">
         <div class="nav-item ativo" onclick="mudarSecao('inicio', this)"><span>🏠</span>Início</div>
         <div class="nav-item" onclick="mudarSecao('raspadinhas', this)"><span>✨</span>Raspa</div>
@@ -258,7 +248,7 @@
     </div>
 
     <script>
-        // CONFIGURAÇÃO DO FIREBASE (Insira sua config ou use seu banco em tempo real)
+        // CONFIGURAÇÃO DO FIREBASE PARA SINCRONIZAÇÃO EM TEMPO REAL
         const firebaseConfig = {
             databaseURL: "https://nosso-jardim-eterno-default-rtdb.firebaseio.com/"
         };
@@ -266,15 +256,6 @@
             firebase.initializeApp(firebaseConfig);
         }
         const db = firebase.database();
-
-        function entrarApp() {
-            const senha = document.getElementById('senhaApp').value;
-            if (senha.trim() !== "") {
-                document.getElementById('loginOverlay').classList.add('hidden');
-            } else {
-                alert('Digite a senha para entrar no jardim! 💜');
-            }
-        }
 
         // NAVEGAÇÃO ENTRE ABAS
         function mudarSecao(nomeSecao, elementoNav) {
@@ -322,19 +303,22 @@
             { id: 4, texto: "Vale um cafuné de 15 minutos sem interrupções! ✨" }
         ];
         const containerRaspa = document.getElementById('containerRaspadinhas');
-        raspadinhasData.forEach(item => {
-            const div = document.createElement('div');
-            div.className = 'raspa-item';
-            div.innerHTML = `
-                <div class="texto-escondido">${item.texto}</div>
-                <canvas class="raspa-canvas" id="raspa-${item.id}"></canvas>
-            `;
-            containerRaspa.appendChild(div);
-            initRaspaCanvas(`raspa-${item.id}`);
-        });
+        if (containerRaspa) {
+            raspadinhasData.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'raspa-item';
+                div.innerHTML = `
+                    <div class="texto-escondido">${item.texto}</div>
+                    <canvas class="raspa-canvas" id="raspa-${item.id}"></canvas>
+                `;
+                containerRaspa.appendChild(div);
+                initRaspaCanvas(`raspa-${item.id}`);
+            });
+        }
 
         function initRaspaCanvas(id) {
             const canvas = document.getElementById(id);
+            if (!canvas) return;
             const ctx = canvas.getContext('2d');
             canvas.width = 160;
             canvas.height = 130;
@@ -367,39 +351,42 @@
         // CUPONS DE MIMOS
         const cuponsData = [
             { id: 1, titulo: "Vale Pedido de Comida", desc: "Escolha um lanche ou doce para pedir juntos!" },
-            { id: 2, titulo: "Vale Reclamação de 10 min", desc: "Pode desabugar sobre tudo que eu te ouço com carinho." },
+            { id: 2, titulo: "Vale Reclamação de 10 min", desc: "Pode desabafar sobre tudo que eu te ouço com carinho." },
             { id: 3, titulo: "Vale Beijo Sem Fim", desc: "Resgatável a qualquer momento do dia." }
         ];
         const listaCupons = document.getElementById('listaCupons');
-        cuponsData.forEach(c => {
-            const d = document.createElement('div');
-            d.className = 'mimo-card';
-            d.id = `cupom-${c.id}`;
-            d.innerHTML = `
-                <div>
-                    <div class="mimo-titulo" id="cupom-t-${c.id}">${c.titulo}</div>
-                    <div class="mimo-desc">${c.desc}</div>
-                </div>
-                <button class="btn-lux" style="padding: 8px; font-size: 0.75rem;" onclick="usarCupom(${c.id})">Resgatar Cupom</button>
-            `;
-            listaCupons.appendChild(d);
-        });
+        if (listaCupons) {
+            cuponsData.forEach(c => {
+                const d = document.createElement('div');
+                d.className = 'mimo-card';
+                d.id = `cupom-${c.id}`;
+                d.innerHTML = `
+                    <div>
+                        <div class="mimo-titulo" id="cupom-t-${c.id}">${c.titulo}</div>
+                        <div class="mimo-desc">${c.desc}</div>
+                    </div>
+                    <button class="btn-lux" style="padding: 8px; font-size: 0.75rem;" onclick="usarCupom(${c.id})">Resgatar Cupom</button>
+                `;
+                listaCupons.appendChild(d);
+            });
+        }
         function usarCupom(id) {
             document.getElementById(`cupom-${id}`).classList.add('usado');
             document.getElementById(`cupom-t-${id}`).classList.add('usado-txt');
             alert('Cupom resgatado com sucesso! Mande print para o mozão 💜');
         }
 
-        // ==========================================
-        // ARENA DE DESENHO EM TEMPO REAL (FIREBASE)
-        // ==========================================
+        // ====================================================
+        // ARENA DE DESENHO EM TEMPO REAL (INTEGRADA COM FIREBASE)
+        // ====================================================
         const canvas = document.getElementById('paintCanvas');
-        const ctx = canvas.getContext('2d');
+        const ctx = canvas ? canvas.getContext('2d') : null;
         let corAtual = '#000000';
         let desenhandoCanvas = false;
-        let isDrawer = true; // Alterna quem desenha/adivinha
+        let isDrawer = true;
 
         function ajustarTamanhoCanvas() {
+            if (!canvas) return;
             canvas.width = canvas.parentElement.clientWidth;
             canvas.height = canvas.parentElement.clientHeight;
             ctx.fillStyle = "white";
@@ -415,14 +402,14 @@
         }
 
         function limparTela() {
+            if (!ctx) return;
             ctx.fillStyle = "white";
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             sincronizarCanvasFirebase();
         }
 
-        // Eventos do Mouse/Touch para desenhar
         function iniciarDesenho(e) {
-            if (!isDrawer) return;
+            if (!isDrawer || !ctx) return;
             desenhandoCanvas = true;
             ctx.beginPath();
             const rect = canvas.getBoundingClientRect();
@@ -430,7 +417,7 @@
         }
 
         function desenhar(e) {
-            if (!desenhandoCanvas || !isDrawer) return;
+            if (!desenhandoCanvas || !isDrawer || !ctx) return;
             const rect = canvas.getBoundingClientRect();
             const x = (e.clientX || e.touches[0].clientX) - rect.left;
             const y = (e.clientY || e.touches[0].clientY) - rect.top;
@@ -448,15 +435,17 @@
             }
         }
 
-        canvas.addEventListener('mousedown', iniciarDesenho);
-        canvas.addEventListener('mousemove', desenhar);
-        canvas.addEventListener('mouseup', pararDesenho);
-        canvas.addEventListener('touchstart', iniciarDesenho);
-        canvas.addEventListener('touchmove', desenhar);
-        canvas.addEventListener('touchend', pararDesenho);
+        if (canvas) {
+            canvas.addEventListener('mousedown', iniciarDesenho);
+            canvas.addEventListener('mousemove', desenhar);
+            canvas.addEventListener('mouseup', pararDesenho);
+            canvas.addEventListener('touchstart', iniciarDesenho);
+            canvas.addEventListener('touchmove', desenhar);
+            canvas.addEventListener('touchend', pararDesenho);
+        }
 
-        // Sincronização Firebase Arena de Desenho
         function sincronizarCanvasFirebase() {
+            if (!canvas) return;
             const dataURL = canvas.toDataURL();
             db.ref('arenaDesenho/canvas').set(dataURL);
         }
@@ -477,9 +466,9 @@
                 const palavraSecreta = snapshot.val() || "";
                 const statusEl = document.getElementById('statusAcerto');
                 if (palavraSecreta && palpite === palavraSecreta) {
-                    statusEl.innerText = "🎉 Acertou mizeravi! Mandou muito bem!";
+                    statusEl.innerText = "🎉 Acertou perfeitamente! Mandou muito bem!";
                 } else if (palpite.length > 0) {
-                    statusEl.innerText = "🤔 Quase... Continue tentando!";
+                    statusEl.innerText = "🤔 Quase lá... Continue tentando!";
                 } else {
                     statusEl.innerText = "";
                 }
@@ -495,26 +484,28 @@
             document.getElementById('inputPalavraSecreta').value = '';
             document.getElementById('inputPalpite').value = '';
             document.getElementById('statusAcerto').innerText = '';
+            db.ref('arenaDesenho/dica').set('');
+            db.ref('arenaDesenho/palavraSecreta').set('');
         }
 
         function atualizarModoJogo() {
             const areaDesenha = document.getElementById('areaQuemDesenha');
             const areaAdivinha = document.getElementById('areaQuemAdivinha');
             if (isDrawer) {
-                areaDesenha.style.display = 'block';
-                areaAdivinha.style.display = 'none';
-                canvas.style.pointerEvents = 'auto';
+                if (areaDesenha) areaDesenha.style.display = 'block';
+                if (areaAdivinha) areaAdivinha.style.display = 'none';
+                if (canvas) canvas.style.pointerEvents = 'auto';
             } else {
-                areaDesenha.style.display = 'none';
-                areaAdivinha.style.display = 'block';
-                canvas.style.pointerEvents = 'none';
+                if (areaDesenha) areaDesenha.style.display = 'none';
+                if (areaAdivinha) areaAdivinha.style.display = 'block';
+                if (canvas) canvas.style.pointerEvents = 'none';
             }
         }
 
-        // Ouvintes Firebase em tempo real
+        // Ouvintes Firebase em tempo real para a Arena de Desenho
         db.ref('arenaDesenho/canvas').on('value', snapshot => {
             const imgData = snapshot.val();
-            if (imgData && !desenhandoCanvas) {
+            if (imgData && !desenhandoCanvas && ctx && canvas) {
                 const img = new Image();
                 img.onload = () => {
                     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -526,13 +517,18 @@
 
         db.ref('arenaDesenho/dica').on('value', snapshot => {
             const dicaVal = snapshot.val() || "";
-            if (!isDrawer) {
-                document.getElementById('inputDica').value = dicaVal;
-                document.getElementById('inputDica').disabled = true;
+            const inputDica = document.getElementById('inputDica');
+            if (!isDrawer && inputDica) {
+                inputDica.value = dicaVal;
+                inputDica.disabled = true;
+            } else if (inputDica) {
+                inputDica.disabled = false;
             }
         });
 
-        // ÁREA DE PEDIDOS EM TEMPO REAL
+        // ====================================================
+        // ÁREA DE PEDIDOS E DESEJOS (FIREBASE)
+        // ====================================================
         function adicionarPedido() {
             const input = document.getElementById('novoPedidoInput');
             const texto = input.value.trim();
@@ -544,6 +540,7 @@
 
         db.ref('pedidos').on('value', snapshot => {
             const lista = document.getElementById('listaPedidos');
+            if (!lista) return;
             lista.innerHTML = '';
             const data = snapshot.val();
             if (data) {
@@ -564,20 +561,22 @@
             db.ref(`pedidos/${key}`).update({ concluido: !estadoAtual });
         }
 
-        // GALERIA DE FOTOS
+        // GALERIA DE FOTOS (PRESERVADA EXATAMENTE COMO ESTAVA)
         const fotosData = [
             { url: "logo-acesso-mais.png", legenda: "Nosso momento especial 💜" }
         ];
         const mural = document.getElementById('muralFotos');
-        fotosData.forEach(f => {
-            const div = document.createElement('div');
-            div.className = 'foto-card';
-            div.innerHTML = `
-                <img src="${f.url}" alt="Foto" onclick="abrirLightbox('${f.url}')">
-                <span>${f.legenda}</span>
-            `;
-            mural.appendChild(div);
-        });
+        if (mural) {
+            fotosData.forEach(f => {
+                const div = document.createElement('div');
+                div.className = 'foto-card';
+                div.innerHTML = `
+                    <img src="${f.url}" alt="Foto" onclick="abrirLightbox('${f.url}')">
+                    <span>${f.legenda}</span>
+                `;
+                mural.appendChild(div);
+            });
+        }
 
         function abrirLightbox(src) {
             document.getElementById('imgLightbox').src = src;
