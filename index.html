@@ -213,7 +213,7 @@
             <div class="glass-card">
                 <input type="file" id="inputVideo" accept="video/*" style="display:none;">
                 <button class="btn-lux" onclick="document.getElementById('inputVideo').click()">Selecionar Vídeo da Galeria</button>
-                <button class="btn-lux" id="btnUploadVideo" onclick="enviarVideoDirect()" style="background:linear-gradient(45deg, #2a9d8f, #e9c46a); display:none; margin-top:8px;">Enviar Vídeo 🎥</button>
+                <button class="btn-lux" id="btnUploadVideo" onclick="enviarVideoDirect()" style="background:linear-gradient(45deg, #2a9d8f, #e9c46a); display:none; margin-top:8px;">Comprimir e Enviar Vídeo 🎥</button>
                 <div id="statusUploadVideo" style="font-size:0.8rem; margin-top:8px; color:var(--gold);"></div>
             </div>
             <div class="mural-fotos" id="muralVideos"></div>
@@ -472,15 +472,93 @@
             if (e.target.files[0]) document.getElementById('btnUploadVideo').style.display = 'block';
         });
 
-        window.enviarVideoDirect = () => {
+        // COMPRESSOR INTELIGENTE DE VÍDEO NO NAVEGADOR
+        window.enviarVideoDirect = async () => {
             const file = document.getElementById('inputVideo').files[0];
             if (!file) return;
-            const r = new FileReader(); r.readAsDataURL(file);
-            r.onload = (ev) => {
-                push(ref(db, 'mural_videos_direto'), { video: ev.target.result, autor: usuarioAtivo, timestamp: Date.now() });
-                document.getElementById('btnUploadVideo').style.display = 'none';
-                document.getElementById('inputVideo').value = "";
-            };
+
+            const statusEl = document.getElementById('statusUploadVideo');
+            statusEl.innerText = "Comprimindo vídeo automaticamente... Aguarde ⏳";
+
+            try {
+                const video = document.createElement('video');
+                video.src = URL.createObjectURL(file);
+                video.muted = true;
+                video.playsInline = true;
+
+                await new Promise((resolve, reject) => {
+                    video.onloadedmetadata = () => {
+                        video.play().then(resolve).catch(reject);
+                    };
+                    video.onerror = reject;
+                });
+
+                // Reduzir resolução máxima para 400px de largura para ficar bem leve
+                const maxWidth = 400;
+                const width = video.videoWidth > maxWidth ? maxWidth : video.videoWidth;
+                const height = Math.floor(video.videoHeight * (width / video.videoWidth));
+
+                const canvas = document.createElement('canvas');
+                canvas.width = width;
+                canvas.height = height;
+                const ctx = canvas.getContext('2d');
+
+                const stream = canvas.captureStream(30);
+                let mimeType = 'video/webm;codecs=vp8';
+                if (!MediaRecorder.isTypeSupported(mimeType)) {
+                    mimeType = 'video/webm';
+                }
+
+                const options = { mimeType, videoBitsPerSecond: 400000 }; // 400kbps para garantir tamanho reduzido
+                const mediaRecorder = new MediaRecorder(stream, options);
+                const chunks = [];
+
+                mediaRecorder.ondataavailable = (e) => {
+                    if (e.data.size > 0) chunks.push(e.data);
+                };
+
+                mediaRecorder.onstop = () => {
+                    const blob = new Blob(chunks, { type: 'video/webm' });
+                    const reader = new FileReader();
+                    reader.readAsDataURL(blob);
+                    reader.onload = (ev) => {
+                        push(ref(db, 'mural_videos_direto'), { 
+                            video: ev.target.result, 
+                            autor: usuarioAtivo, 
+                            timestamp: Date.now() 
+                        }).then(() => {
+                            statusEl.innerText = "Vídeo comprimido e enviado com sucesso! ✨";
+                            document.getElementById('btnUploadVideo').style.display = 'none';
+                            document.getElementById('inputVideo').value = "";
+                            setTimeout(() => { statusEl.innerText = ""; }, 3000);
+                        });
+                    };
+                };
+
+                mediaRecorder.start();
+
+                video.currentTime = 0;
+                const drawInterval = setInterval(() => {
+                    ctx.drawImage(video, 0, 0, width, height);
+                    if (video.ended || video.paused) {
+                        clearInterval(drawInterval);
+                        mediaRecorder.stop();
+                        video.remove();
+                    }
+                }, 1000 / 30);
+
+                video.onended = () => {
+                    clearInterval(drawInterval);
+                    if (mediaRecorder.state !== 'inactive') {
+                        mediaRecorder.stop();
+                    }
+                    video.remove();
+                };
+
+            } catch (err) {
+                console.error(err);
+                statusEl.innerText = "Erro ao comprimir o vídeo. Tente outro arquivo.";
+            }
         };
 
         function sync() {
