@@ -44,9 +44,9 @@
             position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 95%; max-width: 500px;
             background: rgba(0,0,0,0.85); backdrop-filter: blur(15px); border-radius: 30px; display: flex; padding: 10px; border: 1px solid var(--purple); z-index: 1000;
         }
-        .nav-item { color: #fff; opacity: 0.4; font-size: 0.55rem; cursor: pointer; text-align: center; flex: 1; }
+        .nav-item { color: #fff; opacity: 0.4; font-size: 0.5rem; cursor: pointer; text-align: center; flex: 1; }
         .nav-item.ativo { opacity: 1; color: var(--gold); font-weight: bold; }
-        .nav-item span { display: block; font-size: 1rem; margin-bottom: 2px; }
+        .nav-item span { display: block; font-size: 0.95rem; margin-bottom: 2px; }
 
         .glass-card {
             background: rgba(255,255,255,0.08); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.15);
@@ -112,6 +112,25 @@
         }
         .foto-lightbox.show { display: flex; opacity: 1; }
         .foto-lightbox img { max-width: 100%; max-height: 85vh; border-radius: 15px; border: 2px solid var(--gold); box-shadow: 0 0 30px rgba(212, 175, 55, 0.3); }
+
+        /* Estilos dos Cartões de Pedidos */
+        .pedido-card {
+            background: rgba(255,255,255,0.05);
+            border: 1.5px solid var(--purple);
+            border-radius: 15px;
+            padding: 12px;
+            text-align: left;
+            font-size: 0.85rem;
+            transition: 0.3s;
+        }
+        .pedido-card.status-passado {
+            border-color: var(--orange);
+            background: rgba(244, 162, 97, 0.15);
+        }
+        .pedido-card.status-concluido {
+            border-color: var(--green);
+            background: rgba(42, 157, 143, 0.15);
+        }
     </style>
 </head>
 <body>
@@ -135,6 +154,7 @@
     <nav class="nav-bar hidden" id="menu">
         <div class="nav-item ativo" onclick="irPara('home', this)"><span>🏠</span>Início</div>
         <div class="nav-item" onclick="irPara('mimos', this)"><span>🎟️</span>Mimos</div>
+        <div class="nav-item" onclick="irPara('pedidos', this)"><span>📋</span>Pedidos</div>
         <div class="nav-item" onclick="irPara('fotos', this)"><span>📸</span>Fotos</div>
         <div class="nav-item" onclick="irPara('videos', this)"><span>🎥</span>Vídeos</div>
         <div class="nav-item" onclick="irPara('sonhos', this)"><span>✨</span>Sonhos</div>
@@ -195,6 +215,33 @@
         <section id="mimos" class="secao">
             <h2 class="titulo-lux">Cupons de Carinho 🎟️</h2>
             <div id="cuponsGrid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width:100%; max-width:400px;"></div>
+        </section>
+
+        <section id="pedidos" class="secao">
+            <h2 class="titulo-lux">Nossos Pedidos 📋</h2>
+            
+            <div class="glass-card" style="text-align: left;">
+                <p style="font-size:0.7rem; font-weight:bold; letter-spacing:1px; color: var(--gold); text-align: center; margin-bottom: 12px;">ADICIONAR NOVO PEDIDO 📌</p>
+                <label style="font-size: 0.7rem; color: var(--gold); display: block; margin-bottom: 4px;">Para quem é o pedido?</label>
+                <select id="select-destino-pedido">
+                    <option value="ele">Pedido para Ele 🧔</option>
+                    <option value="ela">Pedido para Mim / Ela 👸</option>
+                </select>
+                <input type="text" id="inputTextoPedido" placeholder="Escreva o pedido ou tarefa...">
+                <button class="btn-lux" onclick="adicionarPedido()">Adicionar Pedido ✨</button>
+            </div>
+
+            <div style="width: 100%; max-width: 400px; display: flex; flex-direction: column; gap: 15px;">
+                <div class="glass-card" style="margin-bottom: 0;">
+                    <p style="font-size:0.75rem; font-weight:bold; color: var(--gold); margin-bottom: 10px;">📌 Pedidos Para Ele</p>
+                    <div id="listaPedidosEle" style="display: flex; flex-direction: column; gap: 10px;"></div>
+                </div>
+
+                <div class="glass-card" style="margin-bottom: 0;">
+                    <p style="font-size:0.75rem; font-weight:bold; color: var(--gold); margin-bottom: 10px;">📌 Pedidos Para Mim / Ela</p>
+                    <div id="listaPedidosEla" style="display: flex; flex-direction: column; gap: 10px;"></div>
+                </div>
+            </div>
         </section>
 
         <section id="fotos" class="secao">
@@ -299,6 +346,7 @@
                 sync();
                 initRaspadinha();
                 initHumorDiario();
+                initPedidos();
             }
         };
 
@@ -394,6 +442,67 @@
             });
         };
 
+        // --- SISTEMA DE PEDIDOS ---
+        function initPedidos() {
+            onValue(ref(db, 'pedidos_v2'), snapshot => {
+                const lEle = document.getElementById('listaPedidosEle');
+                const lEla = document.getElementById('listaPedidosEla');
+                if(!lEle || !lEla) return;
+                lEle.innerHTML = "";
+                lEla.innerHTML = "";
+
+                snapshot.forEach(item => {
+                    const p = item.val();
+                    const key = item.key;
+                    
+                    let cardClass = "pedido-card";
+                    if(p.status === 'passado') cardClass += " status-passado";
+                    if(p.status === 'concluido') cardClass += " status-concluido";
+
+                    let html = `
+                        <div class="${cardClass}">
+                            <div style="font-weight: 600; margin-bottom: 5px; ${p.status==='concluido'?'text-decoration:line-through; opacity:0.8;':''}">${p.texto}</div>
+                            <div style="font-size: 0.65rem; opacity: 0.7; margin-bottom: 8px;">Por: ${p.criador}</div>
+                            <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                                <button class="btn-lux" style="padding: 6px 10px; font-size: 0.65rem; margin: 0; background: var(--orange);" onclick="window.mudarStatusPedido('${key}', 'passado')">⏳ Passar</button>
+                                <button class="btn-lux" style="padding: 6px 10px; font-size: 0.65rem; margin: 0; background: var(--green);" onclick="window.mudarStatusPedido('${key}', 'concluido')">✓ Cumprir</button>
+                                <button class="btn-lux" style="padding: 6px 10px; font-size: 0.65rem; margin: 0; background: rgba(255,255,255,0.1);" onclick="window.mudarStatusPedido('${key}', 'pendente')">🔄 Resetar</button>
+                                <button class="btn-lux" style="padding: 6px 10px; font-size: 0.65rem; margin: 0; background: var(--red);" onclick="window.excluirPedido('${key}')">🗑️</button>
+                            </div>
+                        </div>
+                    `;
+
+                    if(p.destino === 'ele') {
+                        lEle.innerHTML += html;
+                    } else {
+                        lEla.innerHTML += html;
+                    }
+                });
+            });
+        }
+
+        window.adicionarPedido = () => {
+            const texto = document.getElementById('inputTextoPedido').value.trim();
+            const destino = document.getElementById('select-destino-pedido').value;
+            if(!texto) return;
+            push(ref(db, 'pedidos_v2'), {
+                texto: texto,
+                destino: destino,
+                criador: usuarioAtivo,
+                status: 'pendente',
+                timestamp: Date.now()
+            });
+            document.getElementById('inputTextoPedido').value = "";
+        };
+
+        window.mudarStatusPedido = (key, novoStatus) => {
+            update(ref(db, `pedidos_v2/${key}`), { status: novoStatus });
+        };
+
+        window.excluirPedido = (key) => {
+            remove(ref(db, `pedidos_v2/${key}`));
+        };
+
         function initMimos() {
             const lotesCuponsSemanas = [
                 [
@@ -472,18 +581,18 @@
             if (e.target.files[0]) document.getElementById('btnUploadVideo').style.display = 'block';
         });
 
-        // COMPRESSOR INTELIGENTE DE VÍDEO NO NAVEGADOR
+        // COMPRESSOR INTELIGENTE DE VÍDEO COM SOM (WEB AUDIO API + CANVAS)
         window.enviarVideoDirect = async () => {
             const file = document.getElementById('inputVideo').files[0];
             if (!file) return;
 
             const statusEl = document.getElementById('statusUploadVideo');
-            statusEl.innerText = "Comprimindo vídeo automaticamente... Aguarde ⏳";
+            statusEl.innerText = "Comprimindo vídeo com som... Aguarde ⏳";
 
             try {
                 const video = document.createElement('video');
                 video.src = URL.createObjectURL(file);
-                video.muted = true;
+                video.crossOrigin = "anonymous";
                 video.playsInline = true;
 
                 await new Promise((resolve, reject) => {
@@ -493,7 +602,6 @@
                     video.onerror = reject;
                 });
 
-                // Reduzir resolução máxima para 400px de largura para ficar bem leve
                 const maxWidth = 400;
                 const width = video.videoWidth > maxWidth ? maxWidth : video.videoWidth;
                 const height = Math.floor(video.videoHeight * (width / video.videoWidth));
@@ -503,14 +611,26 @@
                 canvas.height = height;
                 const ctx = canvas.getContext('2d');
 
-                const stream = canvas.captureStream(30);
-                let mimeType = 'video/webm;codecs=vp8';
+                const videoStream = canvas.captureStream(30);
+
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                const audioCtx = new AudioContext();
+                const source = audioCtx.createMediaElementSource(video);
+                const destination = audioCtx.createMediaStreamDestination();
+                source.connect(destination);
+
+                const combinedStream = new MediaStream([
+                    ...videoStream.getVideoTracks(),
+                    ...destination.stream.getAudioTracks()
+                ]);
+
+                let mimeType = 'video/webm;codecs=vp8,opus';
                 if (!MediaRecorder.isTypeSupported(mimeType)) {
                     mimeType = 'video/webm';
                 }
 
-                const options = { mimeType, videoBitsPerSecond: 400000 }; // 400kbps para garantir tamanho reduzido
-                const mediaRecorder = new MediaRecorder(stream, options);
+                const options = { mimeType, videoBitsPerSecond: 400000 };
+                const mediaRecorder = new MediaRecorder(combinedStream, options);
                 const chunks = [];
 
                 mediaRecorder.ondataavailable = (e) => {
@@ -527,7 +647,7 @@
                             autor: usuarioAtivo, 
                             timestamp: Date.now() 
                         }).then(() => {
-                            statusEl.innerText = "Vídeo comprimido e enviado com sucesso! ✨";
+                            statusEl.innerText = "Vídeo com som enviado com sucesso! ✨";
                             document.getElementById('btnUploadVideo').style.display = 'none';
                             document.getElementById('inputVideo').value = "";
                             setTimeout(() => { statusEl.innerText = ""; }, 3000);
@@ -542,8 +662,9 @@
                     ctx.drawImage(video, 0, 0, width, height);
                     if (video.ended || video.paused) {
                         clearInterval(drawInterval);
-                        mediaRecorder.stop();
+                        if (mediaRecorder.state !== 'inactive') mediaRecorder.stop();
                         video.remove();
+                        audioCtx.close();
                     }
                 }, 1000 / 30);
 
@@ -553,11 +674,12 @@
                         mediaRecorder.stop();
                     }
                     video.remove();
+                    audioCtx.close();
                 };
 
             } catch (err) {
                 console.error(err);
-                statusEl.innerText = "Erro ao comprimir o vídeo. Tente outro arquivo.";
+                statusEl.innerText = "Erro ao processar o vídeo com som. Tente outro arquivo.";
             }
         };
 
